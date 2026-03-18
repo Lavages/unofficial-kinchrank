@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cubing Rank Analysis | Full View</title>
+    <title>Cubing Rank Analysis | Compact View</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;600;800&display=swap"
@@ -49,15 +49,12 @@
             transition: 0.3s ease;
         }
 
-        /* Expanded Container */
         .container {
             max-width: 1600px;
-            /* Increased from 1400px */
             margin: 0 auto;
             width: 100%;
             flex: 1 0 auto;
-            padding: 20px 40px;
-            /* More side breathing room */
+            padding: 15px 30px;
             box-sizing: border-box;
         }
 
@@ -65,13 +62,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 0 30px 0;
+            padding: 10px 0 20px 0;
         }
 
         .brand h1 {
             font-family: 'Outfit', sans-serif;
             margin: 0;
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             font-weight: 800;
             background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));
             -webkit-background-clip: text;
@@ -83,71 +80,44 @@
             backdrop-filter: blur(10px);
             border: 1px solid var(--border);
             color: var(--text-main);
-            padding: 12px 20px;
-            border-radius: 14px;
+            padding: 8px 16px;
+            border-radius: 12px;
             cursor: pointer;
             font-weight: 700;
+            font-size: 0.8rem;
         }
 
-        /* Search Bar */
-        .search-container {
-            margin-bottom: 30px;
-            position: relative;
-        }
-
-        .search-input {
-            width: 100%;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            padding: 20px 20px 20px 60px;
-            border-radius: 20px;
-            color: var(--text-main);
-            font-size: 1.1rem;
-            outline: none;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 25px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            font-size: 1.3rem;
-        }
-
-        /* Configuration Card */
+        /* --- Compact Configuration Card --- */
         .glass-card {
             background: var(--bg-glass);
             backdrop-filter: blur(12px);
             border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 30px;
-            margin-bottom: 35px;
+            border-radius: 18px;
+            padding: 20px;
+            margin-bottom: 20px;
         }
 
         .event-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            /* Larger chips */
-            gap: 12px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 8px;
+            margin-bottom: 20px;
         }
 
         .event-chip {
             display: flex;
             align-items: center;
-            padding: 14px;
+            padding: 10px;
             background: rgba(15, 23, 42, 0.4);
             border: 1px solid var(--border);
-            border-radius: 14px;
-            font-size: 0.9rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
             cursor: pointer;
             color: var(--text-muted);
         }
 
         .event-chip:has(input:checked) {
-            background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(129, 140, 248, 0.15));
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(129, 140, 248, 0.1));
             border-color: var(--primary-accent);
             color: var(--text-main);
         }
@@ -155,54 +125,72 @@
         .btn-update {
             background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));
             color: #fff;
-            padding: 16px 45px;
-            border-radius: 18px;
+            padding: 12px 30px;
+            border-radius: 12px;
             border: none;
             font-weight: 800;
             text-transform: uppercase;
             cursor: pointer;
-            transition: 0.3s ease;
-            font-size: 1rem;
+            font-size: 0.85rem;
         }
 
-        /* --- THE BIG TABLE --- */
+        /* --- THE COMPACT TABLE --- */
         .table-wrap {
-            border-radius: 24px;
+            border-radius: 18px;
             overflow: hidden;
             background: var(--bg-card);
             border: 1px solid var(--border);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
         }
 
         .scroll-area {
             overflow-x: auto;
-            max-height: 75vh;
+            max-height: 65vh;
+            position: relative;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 1100px;
-            table-layout: auto;
+            min-width: 900px;
+            table-layout: fixed;
         }
+
+        /* Specific column widths to prevent excessive stretching */
+        th:nth-child(1) {
+            width: 70px;
+        }
+
+        /* Rank */
+        th:nth-child(2) {
+            width: 220px;
+        }
+
+        /* Competitor */
+        th:nth-child(3) {
+            width: 120px;
+        }
+
+        /* Total */
 
         th {
             background: var(--table-header);
-            padding: 25px 20px;
-            font-size: 0.8rem;
+            padding: 15px 12px;
+            font-size: 0.7rem;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.12em;
+            letter-spacing: 0.1em;
             position: sticky;
             top: 0;
             z-index: 30;
-            border-bottom: 2px solid var(--border);
+            border-bottom: 1px solid var(--border);
         }
 
         td {
-            padding: 22px 20px;
+            padding: 12px 12px;
             border-bottom: 1px solid var(--border);
-            font-size: 1.05rem;
+            font-size: 0.9rem;
+            white-space: nowrap;
         }
 
         .sticky-col {
@@ -210,43 +198,42 @@
             left: 0;
             background: var(--bg-card);
             z-index: 20;
-            border-right: 2px solid var(--border);
-            min-width: 260px;
-            /* Wider for names */
+            border-right: 1px solid var(--border);
         }
 
         .rank-badge {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             background: rgba(148, 163, 184, 0.1);
-            border-radius: 10px;
+            border-radius: 8px;
             font-weight: 800;
             color: var(--primary-accent);
             font-family: 'Outfit';
+            font-size: 0.85rem;
         }
 
         .kinch-pill {
             color: var(--primary-accent);
             font-weight: 800;
             font-family: 'Outfit';
-            font-size: 1.5rem;
+            font-size: 1.1rem;
         }
 
         .name-link {
             text-decoration: none;
             font-weight: 700;
             color: var(--text-main);
-            font-size: 1.1rem;
+            font-size: 0.95rem;
         }
 
         .name-sub {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             color: var(--text-muted);
             display: block;
-            margin-top: 6px;
+            margin-top: 2px;
         }
 
         tr:hover td,
@@ -258,10 +245,10 @@
         .site-footer {
             flex-shrink: 0;
             text-align: center;
-            padding: 50px 20px;
+            padding: 30px 20px;
             border-top: 1px solid var(--border);
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
 
         .site-footer a {
@@ -270,13 +257,13 @@
             font-weight: 700;
         }
 
-        @media (max-width: 1024px) {
+        @media (max-width: 768px) {
             .container {
-                padding: 20px;
+                padding: 10px;
             }
 
             .sticky-col {
-                min-width: 200px;
+                min-width: 160px;
             }
         }
     </style>
@@ -286,50 +273,50 @@
     <div class="container">
         <header>
             <div class="brand">
-                <h1>Cubing Rank<span> Analysis</span></h1>
+                <h1>Cubing Rank Analysis</h1>
             </div>
             <button class="theme-toggle" onclick="toggleTheme()">
                 <i class="fa-solid fa-circle-half-stroke"></i> THEME
             </button>
         </header>
 
-        <div class="search-container">
-            <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            <input type="text" id="memberSearch" class="search-input" placeholder="Search by name, WCA ID, or region..."
-                onkeyup="filterTable()">
-        </div>
+        <div class="glass-card" style="padding: 15px;">
+            <div class="search-container" style="position: relative; margin-bottom: 15px;">
+                <i class="fa-solid fa-magnifying-glass"
+                    style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.9rem;"></i>
+                <input type="text" id="memberSearch" class="search-input" placeholder="Quick find competitor..."
+                    onkeyup="filterTable()"
+                    style="width: 100%; background: var(--bg-body); border: 1px solid var(--border); padding: 12px 12px 12px 40px; border-radius: 10px; color: var(--text-main); font-size: 0.9rem; outline: none; box-sizing: border-box;">
+            </div>
 
-        <div class="glass-card">
             <form action="/" method="POST">
-                <div class="config-header">
-                    <span class="section-label">Events Included</span>
-                    <button type="button" class="toggle-btn"
-                        style="background:none; border: 1px solid var(--primary-accent); color: var(--primary-accent); padding: 8px 16px; border-radius: 10px; cursor:pointer; font-weight: 800; font-size: 0.7rem;"
-                        onclick="toggleAllEvents()">TOGGLE ALL</button>
-                </div>
-
                 <div class="event-grid" id="eventGrid">
                     {% for eid in all_events %}
                     <label class="event-chip">
                         <input type="checkbox" name="events" value="{{ eid }}" {% if eid in event_ids %}checked{% endif
                             %} style="display:none;">
-                        <i class="fa-solid fa-star" style="font-size: 0.8rem; margin-right: 10px; opacity: 0.4;"></i>
+                        <i class="fa-solid fa-cube" style="font-size: 0.7rem; margin-right: 8px; opacity: 0.4;"></i>
                         <span>{{ event_names[eid] }}</span>
                     </label>
                     {% endfor %}
                 </div>
 
                 <div
-                    style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 30px; flex-wrap: wrap; gap: 20px;">
-                    <select name="region"
-                        style="background: var(--bg-body); color: var(--text-main); border: 1px solid var(--border); padding: 15px 25px; border-radius: 14px; font-weight: 600; min-width: 250px;">
-                        <option value="All">Global Rankings</option>
-                        <optgroup label="Continents">{% for c in continents %}<option value="{{ c }}" {% if
-                                current_region==c %}selected{% endif %}>{{ c }}</option>{% endfor %}</optgroup>
-                        <optgroup label="Countries">{% for r in regions %}<option value="{{ r }}" {% if
-                                current_region==r %}selected{% endif %}>{{ r }}</option>{% endfor %}</optgroup>
-                    </select>
-                    <button type="submit" class="btn-update">Update Leaderboard</button>
+                    style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" onclick="toggleAllEvents()"
+                            style="background:none; border: 1px solid var(--border); color: var(--text-muted); padding: 8px 12px; border-radius: 8px; cursor:pointer; font-weight: 700; font-size: 0.7rem;">TOGGLE
+                            ALL</button>
+                        <select name="region"
+                            style="background: var(--bg-body); color: var(--text-main); border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; font-weight: 600; font-size: 0.8rem;">
+                            <option value="All">Global Rankings</option>
+                            <optgroup label="Continents">{% for c in continents %}<option value="{{ c }}" {% if
+                                    current_region==c %}selected{% endif %}>{{ c }}</option>{% endfor %}</optgroup>
+                            <optgroup label="Countries">{% for r in regions %}<option value="{{ r }}" {% if
+                                    current_region==r %}selected{% endif %}>{{ r }}</option>{% endfor %}</optgroup>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-update">Update</button>
                 </div>
             </form>
         </div>
@@ -339,9 +326,9 @@
                 <table id="leaderboardTable">
                     <thead>
                         <tr>
-                            <th style="width: 100px; text-align: center;">Rank</th>
+                            <th style="text-align: center;">Rank</th>
                             <th class="sticky-col">Competitor</th>
-                            <th style="text-align: center;">Kinch Score</th>
+                            <th style="text-align: center;">Score</th>
                             {% for eid in event_ids %}<th style="text-align: center;">{{ event_names[eid] }}</th>{%
                             endfor %}
                         </tr>
@@ -356,8 +343,9 @@
                             </td>
                             <td style="text-align: center;"><span class="kinch-pill">{{ row.total }}</span></td>
                             {% for eid in event_ids %}
-                            <td style="text-align: center; color: var(--text-muted); font-weight: 600;">{{
-                                row.scores[eid] }}%</td>
+                            <td
+                                style="text-align: center; color: var(--text-muted); font-weight: 600; font-size: 0.85rem;">
+                                {{ row.scores[eid] }}%</td>
                             {% endfor %}
                         </tr>
                         {% endfor %}
@@ -368,8 +356,8 @@
     </div>
 
     <footer class="site-footer">
-        Results powered by WCA Data | Licensed under
-        <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY SA 4.0</a>
+        Results powered by WCA Data | <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY SA
+            4.0</a>
     </footer>
 
     <script>

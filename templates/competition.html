@@ -21,15 +21,10 @@
             --row-hover: #334155;
         }
 
-        :root[data-theme="light"] {
-            --bg-body: #f1f5f9;
-            --bg-card: #ffffff;
-            --primary-accent: #0284c7;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-            --table-header: #f8fafc;
-            --row-hover: #f1f5f9;
+        /* Flexbox for sticky footer */
+        html,
+        body {
+            height: 100%;
         }
 
         body {
@@ -37,20 +32,22 @@
             background-color: var(--bg-body);
             color: var(--text-main);
             margin: 0;
-            padding: 40px 20px;
-            transition: all 0.3s ease;
+            padding: 40px 20px 0 20px;
+            /* Padding bottom handled by footer margin */
+            display: flex;
+            flex-direction: column;
         }
 
         .container {
             max-width: 1100px;
             margin: 0 auto;
+            width: 100%;
+            flex: 1 0 auto;
+            /* Allows container to grow and push footer down */
         }
 
         header {
             margin-bottom: 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
         }
 
         .back-link {
@@ -76,24 +73,6 @@
             color: var(--text-muted);
             margin-top: 10px;
             font-size: 1.1rem;
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        /* Mode Toggle Button */
-        .theme-switch {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            padding: 10px 16px;
-            border-radius: 12px;
-            cursor: pointer;
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
         /* Results Table */
@@ -103,6 +82,7 @@
             border-radius: 20px;
             overflow: hidden;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
         }
 
         table {
@@ -127,8 +107,8 @@
             vertical-align: middle;
         }
 
-        tr:hover {
-            background-color: var(--row-hover);
+        tr:last-child td {
+            border-bottom: none;
         }
 
         .event-cell {
@@ -136,20 +116,52 @@
             align-items: center;
             gap: 12px;
             font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .winner-name {
+            text-decoration: none;
+            color: var(--primary-accent);
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .winner-name:hover {
+            text-decoration: underline;
         }
 
         .stat-bold {
             font-family: 'Outfit', sans-serif;
             font-weight: 800;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                gap: 20px;
-            }
+        .solves-cell {
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            letter-spacing: -0.02em;
+        }
 
+        /* Footer Styling */
+        .site-footer {
+            flex-shrink: 0;
+            text-align: center;
+            padding: 30px 20px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: auto;
+        }
+
+        .site-footer a {
+            color: var(--primary-accent);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
             .hide-mobile {
                 display: none;
             }
@@ -164,20 +176,14 @@
 <body>
     <div class="container">
         <header>
-            <div>
-                <a href="javascript:history.back()" class="back-link">
-                    <i class="fa-solid fa-arrow-left"></i> BACK TO PROFILE
-                </a>
-                <h1>{{ comp_name }}</h1>
-                <div class="comp-meta">
-                    <span><i class="fa-solid fa-calendar-days"></i> <span id="word-date">{{ comp_date }}</span></span>
-                    <span><i class="fa-solid fa-location-dot"></i> {{ comp_location }}</span>
-                </div>
+            <a href="javascript:history.back()" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i> BACK TO PROFILE
+            </a>
+            <h1>{{ comp_name }}</h1>
+            <div class="comp-meta">
+                <i class="fa-solid fa-calendar-days"></i> {{ comp_date }} &bull;
+                <i class="fa-solid fa-location-dot"></i> {{ comp_location }}
             </div>
-            <button class="theme-switch" onclick="toggleTheme()">
-                <i id="theme-icon" class="fa-solid fa-moon"></i>
-                <span id="theme-text">Dark Mode</span>
-            </button>
         </header>
 
         <div class="results-card">
@@ -193,24 +199,26 @@
                 </thead>
                 <tbody>
                     {% for result in winners %}
-                    <tr>
+                    <tr class="result-row">
                         <td>
                             <div class="event-cell">
-                                <i class="fa-solid fa-trophy" style="color: #fbbf24;"></i>
+                                <i class="fa-solid fa-cube" style="color: var(--text-muted); font-size: 0.8rem;"></i>
                                 {{ result.event_name }}
                             </div>
                         </td>
                         <td>
-                            <a href="/person/{{ result.winner_id }}"
-                                style="text-decoration:none; color: var(--primary-accent); font-weight:700;">
+                            <a href="/person/{{ result.winner_id }}" class="winner-name">
                                 {{ result.winner_name }}
                             </a>
                             <div style="font-size: 0.75rem; color: var(--text-muted);">{{ result.representing }}</div>
                         </td>
-                        <td style="text-align: center;" class="stat-bold">{{ result.best }}</td>
-                        <td style="text-align: center;" class="stat-bold">{{ result.average if result.average else 'DNF'
-                            }}</td>
-                        <td class="hide-mobile" style="font-family: monospace; color: var(--text-muted);">
+                        <td style="text-align: center;" class="stat-bold">
+                            {{ result.best }}
+                        </td>
+                        <td style="text-align: center;" class="stat-bold">
+                            {{ result.average if result.average else 'DNF' }}
+                        </td>
+                        <td class="solves-cell hide-mobile">
                             {{ result.solves_list | join(', ') }}
                         </td>
                     </tr>
@@ -220,41 +228,10 @@
         </div>
     </div>
 
-    <script>
-        // 1. Date to Words Conversion
-        function formatDateToWords(dateStr) {
-            const date = new Date(dateStr);
-            if (isNaN(date)) return dateStr;
-            return date.toLocaleDateString('en-US', {
-                month: 'long',
-                day: 'numeric',
-                year: 'numeric'
-            });
-        }
-
-        // 2. Theme Toggling
-        function toggleTheme() {
-            const html = document.documentElement;
-            const icon = document.getElementById('theme-icon');
-            const text = document.getElementById('theme-text');
-
-            if (html.getAttribute('data-theme') === 'dark') {
-                html.setAttribute('data-theme', 'light');
-                icon.className = 'fa-solid fa-sun';
-                text.innerText = 'Light Mode';
-            } else {
-                html.setAttribute('data-theme', 'dark');
-                icon.className = 'fa-solid fa-moon';
-                text.innerText = 'Dark Mode';
-            }
-        }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            const dateSpan = document.getElementById('word-date');
-            dateSpan.innerText = formatDateToWords(dateSpan.innerText);
-        });
-    </script>
+    <footer class="site-footer">
+        Results powered by WCA Data | Licensed under
+        <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY SA 4.0</a>
+    </footer>
 </body>
 
 </html>

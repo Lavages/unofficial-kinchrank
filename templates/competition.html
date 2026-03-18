@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ comp_name }} - Results</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root[data-theme="dark"] {
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --primary-accent: #38bdf8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --table-header: #1e293b;
+            --row-hover: #334155;
+        }
+
+        :root[data-theme="light"] {
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --primary-accent: #0284c7;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --table-header: #f8fafc;
+            --row-hover: #f1f5f9;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: var(--primary-accent);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        .comp-meta {
+            color: var(--text-muted);
+            margin-top: 10px;
+            font-size: 1.1rem;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Mode Toggle Button */
+        .theme-switch {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            padding: 10px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Results Table */
+        .results-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background: var(--table-header);
+            padding: 16px 20px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+
+        tr:hover {
+            background-color: var(--row-hover);
+        }
+
+        .event-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+        }
+
+        .stat-bold {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .hide-mobile {
+                display: none;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <a href="javascript:history.back()" class="back-link">
+                    <i class="fa-solid fa-arrow-left"></i> BACK TO PROFILE
+                </a>
+                <h1>{{ comp_name }}</h1>
+                <div class="comp-meta">
+                    <span><i class="fa-solid fa-calendar-days"></i> <span id="word-date">{{ comp_date }}</span></span>
+                    <span><i class="fa-solid fa-location-dot"></i> {{ comp_location }}</span>
+                </div>
+            </div>
+            <button class="theme-switch" onclick="toggleTheme()">
+                <i id="theme-icon" class="fa-solid fa-moon"></i>
+                <span id="theme-text">Dark Mode</span>
+            </button>
+        </header>
+
+        <div class="results-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Event</th>
+                        <th>Winner</th>
+                        <th style="text-align: center;">Best</th>
+                        <th style="text-align: center;">Average</th>
+                        <th class="hide-mobile">Solves</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in winners %}
+                    <tr>
+                        <td>
+                            <div class="event-cell">
+                                <i class="fa-solid fa-trophy" style="color: #fbbf24;"></i>
+                                {{ result.event_name }}
+                            </div>
+                        </td>
+                        <td>
+                            <a href="/person/{{ result.winner_id }}"
+                                style="text-decoration:none; color: var(--primary-accent); font-weight:700;">
+                                {{ result.winner_name }}
+                            </a>
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">{{ result.representing }}</div>
+                        </td>
+                        <td style="text-align: center;" class="stat-bold">{{ result.best }}</td>
+                        <td style="text-align: center;" class="stat-bold">{{ result.average if result.average else 'DNF'
+                            }}</td>
+                        <td class="hide-mobile" style="font-family: monospace; color: var(--text-muted);">
+                            {{ result.solves_list | join(', ') }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // 1. Date to Words Conversion
+        function formatDateToWords(dateStr) {
+            const date = new Date(dateStr);
+            if (isNaN(date)) return dateStr;
+            return date.toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+            });
+        }
+
+        // 2. Theme Toggling
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            const text = document.getElementById('theme-text');
+
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.setAttribute('data-theme', 'light');
+                icon.className = 'fa-solid fa-sun';
+                text.innerText = 'Light Mode';
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                icon.className = 'fa-solid fa-moon';
+                text.innerText = 'Dark Mode';
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            const dateSpan = document.getElementById('word-date');
+            dateSpan.innerText = formatDateToWords(dateSpan.innerText);
+        });
+    </script>
+</body>
+
+</html>

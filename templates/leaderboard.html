@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cubing Contest Rank Analysis</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root[data-theme="dark"] {
+            /* Softer Slate Dark Theme */
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --primary-accent: #38bdf8;
+            --secondary-accent: #818cf8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --table-header: #1e293b;
+            --row-hover: #334155;
+            --input-bg: #0f172a;
+        }
+
+        :root[data-theme="light"] {
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --primary-accent: #2563eb;
+            --secondary-accent: #4f46e5;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --table-header: #f8fafc;
+            --row-hover: #f1f5f9;
+            --input-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            transition: 0.3s ease;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0 40px 0;
+        }
+
+        .brand h1 {
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .theme-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 10px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--primary-accent);
+        }
+
+        /* Search Bar */
+        .search-container {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            padding: 16px 20px 16px 50px;
+            border-radius: 16px;
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            box-sizing: border-box;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Config Card */
+        .glass-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+
+        .config-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--primary-accent);
+        }
+
+        .toggle-btn {
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid var(--primary-accent);
+            color: var(--primary-accent);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: 0.2s;
+        }
+
+        .toggle-btn:hover {
+            background: var(--primary-accent);
+            color: #fff;
+        }
+
+        .event-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .event-chip {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: var(--bg-body);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: 0.2s ease;
+        }
+
+        .event-chip:hover {
+            border-color: var(--primary-accent);
+        }
+
+        .event-chip:has(input:checked) {
+            background: rgba(56, 189, 248, 0.1);
+            border-color: var(--primary-accent);
+            color: var(--text-main);
+        }
+
+        .btn-update {
+            background: var(--primary-accent);
+            color: #0f172a;
+            padding: 14px 32px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 800;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .btn-update:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        /* Leaderboard Table */
+        .table-wrap {
+            border-radius: 20px;
+            overflow: hidden;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .scroll-area {
+            overflow-x: auto;
+            max-height: 70vh;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: var(--table-header);
+            padding: 20px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sticky-col {
+            position: sticky;
+            left: 0;
+            background: var(--bg-card);
+            z-index: 10;
+            border-right: 1px solid var(--border);
+            min-width: 200px;
+        }
+
+        .kinch-pill {
+            color: var(--primary-accent);
+            font-weight: 800;
+            font-family: 'Outfit';
+            font-size: 1.2rem;
+        }
+
+        .name-link {
+            text-decoration: none;
+            font-weight: 700;
+            color: var(--text-main);
+            transition: 0.2s;
+        }
+
+        .name-link:hover {
+            color: var(--primary-accent);
+        }
+
+        .name-sub {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: block;
+            margin-top: 4px;
+        }
+
+        tr:hover td,
+        tr:hover .sticky-col {
+            background-color: var(--row-hover) !important;
+        }
+
+        select {
+            background: var(--bg-body);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 12px 16px;
+            border-radius: 12px;
+            outline: none;
+            font-family: inherit;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="brand">
+                <h1>Cubing Rank<span> Analysis</span></h1>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <i class="fa-solid fa-circle-half-stroke"></i> TOGGLE MODE
+            </button>
+        </header>
+
+        <div class="search-container">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="memberSearch" class="search-input" placeholder="Quick find by name or ID..."
+                onkeyup="filterTable()">
+        </div>
+
+        <div class="glass-card">
+            <form action="/" method="POST">
+                <div class="config-header">
+                    <span class="section-label">Event Selection</span>
+                    <button type="button" class="toggle-btn" onclick="toggleAllEvents()">Toggle All</button>
+                </div>
+
+                <div class="event-grid" id="eventGrid">
+                    {% for eid in all_events %}
+                    <label class="event-chip">
+                        <input type="checkbox" name="events" value="{{ eid }}" {% if eid in event_ids %}checked{% endif
+                            %}>
+                        <span style="margin-left: 10px;">{{ event_names[eid] }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 25px;">
+                    <select name="region">
+                        <option value="All">Global Rankings</option>
+                        <optgroup label="Continents">
+                            {% for c in continents %}<option value="{{ c }}" {% if current_region==c %}selected{% endif
+                                %}>{{ c }}</option>{% endfor %}
+                        </optgroup>
+                        <optgroup label="Countries">
+                            {% for r in regions %}<option value="{{ r }}" {% if current_region==r %}selected{% endif %}>
+                                {{ r }}</option>{% endfor %}
+                        </optgroup>
+                    </select>
+                    <button type="submit" class="btn-update">Generate Rankings</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="table-wrap">
+            <div class="scroll-area">
+                <table id="leaderboardTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 60px; text-align: center;">#</th>
+                            <th class="sticky-col">Competitor</th>
+                            <th style="text-align: center;">Kinch Score</th>
+                            {% for eid in event_ids %}
+                            <th style="text-align: center;">{{ event_names[eid] }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in leaderboard %}
+                        <tr class="competitor-row">
+                            <td
+                                style="text-align: center; color: var(--text-muted); font-weight: 800; font-family: 'Outfit';">
+                                {{ row.rank }}</td>
+                            <td class="sticky-col">
+                                <a href="/person/{{ row.id }}" class="name-link">{{ row.name }}</a>
+                                <span class="name-sub">{{ row.wca_id }} • {{ row.region }}</span>
+                            </td>
+                            <td style="text-align: center;"><span class="kinch-pill">{{ row.total }}</span></td>
+                            {% for eid in event_ids %}
+                            <td
+                                style="text-align: center; color: var(--text-muted); font-size: 0.9rem; font-weight: 600;">
+                                {{ row.scores[eid] }}%
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+
+        // Load saved theme
+        document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');
+
+        function toggleAllEvents() {
+            const checkboxes = document.querySelectorAll('#eventGrid input[type="checkbox"]');
+            const someUnchecked = Array.from(checkboxes).some(cb => !cb.checked);
+            checkboxes.forEach(cb => cb.checked = someUnchecked);
+        }
+
+        function filterTable() {
+            const input = document.getElementById("memberSearch").value.toLowerCase();
+            const rows = document.querySelectorAll(".competitor-row");
+            rows.forEach(row => {
+                const name = row.querySelector(".name-link").innerText.toLowerCase();
+                const sub = row.querySelector(".name-sub").innerText.toLowerCase();
+                row.style.display = (name.includes(input) || sub.includes(input)) ? "" : "none";
+            });
+        }
+    </script>
+</body>
+
+</html>

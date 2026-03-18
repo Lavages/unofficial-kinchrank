@@ -1,208 +1,253 @@
+from flask import Flask, render_template, request
+from flask_caching import Cache
+import pandas as pd
+import numpy as np
+import ast
+import pycountry
+import pycountry_convert as pc
 import os
-import sys
-import time
-import json
-import logging
-from flask import Flask, jsonify, request, render_template
-from dotenv import load_dotenv
-from collections import defaultdict
 
-# Load environment variables from .env file
-load_dotenv()
-
-# --- App Initialization ---
 app = Flask(__name__)
-app.logger.setLevel(logging.INFO)
+# Set debug to False for production performance
+app.debug = False 
 
-# --- WCA Data Module Imports ---
-from wca_data import get_all_wca_persons_data, is_wca_data_loaded, continent_map
+# --- CACHE CONFIGURATION ---
+# Simple cache is best for Vercel's ephemeral nature
+cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
-# --- Continent Scope Mapping ---
-CONTINENT_SCOPES = {
-    "africa": "af",
-    "asia": "as",
-    "europe": "eu",
-    "north-america": "na",
-    "south-america": "sa",
-    "oceania": "oc",
-}
+# --- CONFIGURATION ---
+CORE_AVG = ['fto', '333_team_bld', '333_mirror_blocks', '333_mirror_blocks_bld', 'mpyram', 'kilominx', 'redi', 'magic', 'mmagic', '333_linear_fm', '333ft']
+CORE_SIN = ['333_speed_bld', 'miniguild', 'miniguild_2_person', '333mts']
+MISC_AVG_EVENTS = ['222_blanker', '222_mirror_blocks', '444_mirror_blocks', '555_mirror_blocks', 'fisher', '333_windmill_cube', '333_axis_cube', '333_twist_cube', '333_void', '333_cube_mile', '333_siamese', '223_cuboid', '233_cuboid', '334_cuboid', 'super_133', '888', '999', '101010', 'mkilominx', 'gigaminx', 'baby_fto', 'mfto', 'cto', '2pentahedron', '3pentahedron', 'pyramorphix', 'pyram_duo', 'dino', 'ivy_cube', 'rainbow_cube', 'corner_heli222', 'helicopter', 'curvycopter', 'gear_cube', 'super_gear_cube', 'magic_oh', '222fm', '444fm', 'snake', '15puzzle', '8puzzle','222oh','444oh','clock_oh','333_oven_mitts','333_paw_mitts','222bf']
+MISC_SIN_EVENTS = ['333_bets', '333_supersolve', '333bf_bottle', '333_braille_bld']
 
-# --- API Route Functions ---
-def find_and_format_rank(scope_str: str, ranking_type: str, event_id: str, rank_number: int):
-    if not is_wca_data_loaded():
-        return jsonify({"error": "Core competitor data is still loading."}), 503
+AVG_EVENTS = set(CORE_AVG + MISC_AVG_EVENTS)
+SIN_EVENTS = set(CORE_SIN + MISC_SIN_EVENTS)
+ALL_TARGET_EVENTS = list(AVG_EVENTS | SIN_EVENTS)
+CONTINENTS = ['Africa', 'Asia', 'Europe', 'North America', 'Oceania', 'South America']
 
-    ranking_type_norm = None
-    if ranking_type in ["single", "singles"]:
-        ranking_type_norm = "singles"
-    elif ranking_type in ["average", "averages"]:
-        ranking_type_norm = "averages"
+# --- HELPERS ---
+def format_time(value, event_id, is_avg=False):
+    try:
+        val_float = float(value)
+        if val_float <= 0: return "-"
+    except (ValueError, TypeError):
+        return "-"
+    
+    if 'fm' in event_id.lower():
+        return f"{val_float / 100.0:.2f}" if is_avg else str(int(val_float))
+
+    seconds = int(val_float) / 100.0
+    if seconds < 60:
+        return f"{seconds:.2f}"
+    return f"{int(seconds // 60)}:{seconds % 60:05.2f}"
+
+@cache.memoize(timeout=86400)
+def get_region_info(code):
+    try:
+        manual_continents = {'HK': 'Asia', 'TW': 'Asia', 'XK': 'Europe', 'PS': 'Asia'}
+        country = pycountry.countries.get(alpha_2=code)
+        c_name = country.name if country else code
+        cont_name = manual_continents.get(code) or pc.convert_continent_code_to_continent_name(pc.country_alpha2_to_continent_code(code))
+        return c_name, cont_name
+    except:
+        return code, "Other"
+
+# --- DATA PERSISTENCE ---
+# Global dictionary to keep data in memory across requests in a single worker
+GLOBAL_DATA = {}
+
+def load_and_process_data():
+    if GLOBAL_DATA:
+        return GLOBAL_DATA['res'], GLOBAL_DATA['exp'], GLOBAL_DATA['pers'], GLOBAL_DATA['ev'], GLOBAL_DATA['cont']
+
+    try:
+        # Optimization: Only read needed columns if your CSV is huge
+        res_df = pd.read_csv("export_results.csv")
+        pers_df = pd.read_csv("export_persons.csv")
+        ev_df = pd.read_csv("export_events.csv")
+        rounds_df = pd.read_csv("export_rounds.csv")
+        contests_df = pd.read_csv("export_contests.csv")
+        
+        event_names = ev_df.set_index('event_id')['name'].to_dict()
+        
+        # Pre-process Region Info
+        region_data = pers_df['region_code'].apply(get_region_info)
+        pers_df['full_country'] = [x[0] for x in region_data]
+        pers_df['continent'] = [x[1] for x in region_data]
+        pers_df['id'] = pers_df['id'].astype(str)
+
+        # Merge and Explode (Logic Kept Exactly As Requested)
+        res_df = res_df.merge(rounds_df[['competition_id', 'id', 'round_type_id']], 
+                             left_on=['competition_id', 'round_id'], 
+                             right_on=['competition_id', 'id'], how='left')
+
+        res_df['pid_list'] = res_df['person_ids'].apply(lambda x: ast.literal_eval(x) if str(x).startswith('[') else [x])
+        res_exploded = res_df.explode('pid_list').rename(columns={'pid_list': 'person_id'})
+        res_exploded['person_id'] = res_exploded['person_id'].astype(str)
+        
+        GLOBAL_DATA.update({
+            'res': res_df, 'exp': res_exploded, 'pers': pers_df, 
+            'ev': event_names, 'cont': contests_df
+        })
+        return load_and_process_data()
+    except Exception as e:
+        print(f"File Error: {e}")
+        return pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), {}, pd.DataFrame()
+
+@app.route('/', methods=['GET', 'POST'])
+def kinch_leaderboard():
+    selected_events = request.form.getlist('events') if request.method == 'POST' else request.args.getlist('events')
+    target_region = (request.form.get('region') if request.method == 'POST' else request.args.get('region')) or 'All'
+    
+    if not selected_events: selected_events = CORE_AVG + CORE_SIN
+
+    _, res_exploded, persons, event_names, _ = load_and_process_data()
+    if res_exploded.empty: return "Error: Data missing."
+
+    unique_countries = sorted(persons['full_country'].unique().tolist())
+
+    if target_region != "All":
+        rel_ids = persons[(persons['full_country'] == target_region) | (persons['continent'] == target_region)]['id'].unique()
+        df = res_exploded[res_exploded['person_id'].isin(rel_ids)].copy()
     else:
-        return jsonify({"error": "Invalid ranking type. Use 'single'/'singles' or 'average'/'averages'."}), 400
+        df = res_exploded.copy()
 
-    if not isinstance(rank_number, int) or rank_number <= 0:
-        return jsonify({"error": "Rank number must be a positive integer."}), 400
-
-    requested_scopes = [s.strip().lower().replace(" ", "-") for s in scope_str.split(",") if s.strip()]
-    if not requested_scopes:
-        return jsonify({"error": "Invalid scope provided."}), 400
-
-    # Collect all eligible competitors for the given scope, event, and ranking type
-    eligible_competitors = []
-    persons_data = get_all_wca_persons_data()
-    if not persons_data:
-        return jsonify({"error": "Failed to retrieve competitor data."}), 500
-
-    for person in persons_data.values():
-        person_country = person.get("country", "").lower()
-        person_continent = continent_map.get(person_country.upper(), "").lower()
-
-        is_eligible_scope = False
-        for scope_key in requested_scopes:
-            if scope_key == "world":
-                is_eligible_scope = True
-                break
-            elif scope_key in CONTINENT_SCOPES and scope_key == person_continent:
-                is_eligible_scope = True
-                break
-            elif scope_key == person_country:
-                is_eligible_scope = True
-                break
-
-        if not is_eligible_scope:
-            continue
-
-        ranks = person.get("rank", {})
-        events = ranks.get(ranking_type_norm, [])
-        for event_info in events:
-            if event_info.get("eventId") == event_id:
-                best_result = event_info.get("best")
-                if best_result is not None:
-                    eligible_competitors.append({
-                        "wca_id": person.get("id"),
-                        "result": best_result
-                    })
-                break
-
-    if not eligible_competitors:
-        return jsonify({"error": f"No ranks found for {event_id} in scopes '{scope_str}'."}), 404
-
-    # Sort competitors by result
-    sorted_competitors = sorted(eligible_competitors, key=lambda x: x["result"])
+    df = df[df['event_id'].isin(selected_events)]
+    valid = df[df['best'] > 0].copy()
     
-    # Apply Standard Competition Ranking (min method)
-    ranked_competitors = []
-    current_rank = 1
-    i = 0
-    while i < len(sorted_competitors):
-        tied_competitors = []
-        current_result = sorted_competitors[i]['result']
-        j = i
-        while j < len(sorted_competitors) and sorted_competitors[j]['result'] == current_result:
-            person_data = persons_data.get(sorted_competitors[j]['wca_id'])
-            if person_data:
-                tied_competitors.append({
-                    "person": {
-                        "name": person_data.get("name"),
-                        "wcaId": person_data.get("id"),
-                        "countryIso2": person_data.get("country")
-                    },
-                    "result": sorted_competitors[j]['result'],
-                    "actualRank": current_rank
-                })
-            j += 1
+    if valid.empty:
+        return render_template('leaderboard.html', leaderboard=[], event_names=event_names, 
+                               event_ids=selected_events, all_events=ALL_TARGET_EVENTS,
+                               regions=unique_countries, current_region=target_region, continents=CONTINENTS)
 
-        ranked_competitors.extend(tied_competitors)
-        current_rank = len(ranked_competitors) + 1
-        i = j
+    pb_avg = valid[valid['average'] > 0].groupby(['person_id', 'event_id'])['average'].min().unstack()
+    pb_sin = valid.groupby(['person_id', 'event_id'])['best'].min().unstack()
+    bench_avg, bench_sin = pb_avg.min(), pb_sin.min()
 
-    # Check for the requested rank. If it's too high, return an error.
-    max_rank = ranked_competitors[-1]['actualRank'] if ranked_competitors else 0
-    if rank_number > max_rank:
-        return jsonify({
-            "error": f"Requested rank #{rank_number} is out of the valid range. The highest rank for this selection is #{max_rank}."
-        }), 404
+    kinch_matrix = pd.DataFrame(index=pb_sin.index).reindex(columns=selected_events)
+    for ev in selected_events:
+        if ev in AVG_EVENTS:
+            if ev in pb_avg.columns and ev in bench_avg.index:
+                kinch_matrix[ev] = (bench_avg[ev] / pb_avg[ev] * 100)
+        else:
+            if ev in pb_sin.columns and ev in bench_sin.index:
+                kinch_matrix[ev] = (bench_sin[ev] / pb_sin[ev] * 100)
+
+    kinch_matrix = kinch_matrix.fillna(0.0)
+    kinch_matrix['total'] = kinch_matrix[selected_events].sum(axis=1) / len(selected_events)
     
-    # Find the requested rank
-    found_competitors = [comp for comp in ranked_competitors if comp['actualRank'] == rank_number]
+    leaderboard = kinch_matrix.merge(persons[['id', 'name', 'wca_id', 'full_country']], left_index=True, right_on='id')
+    leaderboard = leaderboard[leaderboard['total'] > 0].sort_values('total', ascending=False)
     
-    # If not found (due to a tie), find the closest rank
-    if not found_competitors:
-        for comp in ranked_competitors:
-            if comp['actualRank'] >= rank_number:
-                found_competitors = [c for c in ranked_competitors if c['actualRank'] == comp['actualRank']]
-                break
+    final_data = [{
+        'rank': i + 1, 'id': row['id'], 'name': row['name'],
+        'wca_id': row['wca_id'] if pd.notna(row['wca_id']) and row['wca_id'] != "" else "-",
+        'region': row['full_country'], 'total': round(row['total'], 2),
+        'scores': {ev: round(row.get(ev, 0.0), 1) for ev in selected_events}
+    } for i, row in enumerate(leaderboard.head(500).to_dict('records'))]
 
-    # Add a message if the requested rank was not found but a nearby rank was
-    if found_competitors and found_competitors[0]['actualRank'] != rank_number:
-        for comp in found_competitors:
-            comp['note'] = f"Requested rank #{rank_number} not found. Displaying nearest competitor(s) at rank #{comp['actualRank']} instead."
+    return render_template('leaderboard.html', leaderboard=final_data, event_names=event_names, 
+                           event_ids=selected_events, all_events=ALL_TARGET_EVENTS,
+                           regions=unique_countries, current_region=target_region, continents=CONTINENTS)
+
+@app.route('/person/<person_id>')
+def person_profile(person_id):
+    _, res_exploded, pers_df, event_names, _ = load_and_process_data()
+    p_row = pers_df[pers_df['id'] == person_id]
+    if p_row.empty: return "Person not found", 404
     
-    # If there are multiple competitors, indicate a tie
-    if len(found_competitors) > 1:
-        for comp in found_competitors:
-            comp['isTie'] = True
+    person = p_row.iloc[0].to_dict()
+    country, continent = person['full_country'], person['continent']
+    p_res = res_exploded[res_exploded['person_id'] == person_id].copy()
 
-    if not found_competitors:
-        return jsonify({"error": "Failed to retrieve competitor data for the nearest rank."}), 500
+    medals = {
+        'gold': int((p_res['ranking'] == 1).sum()) if 'ranking' in p_res.columns else 0,
+        'silver': int((p_res['ranking'] == 2).sum()) if 'ranking' in p_res.columns else 0,
+        'bronze': int((p_res['ranking'] == 3).sum()) if 'ranking' in p_res.columns else 0
+    }
 
-    return jsonify({"competitors": found_competitors})
+    wr_count = (p_res['regional_single_record'] == 'WR').sum() + (p_res['regional_average_record'] == 'WR').sum()
+    nr_count = (p_res['regional_single_record'] == 'NR').sum() + (p_res['regional_average_record'] == 'NR').sum()
+    cr_list = ['AfR', 'AsR', 'ER', 'NAR', 'OcR', 'SAR']
+    cr_count = p_res['regional_single_record'].isin(cr_list).sum() + p_res['regional_average_record'].isin(cr_list).sum()
 
-# --- App Routes ---
-@app.route("/")
-def index():
-    if not is_wca_data_loaded():
-        return "Data is loading, please wait...", 503
-    return render_template('index.html')
+    pbs = p_res.groupby('event_id').agg({'best': 'min', 'average': lambda x: x[x > 0].min() if not x[x > 0].empty else 0}).to_dict('index')
+    
+    p_res = p_res.sort_values(['date', 'event_id'], ascending=[False, True])
+    grouped_results = {}
+    for eid in p_res['event_id'].unique():
+        ev_list = []
+        for _, row in p_res[p_res['event_id'] == eid].iterrows():
+            try:
+                atts = ast.literal_eval(row['attempts'])
+                f_solves = [("(DNF)" if a['result'] == -1 else "(DNS)" if a['result'] == -2 else format_time(a['result'], eid)) for a in atts]
+                solves_joined = ", ".join(f_solves)
+            except: solves_joined = "-"
 
-@app.route("/competitors")
-def competitors():
-    if not is_wca_data_loaded():
-        return "Data is loading, please wait...", 503
-    return render_template('competitors.html')
+            ev_list.append({
+                'competition_id': row['competition_id'], 'event_name': event_names.get(eid, eid),
+                'round_id': row.get('round_type_id', row.get('round_id', "-")),
+                'ranking': int(row['ranking']) if pd.notna(row['ranking']) else "-",
+                'single_formatted': format_time(row['best'], eid),
+                'average_formatted': format_time(row['average'], eid, True) if row['average'] > 0 else "-",
+                'solves_joined': solves_joined, 'single_is_pb': row['best'] == pbs[eid]['best'],
+                'average_is_pb': row['average'] == pbs[eid]['average'] and row['average'] > 0
+            })
+        grouped_results[eid] = ev_list
 
-@app.route("/completionist")
-def completionist():
-    if not is_wca_data_loaded():
-        return "Data is loading, please wait...", 503
-    return render_template('completionist.html')
+    all_pbs = res_exploded.groupby(['person_id', 'event_id']).agg({'best': 'min', 'average': lambda x: x[x > 0].min() if not x[x > 0].empty else 0}).reset_index()
+    all_pbs = all_pbs.merge(pers_df[['id', 'full_country', 'continent']], left_on='person_id', right_on='id')
 
-@app.route("/specialist")
-def specialist():
-    if not is_wca_data_loaded():
-        return "Data is loading, please wait...", 503
-    return render_template('specialist.html')
+    records_tab_data = []
+    for eid in ALL_TARGET_EVENTS:
+        if eid not in pbs: continue
+        my_sin, my_avg = pbs[eid]['best'], pbs[eid]['average']
+        def get_rank(val, field, r_field=None, r_val=None):
+            if val <= 0: return "-"
+            data = all_pbs[all_pbs['event_id'] == eid]
+            if r_field: data = data[data[r_field] == r_val]
+            return (data[(data[field] > 0) & (data[field] < val)]['person_id'].nunique() + 1)
 
-# --- Add this route for the new page ---
-@app.route("/comparison")
-def comparison():
-    if not is_wca_data_loaded():
-        return "Data is loading, please wait...", 503
-    return render_template('comparison.html')
+        records_tab_data.append({
+            'event_id': eid, 'event_name': event_names.get(eid, eid), 'single': my_sin, 'average': my_avg,
+            'wr_s': get_rank(my_sin, 'best'), 'cr_s': get_rank(my_sin, 'best', 'continent', continent),
+            'nr_s': get_rank(my_sin, 'best', 'full_country', country),
+            'wr_a': get_rank(my_avg, 'average'), 'cr_a': get_rank(my_avg, 'average', 'continent', continent),
+            'nr_a': get_rank(my_avg, 'average', 'full_country', country),
+        })
 
-@app.route("/api/global-rankings/<scope>/<ranking_type>/<event_id>")
-def get_global_rankings(scope, ranking_type, event_id):
-    rank_number = request.args.get("rankNumber", type=int)
-    if not rank_number:
-        return jsonify({"error": "Missing rankNumber"}), 400
-    return find_and_format_rank(scope, ranking_type, event_id, rank_number)
+    return render_template('profile.html', person=person, records=records_tab_data, 
+                            stats={'comps': p_res['competition_id'].nunique(), 'solves': len(p_res), 'medals': medals, 'records': {'wr': int(wr_count), 'cr': int(cr_count), 'nr': int(nr_count)}}, 
+                            grouped_results=grouped_results, format_time=format_time)
 
-@app.route("/api/rankings/<scope>/<event_id>/<ranking_type>/<int:rank_number>")
-def get_rankings(scope: str, event_id: str, ranking_type: str, rank_number: int):
-    return find_and_format_rank(scope, ranking_type, event_id, rank_number)
+@app.route('/competition/<competition_id>')
+def competition_page(competition_id):
+    res_df, _, pers_df, event_names, contests_df = load_and_process_data()
+    comp_info = contests_df[contests_df['competition_id'] == competition_id]
+    
+    display_name = comp_info.iloc[0]['name'] if not comp_info.empty else competition_id.replace('_', ' ')
+    location = f"{comp_info.iloc[0]['city']}, {comp_info.iloc[0]['venue']}" if not comp_info.empty else "Unknown Location"
+    date_val = comp_info.iloc[0]['start_date'].split('T')[0] if not comp_info.empty and pd.notna(comp_info.iloc[0]['start_date']) else ""
 
-# --- Blueprint Imports ---
-from competitors import competitors_bp
-from completionist import completionists_bp
-from specialist import specialist_bp
-from comparison import comparison_bp # <-- ADD THIS LINE
+    comp_results = res_df[res_df['competition_id'] == competition_id]
+    winners_list = []
+    for _, row in comp_results[comp_results['ranking'] == 1].iterrows():
+        pids = row.get('pid_list', [])
+        p_info = pers_df[pers_df['id'] == str(pids[0])] if pids else pd.DataFrame()
+        winners_list.append({
+            'event_name': event_names.get(row['event_id'], row['event_id']),
+            'winner_name': p_info.iloc[0]['name'] if not p_info.empty else "Unknown",
+            'winner_id': pids[0] if pids else None,
+            'representing': p_info.iloc[0]['full_country'] if not p_info.empty else "",
+            'best': format_time(row['best'], row['event_id']),
+            'average': format_time(row['average'], row['event_id'], True) if row['average'] > 0 else None,
+        })
 
-app.register_blueprint(competitors_bp, url_prefix="/api")
-app.register_blueprint(completionists_bp, url_prefix="/api")
-app.register_blueprint(specialist_bp, url_prefix="/api")
-app.register_blueprint(comparison_bp, url_prefix="/api/comparison") # <-- AND THIS LINE
+    return render_template('competition.html', comp_name=display_name, comp_location=location, comp_date=date_val, winners=winners_list)
 
-# --- Main Execution ---
-if __name__ == "__main__":
-    app.logger.info("Starting Flask application...")
-    app.run(host="0.0.0.0", port=5000)
+# Vercel entry point
+app = app
+
+if __name__ == '__main__':
+    app.run()

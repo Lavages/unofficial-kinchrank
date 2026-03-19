@@ -58,33 +58,39 @@
 
         .logo {
             font-family: 'Outfit';
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 800;
             background: linear-gradient(to right, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* --- Config Panel --- */
         .config-panel {
             background: var(--bg-card);
             border: 1px solid var(--border);
             border-radius: 16px;
-            padding: 25px;
+            padding: 20px;
             margin-bottom: 30px;
             box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
         }
 
+        .section-header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0 10px 0;
+        }
+
         .section-h {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 800;
             text-transform: uppercase;
             color: var(--primary);
             letter-spacing: 1px;
-            margin: 25px 0 15px 0;
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-grow: 1;
         }
 
         .section-h::after {
@@ -92,6 +98,7 @@
             flex: 1;
             height: 1px;
             background: var(--border);
+            margin-left: 10px;
         }
 
         .event-flex {
@@ -105,35 +112,54 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 8px 12px;
+            padding: 10px;
             border: 2px solid var(--border);
             border-radius: 12px;
             background: rgba(0, 0, 0, 0.2);
             transition: all 0.2s ease;
-            min-width: 50px;
-            min-height: 50px;
+            min-width: 58px;
+            min-height: 58px;
         }
 
-        .chip span.cubing-icon {
-            font-size: 2.2rem;
-            color: var(--text-muted);
+        /* --- ICON SIZING FIX --- */
+        .chip span.cubing-icon,
+        .chip img {
+            width: 38px !important;
+            height: 38px !important;
+            /* Force images to fill the 38px even if file says 16px */
+            min-width: 38px;
+            min-height: 38px;
+            font-size: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            object-fit: contain;
         }
 
-        .chip .txt {
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-align: center;
+        .chip img {
+            filter: invert(72%) sepia(9%) saturate(838%) hue-rotate(182deg) brightness(91%) contrast(89%);
         }
 
         .chip:has(input:checked) {
             border-color: var(--primary);
             background: rgba(56, 189, 248, 0.1);
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
         }
 
         .chip:has(input:checked) span {
             color: var(--primary);
+        }
+
+        .chip:has(input:checked) img {
+            filter: invert(65%) sepia(85%) saturate(1500%) hue-rotate(170deg) brightness(100%) contrast(100%);
+        }
+
+        .chip .txt {
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 0 4px;
         }
 
         .chip:has(input:checked) .txt {
@@ -141,11 +167,10 @@
         }
 
         .chip:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             border-color: var(--secondary);
         }
 
-        /* --- glitch-free Table --- */
         .table-outer {
             border: 1px solid var(--border);
             border-radius: 16px;
@@ -155,7 +180,7 @@
 
         .scroll-box {
             overflow: auto;
-            max-height: 70vh;
+            max-height: 65vh;
         }
 
         table {
@@ -169,21 +194,41 @@
             color: var(--text-muted);
             font-size: 0.75rem;
             text-transform: uppercase;
-            padding: 15px;
+            padding: 14px;
             position: sticky;
             top: 0;
             z-index: 100;
             border-bottom: 2px solid var(--border);
         }
 
+        th .header-icon-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 28px;
+        }
+
+        th .cubing-icon,
+        th img {
+            width: 28px !important;
+            height: 28px !important;
+            min-width: 28px;
+            min-height: 28px;
+            font-size: 28px;
+            object-fit: contain;
+        }
+
+        th img {
+            filter: invert(72%) sepia(9%) saturate(838%) hue-rotate(182deg) brightness(91%) contrast(89%);
+        }
+
         td {
-            padding: 12px 15px;
+            padding: 12px 14px;
             border-bottom: 1px solid var(--border);
             white-space: nowrap;
             font-size: 0.95rem;
         }
 
-        /* Sticky Column Fixes */
         .col-rank {
             position: sticky;
             left: 0;
@@ -204,18 +249,11 @@
             border-right: 3px solid var(--border);
         }
 
-        /* Ensures headers stay on top of sticky columns */
-        th.col-rank,
-        th.col-name {
-            z-index: 110;
-        }
-
         .score-box {
             font-family: 'Outfit';
             font-weight: 800;
             color: var(--primary);
             text-align: center;
-            font-size: 1.15rem;
             background: rgba(56, 189, 248, 0.05);
         }
 
@@ -230,33 +268,37 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 30px;
+            margin-top: 25px;
         }
 
         .btn {
             background: var(--primary);
             color: #000;
             border: none;
-            padding: 12px 28px;
+            padding: 12px 24px;
             border-radius: 10px;
             font-weight: 800;
             cursor: pointer;
             transition: 0.2s;
+            font-size: 0.9rem;
         }
 
-        .btn:hover {
-            opacity: 0.9;
-            transform: scale(1.02);
+        .btn-outline {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 6px 12px;
+            font-size: 0.75rem;
+            margin-left: 8px;
         }
     </style>
 </head>
 
 <body>
-    {# The list of icons provided by user, used for conditional class assignment #}
     {% set wca =
     ['333','222','444','555','666','777','333bf','333fm','333oh','clock','minx','pyram','skewb','sq1','444bf','555bf','333mbf','333ft','333mbo','magic','mmagic']
     %}
-    {% set unofficial =
+    {% set github_unofficial =
     ['222bf','222oh','234567relay','234567relay_2_person','23456relay','2345relay','234relay','333_linear_fm','333_mirror_blocks','333_mirror_blocks_bld','333_oh_bld_relay','333_oh_bld_team_relay','333_oven_mitts','333_siamese','333_speed_bld','333_team_bld','333_team_factory','333bf_2_person_relay','333bf_3_person_relay','333bf_4_person_relay','333bf_8_person_relay','333mts','444ft','666bf','777bf','baby_fto','cmetrick_mini','corner_helicopter_222','crazy_333','curvycopter','dino','fisher','fto','gear','gigaminx','helicopter','ivy','kilominx','magic_oh','miniguild','miniguild_2_person','miniguild_bld','minx_bld','mpyram','mskewb','mtetram','pyraminx_crystal','pyramorphix','redi','sq1_bld','sq2','super_sq1','ufo']
     %}
 
@@ -264,43 +306,75 @@
         <header>
             <div class="logo">Kinchranks</div>
             <button class="btn" style="background:none; border: 1px solid var(--border); color:var(--text-main);"
-                onclick="document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')">Toggle
-                Theme</button>
+                onclick="document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')">
+                <i class="fa-solid fa-circle-half-stroke"></i>
+            </button>
         </header>
 
         <div class="config-panel">
-            <form action="/" method="POST">
-                <span class="section-h">Core / Unofficial Events</span>
+            <form action="/" method="POST" id="eventForm">
+                <div class="section-header-container">
+                    <span class="section-h">Core & Unofficial</span>
+                    <div>
+                        <button type="button" class="btn btn-outline" onclick="toggleAll(true)">Select All</button>
+                        <button type="button" class="btn btn-outline" onclick="toggleAll(false)">None</button>
+                    </div>
+                </div>
+
                 <div class="event-flex">
                     {% for eid in all_events if eid in (CORE_AVG + CORE_SIN) %}
                     <label class="chip" title="{{ event_names[eid] }}">
                         <input type="checkbox" name="events" value="{{ eid }}" {% if eid in event_ids %}checked{% endif
                             %} style="display:none;">
-                        {% if eid in wca %}<span class="cubing-icon event-{{ eid }}"></span>
-                        {% elif eid in unofficial %}<span class="cubing-icon unofficial-{{ eid }}"></span>
-                        {% else %}<div class="txt">{{ event_names[eid] }}</div>{% endif %}
+                        {% if eid in wca %}
+                        <span class="cubing-icon event-{{ eid }}"></span>
+                        {% elif eid in github_unofficial %}
+                        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/{{ eid }}.svg"
+                            alt="{{ eid }}">
+                        {% else %}
+                        <span class="cubing-icon unofficial-{{ eid }}"></span>
+                        {% endif %}
                     </label>
                     {% endfor %}
                 </div>
 
-                <span class="section-h">Misc Events</span>
+                <div class="section-header-container">
+                    <span class="section-h">Misc Events</span>
+                </div>
+
                 <div class="event-flex">
                     {% for eid in all_events if eid not in (CORE_AVG + CORE_SIN) %}
                     <label class="chip" title="{{ event_names[eid] }}">
                         <input type="checkbox" name="events" value="{{ eid }}" {% if eid in event_ids %}checked{% endif
                             %} style="display:none;">
-                        {# Special Check for Dino and Gigaminx which are in your MISC list #}
-                        {% if eid in wca %}<span class="cubing-icon event-{{ eid }}"></span>
-                        {% elif eid in unofficial or eid == 'dino' or eid == 'gigaminx' %}<span
-                            class="cubing-icon unofficial-{{ eid }}"></span>
-                        {% else %}<div class="txt">{{ event_names[eid] }}</div>{% endif %}
+                        {% if eid in wca %}
+                        <span class="cubing-icon event-{{ eid }}"></span>
+                        {% elif eid in github_unofficial %}
+                        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/{{ eid }}.svg"
+                            alt="{{ eid }}">
+                        {% elif eid == 'gear_cube' %}
+                        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/gear.svg"
+                            alt="Gear Cube">
+                        {% elif eid == 'ivy_cube' %}
+                        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/ivy.svg"
+                            alt="Ivy Cube">
+                        {% elif eid == 'corner_heli222' %}
+                        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/corner_helicopter_222.svg"
+                            alt="Corner Helicopter 2x2">
+                        {% else %}
+                        {# Added scale(1.1) to make the image 10% larger within the existing box #}
+                        <img src="/static/icons/{{ eid }}.svg" alt="{{ eid }}"
+                            style="width: 100%; height: 100%; transform: scale(1.1); transform-origin: center;"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="txt" style="display:none;">{{ event_names[eid] or eid }}</div>
+                        {% endif %}
                     </label>
                     {% endfor %}
                 </div>
 
                 <div class="controls">
                     <select name="region"
-                        style="padding: 12px; border-radius: 10px; background: var(--bg-body); color: var(--text-main); border: 2px solid var(--border); font-weight: 700;">
+                        style="padding: 10px; border-radius: 8px; background: var(--bg-body); color: var(--text-main); border: 2px solid var(--border); font-weight: 700;">
                         <option value="All">Global Rankings</option>
                         {% for r in regions %}<option value="{{ r }}" {% if current_region==r %}selected{% endif %}>{{ r
                             }}</option>{% endfor %}
@@ -320,11 +394,19 @@
                             <th style="text-align: center;">Kinch</th>
                             {% for eid in event_ids %}
                             <th style="text-align: center;">
-                                {% if eid in wca %}<span class="cubing-icon event-{{ eid }}"
-                                    style="font-size: 1.5rem;"></span>
-                                {% elif eid in unofficial or eid == 'dino' or eid == 'gigaminx' %}<span
-                                    class="cubing-icon unofficial-{{ eid }}" style="font-size: 1.5rem;"></span>
-                                {% else %}<span style="font-size: 0.6rem;">{{ event_names[eid][:5] }}</span>{% endif %}
+                                <div class="header-icon-wrap">
+                                    {% if eid in wca %}
+                                    <span class="cubing-icon event-{{ eid }}"></span>
+                                    {% elif eid in github_unofficial %}
+                                    <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/{{ eid }}.svg"
+                                        alt="{{ eid }}">
+                                    {% else %}
+                                    <img src="/static/icons/{{ eid }}.svg" alt="{{ eid }}"
+                                        onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                                    <span style="font-size: 0.7rem; display:none;">{{ event_names[eid][:5] or eid
+                                        }}</span>
+                                    {% endif %}
+                                </div>
                             </th>
                             {% endfor %}
                         </tr>
@@ -350,6 +432,13 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function toggleAll(checked) {
+            const checkboxes = document.querySelectorAll('input[name="events"]');
+            checkboxes.forEach(cb => cb.checked = checked);
+        }
+    </script>
 </body>
 
 </html>

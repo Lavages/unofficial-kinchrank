@@ -388,7 +388,12 @@
             <div class="event-icons-bar">
                 {% for event_id in grouped_results.keys() %}
                 <a href="#event-{{ event_id }}" class="event-icon-btn">
+                    {% if event_id in ['dino','gigaminx','my_custom_event'] %}
+                    <img src="{{ url_for('static', filename='icons/' ~ event_id ~ '.svg') }}"
+                        alt="{{ results[0].event_name }}" style="width: 1.4rem; height: 1.4rem;">
+                    {% else %}
                     <span class="cubing-icon event-{{ event_id }}"></span>
+                    {% endif %}
                 </a>
                 {% endfor %}
             </div>
@@ -396,7 +401,12 @@
             {% for event_id, results in grouped_results.items() %}
             <div id="event-{{ event_id }}">
                 <div class="event-group-header">
+                    {% if event_id in ['dino','gigaminx','my_custom_event'] %}
+                    <img src="{{ url_for('static', filename='icons/' ~ event_id ~ '.svg') }}"
+                        alt="{{ results[0].event_name }}" style="width: 1.4rem; height: 1.4rem; margin-right: 0.5rem;">
+                    {% else %}
                     <span class="cubing-icon event-{{ event_id }}"></span>
+                    {% endif %}
                     {{ results[0].event_name }}
                 </div>
                 <table class="results-table">

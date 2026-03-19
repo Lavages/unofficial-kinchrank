@@ -17,8 +17,8 @@ cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 # --- CONFIGURATION ---
 CORE_AVG = ['fto', '333_team_bld', '333_mirror_blocks', '333_mirror_blocks_bld', 'mpyram', 'kilominx', 'redi', 'magic', 'mmagic', '333_linear_fm', '333ft']
 CORE_SIN = ['333_speed_bld', 'miniguild', 'miniguild_2_person', '333mts']
-MISC_AVG_EVENTS = ['222_blanker', '222_mirror_blocks', '444_mirror_blocks', '555_mirror_blocks', 'fisher', '333_windmill_cube', '333_axis_cube', '333_twist_cube', '333_void', '333_cube_mile', '333_siamese', '223_cuboid', '233_cuboid', '334_cuboid', 'super_133', '888', '999', '101010', 'mkilominx', 'gigaminx', 'baby_fto', 'mfto', 'cto', '2pentahedron', '3pentahedron', 'pyramorphix', 'pyram_duo', 'dino', 'ivy_cube', 'rainbow_cube', 'corner_heli222', 'helicopter', 'curvycopter', 'gear_cube', 'super_gear_cube', 'magic_oh', '222fm', '444fm', 'snake', '15puzzle', '8puzzle','222oh','444oh','clock_oh','333_oven_mitts','333_paw_mitts','222bf']
-MISC_SIN_EVENTS = ['333_bets', '333_supersolve', '333bf_bottle', '333_braille_bld']
+MISC_AVG_EVENTS = ['222_blanker', '222_mirror_blocks', '444_mirror_blocks', '555_mirror_blocks', 'fisher', '333_windmill_cube', '333_axis_cube', '333_twist_cube', '333_void', '333_cube_mile', '333_siamese', '223_cuboid', '233_cuboid', '334_cuboid', 'super_133', '888', '999', '101010', 'mkilominx', 'gigaminx', 'baby_fto', 'mfto', 'cto', '2pentahedron', '3pentahedron', 'pyramorphix', 'pyram_duo', 'dino', 'ivy_cube', 'rainbow_cube', 'corner_heli222', 'helicopter', 'curvycopter', 'gear_cube', 'super_gear_cube', 'magic_oh', '222fm', '444fm', 'snake', '15puzzle', '8puzzle','222oh','444oh','clock_oh','333_oven_mitts','333_paw_mitts','222bf','new_penta_clock','penta_clock']
+MISC_SIN_EVENTS = ['333_bets', '333_supersolve', '333bf_bottle', '333_braille_bld','234567relay','2345relay_bld',]
 
 AVG_EVENTS = set(CORE_AVG + MISC_AVG_EVENTS)
 SIN_EVENTS = set(CORE_SIN + MISC_SIN_EVENTS)
@@ -60,13 +60,40 @@ def load_and_process_data():
         return GLOBAL_DATA['res'], GLOBAL_DATA['exp'], GLOBAL_DATA['pers'], GLOBAL_DATA['ev'], GLOBAL_DATA['cont']
 
     try:
-        # Vercel Optimization: Read only strictly necessary columns
-        res_df = pd.read_csv("export_results.csv", usecols=['competition_id', 'person_ids', 'event_id', 'round_id', 'best', 'average', 'ranking', 'attempts', 'regional_single_record', 'regional_average_record'])
+        # Vercel Optimization: Read necessary columns + record_category for filtering
+        res_df = pd.read_csv("export_results.csv", usecols=[
+            'competition_id', 'person_ids', 'event_id', 'round_id', 'best', 
+            'average', 'ranking', 'attempts', 'regional_single_record', 
+            'regional_average_record', 'record_category'
+        ])
         pers_df = pd.read_csv("export_persons.csv", usecols=['id', 'name', 'wca_id', 'region_code'])
         ev_df = pd.read_csv("export_events.csv")
         rounds_df = pd.read_csv("export_rounds.csv", usecols=['competition_id', 'id', 'round_type_id'])
         contests_df = pd.read_csv("export_contests.csv")
         
+        # --- NEW FILTERING LOGIC ---
+        
+        # 1. Filter Meetups: Keep only if event is 333_cube_mile or category is NOT meetups
+        res_df = res_df[
+            (res_df['record_category'] != 'meetups') | 
+            (res_df['event_id'] == '333_cube_mile')
+        ]
+
+        # 2. Filter Video-Based: Only allow specific events for video-based-results
+        allowed_video_events = {
+            '333mbo', '666bf', '777bf', '888bf', '999bf', '101010bf', 
+            '111111bf', '444mbf', '555mbf', '2345relay_bld', '234567relay_bld', 
+            '2345678relay_bld', 'miniguild_bld', 'minx_bld', 'minx444_bld', 
+            'minx555_bld', 'minx2345relay_bld', 'pyram_crystal_bld', '333_speed_bld'
+        }
+        
+        res_df = res_df[
+            (res_df['record_category'] != 'video-based-results') | 
+            (res_df['event_id'].isin(allowed_video_events))
+        ]
+
+        # --- END FILTERING LOGIC ---
+
         event_names = ev_df.set_index('event_id')['name'].to_dict()
         
         region_data = pers_df['region_code'].apply(get_region_info)
@@ -114,7 +141,9 @@ def kinch_leaderboard():
     if valid.empty:
         return render_template('leaderboard.html', leaderboard=[], event_names=event_names, 
                                event_ids=selected_events, all_events=ALL_TARGET_EVENTS,
-                               regions=unique_countries, current_region=target_region, continents=CONTINENTS)
+                               regions=unique_countries, current_region=target_region, continents=CONTINENTS,
+                           CORE_AVG=CORE_AVG,    # <--- Add this
+                           CORE_SIN=CORE_SIN)
 
     pb_avg = valid[valid['average'] > 0].groupby(['person_id', 'event_id'])['average'].min().unstack()
     pb_sin = valid.groupby(['person_id', 'event_id'])['best'].min().unstack()
@@ -144,7 +173,9 @@ def kinch_leaderboard():
 
     return render_template('leaderboard.html', leaderboard=final_data, event_names=event_names, 
                            event_ids=selected_events, all_events=ALL_TARGET_EVENTS,
-                           regions=unique_countries, current_region=target_region, continents=CONTINENTS)
+                           regions=unique_countries, current_region=target_region, continents=CONTINENTS,
+                           CORE_AVG=CORE_AVG,    # <--- Add this
+                           CORE_SIN=CORE_SIN)
 def format_round(r):
     return {
         'f': 'Final',

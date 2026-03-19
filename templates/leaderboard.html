@@ -4,364 +4,344 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cubing Rank Analysis | Compact View</title>
+    <title>Kinchranks Leaderboard</title>
+
+    <link rel="stylesheet" href="https://cdn.cubing.net/v0/css/@cubing/icons/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;600;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Outfit:wght@600;800&display=swap"
         rel="stylesheet">
+
     <style>
         :root[data-theme="dark"] {
             --bg-body: #020617;
             --bg-card: #0f172a;
-            --bg-glass: rgba(30, 41, 59, 0.7);
-            --primary-accent: #38bdf8;
-            --secondary-accent: #818cf8;
+            --primary: #38bdf8;
+            --secondary: #818cf8;
             --text-main: #f1f5f9;
             --text-muted: #94a3b8;
-            --border: rgba(51, 65, 85, 0.6);
-            --table-header: #1e293b;
+            --border: #334155;
+            --sticky-bg: #0f172a;
         }
 
         :root[data-theme="light"] {
             --bg-body: #f8fafc;
             --bg-card: #ffffff;
-            --bg-glass: rgba(255, 255, 255, 0.8);
-            --primary-accent: #0284c7;
-            --secondary-accent: #4f46e5;
+            --primary: #0284c7;
+            --secondary: #4f46e5;
             --text-main: #0f172a;
             --text-muted: #64748b;
-            --border: #e2e8f0;
-            --table-header: #f1f5f9;
-        }
-
-        html,
-        body {
-            height: 100%;
-            margin: 0;
+            --border: #cbd5e1;
+            --sticky-bg: #ffffff;
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-body);
+            background: var(--bg-body);
             color: var(--text-main);
-            display: flex;
-            flex-direction: column;
-            transition: 0.3s ease;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.5;
         }
 
         .container {
-            max-width: 1600px;
+            max-width: 100%;
             margin: 0 auto;
-            width: 100%;
-            flex: 1 0 auto;
-            padding: 15px 30px;
-            box-sizing: border-box;
         }
 
         header {
             display: flex;
             justify-content: space-between;
+            margin-bottom: 25px;
             align-items: center;
-            padding: 10px 0 20px 0;
         }
 
-        .brand h1 {
-            font-family: 'Outfit', sans-serif;
-            margin: 0;
-            font-size: 1.8rem;
+        .logo {
+            font-family: 'Outfit';
+            font-size: 2rem;
             font-weight: 800;
-            background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));
+            background: linear-gradient(to right, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .theme-toggle {
-            background: var(--bg-glass);
-            backdrop-filter: blur(10px);
+        /* --- Config Panel --- */
+        .config-panel {
+            background: var(--bg-card);
             border: 1px solid var(--border);
-            color: var(--text-main);
-            padding: 8px 16px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 700;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .section-h {
             font-size: 0.8rem;
-        }
-
-        /* --- Compact Configuration Card --- */
-        .glass-card {
-            background: var(--bg-glass);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .event-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
-        .event-chip {
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--primary);
+            letter-spacing: 1px;
+            margin: 25px 0 15px 0;
             display: flex;
             align-items: center;
-            padding: 10px;
-            background: rgba(15, 23, 42, 0.4);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            font-size: 0.8rem;
+            gap: 10px;
+        }
+
+        .section-h::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .event-flex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .chip {
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 12px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+            min-width: 50px;
+            min-height: 50px;
+        }
+
+        .chip span.cubing-icon {
+            font-size: 2.2rem;
             color: var(--text-muted);
         }
 
-        .event-chip:has(input:checked) {
-            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(129, 140, 248, 0.1));
-            border-color: var(--primary-accent);
+        .chip .txt {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .chip:has(input:checked) {
+            border-color: var(--primary);
+            background: rgba(56, 189, 248, 0.1);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
+        }
+
+        .chip:has(input:checked) span {
+            color: var(--primary);
+        }
+
+        .chip:has(input:checked) .txt {
             color: var(--text-main);
         }
 
-        .btn-update {
-            background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));
-            color: #fff;
-            padding: 12px 30px;
-            border-radius: 12px;
-            border: none;
-            font-weight: 800;
-            text-transform: uppercase;
-            cursor: pointer;
-            font-size: 0.85rem;
+        .chip:hover {
+            transform: translateY(-3px);
+            border-color: var(--secondary);
         }
 
-        /* --- THE COMPACT TABLE --- */
-        .table-wrap {
-            border-radius: 18px;
+        /* --- glitch-free Table --- */
+        .table-outer {
+            border: 1px solid var(--border);
+            border-radius: 16px;
             overflow: hidden;
             background: var(--bg-card);
-            border: 1px solid var(--border);
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
         }
 
-        .scroll-area {
-            overflow-x: auto;
-            max-height: 65vh;
-            position: relative;
+        .scroll-box {
+            overflow: auto;
+            max-height: 70vh;
         }
 
         table {
             width: 100%;
-            border-collapse: collapse;
-            min-width: 900px;
-            table-layout: fixed;
+            border-collapse: separate;
+            border-spacing: 0;
         }
-
-        /* Specific column widths to prevent excessive stretching */
-        th:nth-child(1) {
-            width: 70px;
-        }
-
-        /* Rank */
-        th:nth-child(2) {
-            width: 220px;
-        }
-
-        /* Competitor */
-        th:nth-child(3) {
-            width: 120px;
-        }
-
-        /* Total */
 
         th {
-            background: var(--table-header);
-            padding: 15px 12px;
-            font-size: 0.7rem;
+            background: #1e293b;
             color: var(--text-muted);
+            font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
+            padding: 15px;
             position: sticky;
             top: 0;
-            z-index: 30;
-            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            border-bottom: 2px solid var(--border);
         }
 
         td {
-            padding: 12px 12px;
+            padding: 12px 15px;
             border-bottom: 1px solid var(--border);
-            font-size: 0.9rem;
             white-space: nowrap;
-        }
-
-        .sticky-col {
-            position: sticky;
-            left: 0;
-            background: var(--bg-card);
-            z-index: 20;
-            border-right: 1px solid var(--border);
-        }
-
-        .rank-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
-            background: rgba(148, 163, 184, 0.1);
-            border-radius: 8px;
-            font-weight: 800;
-            color: var(--primary-accent);
-            font-family: 'Outfit';
-            font-size: 0.85rem;
-        }
-
-        .kinch-pill {
-            color: var(--primary-accent);
-            font-weight: 800;
-            font-family: 'Outfit';
-            font-size: 1.1rem;
-        }
-
-        .name-link {
-            text-decoration: none;
-            font-weight: 700;
-            color: var(--text-main);
             font-size: 0.95rem;
         }
 
-        .name-sub {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            display: block;
-            margin-top: 2px;
-        }
-
-        tr:hover td,
-        tr:hover .sticky-col {
-            background-color: rgba(56, 189, 248, 0.04) !important;
-        }
-
-        /* --- Footer --- */
-        .site-footer {
-            flex-shrink: 0;
+        /* Sticky Column Fixes */
+        .col-rank {
+            position: sticky;
+            left: 0;
+            z-index: 50;
+            background: var(--sticky-bg);
+            width: 60px;
             text-align: center;
-            padding: 30px 20px;
-            border-top: 1px solid var(--border);
-            color: var(--text-muted);
-            font-size: 0.8rem;
+            border-right: 1px solid var(--border);
+            font-weight: 800;
         }
 
-        .site-footer a {
-            color: var(--primary-accent);
-            text-decoration: none;
-            font-weight: 700;
+        .col-name {
+            position: sticky;
+            left: 60px;
+            z-index: 50;
+            background: var(--sticky-bg);
+            min-width: 200px;
+            border-right: 3px solid var(--border);
         }
 
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-
-            .sticky-col {
-                min-width: 160px;
-            }
+        /* Ensures headers stay on top of sticky columns */
+        th.col-rank,
+        th.col-name {
+            z-index: 110;
         }
 
-        .site-footer {
-            flex-shrink: 0;
+        .score-box {
+            font-family: 'Outfit';
+            font-weight: 800;
+            color: var(--primary);
             text-align: center;
-            padding: 40px 20px;
-            border-top: 1px solid var(--border);
-            color: var(--text-muted);
+            font-size: 1.15rem;
+            background: rgba(56, 189, 248, 0.05);
+        }
+
+        .data-cell {
+            text-align: center;
             font-size: 0.85rem;
-            margin-top: auto;
+            color: var(--text-muted);
+            font-weight: 600;
         }
 
-        .site-footer a {
-            color: var(--primary-accent);
-            text-decoration: none;
-            font-weight: 700;
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: #000;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
         }
     </style>
 </head>
 
 <body>
+    {# The list of icons provided by user, used for conditional class assignment #}
+    {% set wca =
+    ['333','222','444','555','666','777','333bf','333fm','333oh','clock','minx','pyram','skewb','sq1','444bf','555bf','333mbf','333ft','333mbo','magic','mmagic']
+    %}
+    {% set unofficial =
+    ['222bf','222oh','234567relay','234567relay_2_person','23456relay','2345relay','234relay','333_linear_fm','333_mirror_blocks','333_mirror_blocks_bld','333_oh_bld_relay','333_oh_bld_team_relay','333_oven_mitts','333_siamese','333_speed_bld','333_team_bld','333_team_factory','333bf_2_person_relay','333bf_3_person_relay','333bf_4_person_relay','333bf_8_person_relay','333mts','444ft','666bf','777bf','baby_fto','cmetrick_mini','corner_helicopter_222','crazy_333','curvycopter','dino','fisher','fto','gear','gigaminx','helicopter','ivy','kilominx','magic_oh','miniguild','miniguild_2_person','miniguild_bld','minx_bld','mpyram','mskewb','mtetram','pyraminx_crystal','pyramorphix','redi','sq1_bld','sq2','super_sq1','ufo']
+    %}
+
     <div class="container">
         <header>
-            <div class="brand">
-                <h1>Cubing Rank Analysis</h1>
-            </div>
-            <button class="theme-toggle" onclick="toggleTheme()">
-                <i class="fa-solid fa-circle-half-stroke"></i> THEME
-            </button>
+            <div class="logo">Kinchranks</div>
+            <button class="btn" style="background:none; border: 1px solid var(--border); color:var(--text-main);"
+                onclick="document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')">Toggle
+                Theme</button>
         </header>
 
-        <div class="glass-card" style="padding: 15px;">
-            <div class="search-container" style="position: relative; margin-bottom: 15px;">
-                <i class="fa-solid fa-magnifying-glass"
-                    style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.9rem;"></i>
-                <input type="text" id="memberSearch" class="search-input" placeholder="Quick find competitor..."
-                    onkeyup="filterTable()"
-                    style="width: 100%; background: var(--bg-body); border: 1px solid var(--border); padding: 12px 12px 12px 40px; border-radius: 10px; color: var(--text-main); font-size: 0.9rem; outline: none; box-sizing: border-box;">
-            </div>
-
+        <div class="config-panel">
             <form action="/" method="POST">
-                <div class="event-grid" id="eventGrid">
-                    {% for eid in all_events %}
-                    <label class="event-chip">
+                <span class="section-h">Core / Unofficial Events</span>
+                <div class="event-flex">
+                    {% for eid in all_events if eid in (CORE_AVG + CORE_SIN) %}
+                    <label class="chip" title="{{ event_names[eid] }}">
                         <input type="checkbox" name="events" value="{{ eid }}" {% if eid in event_ids %}checked{% endif
                             %} style="display:none;">
-                        <i class="fa-solid fa-cube" style="font-size: 0.7rem; margin-right: 8px; opacity: 0.4;"></i>
-                        <span>{{ event_names[eid] }}</span>
+                        {% if eid in wca %}<span class="cubing-icon event-{{ eid }}"></span>
+                        {% elif eid in unofficial %}<span class="cubing-icon unofficial-{{ eid }}"></span>
+                        {% else %}<div class="txt">{{ event_names[eid] }}</div>{% endif %}
                     </label>
                     {% endfor %}
                 </div>
 
-                <div
-                    style="display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;">
-                    <div style="display: flex; gap: 10px;">
-                        <button type="button" onclick="toggleAllEvents()"
-                            style="background:none; border: 1px solid var(--border); color: var(--text-muted); padding: 8px 12px; border-radius: 8px; cursor:pointer; font-weight: 700; font-size: 0.7rem;">TOGGLE
-                            ALL</button>
-                        <select name="region"
-                            style="background: var(--bg-body); color: var(--text-main); border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; font-weight: 600; font-size: 0.8rem;">
-                            <option value="All">Global Rankings</option>
-                            <optgroup label="Continents">{% for c in continents %}<option value="{{ c }}" {% if
-                                    current_region==c %}selected{% endif %}>{{ c }}</option>{% endfor %}</optgroup>
-                            <optgroup label="Countries">{% for r in regions %}<option value="{{ r }}" {% if
-                                    current_region==r %}selected{% endif %}>{{ r }}</option>{% endfor %}</optgroup>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn-update">Update</button>
+                <span class="section-h">Misc Events</span>
+                <div class="event-flex">
+                    {% for eid in all_events if eid not in (CORE_AVG + CORE_SIN) %}
+                    <label class="chip" title="{{ event_names[eid] }}">
+                        <input type="checkbox" name="events" value="{{ eid }}" {% if eid in event_ids %}checked{% endif
+                            %} style="display:none;">
+                        {# Special Check for Dino and Gigaminx which are in your MISC list #}
+                        {% if eid in wca %}<span class="cubing-icon event-{{ eid }}"></span>
+                        {% elif eid in unofficial or eid == 'dino' or eid == 'gigaminx' %}<span
+                            class="cubing-icon unofficial-{{ eid }}"></span>
+                        {% else %}<div class="txt">{{ event_names[eid] }}</div>{% endif %}
+                    </label>
+                    {% endfor %}
+                </div>
+
+                <div class="controls">
+                    <select name="region"
+                        style="padding: 12px; border-radius: 10px; background: var(--bg-body); color: var(--text-main); border: 2px solid var(--border); font-weight: 700;">
+                        <option value="All">Global Rankings</option>
+                        {% for r in regions %}<option value="{{ r }}" {% if current_region==r %}selected{% endif %}>{{ r
+                            }}</option>{% endfor %}
+                    </select>
+                    <button type="submit" class="btn">UPDATE RANKINGS</button>
                 </div>
             </form>
         </div>
 
-        <div class="table-wrap">
-            <div class="scroll-area">
-                <table id="leaderboardTable">
+        <div class="table-outer">
+            <div class="scroll-box">
+                <table>
                     <thead>
                         <tr>
-                            <th style="text-align: center;">Rank</th>
-                            <th class="sticky-col">Competitor</th>
-                            <th style="text-align: center;">Score</th>
-                            {% for eid in event_ids %}<th style="text-align: center;">{{ event_names[eid] }}</th>{%
-                            endfor %}
+                            <th class="col-rank">#</th>
+                            <th class="col-name">Competitor</th>
+                            <th style="text-align: center;">Kinch</th>
+                            {% for eid in event_ids %}
+                            <th style="text-align: center;">
+                                {% if eid in wca %}<span class="cubing-icon event-{{ eid }}"
+                                    style="font-size: 1.5rem;"></span>
+                                {% elif eid in unofficial or eid == 'dino' or eid == 'gigaminx' %}<span
+                                    class="cubing-icon unofficial-{{ eid }}" style="font-size: 1.5rem;"></span>
+                                {% else %}<span style="font-size: 0.6rem;">{{ event_names[eid][:5] }}</span>{% endif %}
+                            </th>
+                            {% endfor %}
                         </tr>
                     </thead>
                     <tbody>
                         {% for row in leaderboard %}
-                        <tr class="competitor-row">
-                            <td style="text-align: center;"><span class="rank-badge">{{ row.rank }}</span></td>
-                            <td class="sticky-col">
-                                <a href="/person/{{ row.id }}" class="name-link">{{ row.name }}</a>
-                                <span class="name-sub">{{ row.wca_id }} • {{ row.region }}</span>
+                        <tr>
+                            <td class="col-rank">{{ row.rank }}</td>
+                            <td class="col-name">
+                                <a href="/person/{{ row.id }}"
+                                    style="color:var(--primary); text-decoration:none; font-weight:800;">{{ row.name
+                                    }}</a><br>
+                                <small style="color:var(--text-muted); font-weight: 500;">{{ row.region }}</small>
                             </td>
-                            <td style="text-align: center;"><span class="kinch-pill">{{ row.total }}</span></td>
+                            <td class="score-box">{{ row.total }}</td>
                             {% for eid in event_ids %}
-                            <td
-                                style="text-align: center; color: var(--text-muted); font-weight: 600; font-size: 0.85rem;">
-                                {{ row.scores[eid] }}%</td>
+                            <td class="data-cell">{{ row.scores[eid] }}%</td>
                             {% endfor %}
                         </tr>
                         {% endfor %}
@@ -370,38 +350,6 @@
             </div>
         </div>
     </div>
-
-    <footer class="site-footer">
-        Results are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA
-            4.0</a> | Latest export: v1 (3/19/2026)
-    </footer>
-
-    <script>
-        function toggleTheme() {
-            const html = document.documentElement;
-            const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            html.setAttribute('data-theme', next);
-            localStorage.setItem('theme', next);
-        }
-        document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');
-
-        function toggleAllEvents() {
-            const checkboxes = document.querySelectorAll('#eventGrid input[type="checkbox"]');
-            const someUnchecked = Array.from(checkboxes).some(cb => !cb.checked);
-            checkboxes.forEach(cb => cb.checked = someUnchecked);
-        }
-
-        function filterTable() {
-            const input = document.getElementById("memberSearch").value.toLowerCase();
-            const rows = document.querySelectorAll(".competitor-row");
-            rows.forEach(row => {
-                const name = row.querySelector(".name-link").innerText.toLowerCase();
-                const sub = row.querySelector(".name-sub").innerText.toLowerCase();
-                row.style.display = (name.includes(input) || sub.includes(input)) ? "" : "none";
-            });
-        }
-    </script>
-
 </body>
 
 </html>

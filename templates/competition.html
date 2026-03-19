@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ comp_name }} - Results</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cubing-icons@1.0.1/css/cubing-icons.min.css">
     <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;600;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;600;800&family=JetBrains+Mono&display=swap"
         rel="stylesheet">
+
     <style>
         :root[data-theme="dark"] {
             --bg-body: #0f172a;
@@ -17,25 +19,23 @@
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --border: #334155;
-            --table-header: #1e293b;
+            --table-header: rgba(0, 0, 0, 0.2);
             --row-hover: #334155;
         }
 
-        /* Flexbox for sticky footer */
         html,
         body {
             height: 100%;
+            margin: 0;
         }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--bg-body);
             color: var(--text-main);
-            margin: 0;
-            padding: 40px 20px 0 20px;
-            /* Padding bottom handled by footer margin */
             display: flex;
             flex-direction: column;
+            padding: 40px 20px 0 20px;
         }
 
         .container {
@@ -43,7 +43,6 @@
             margin: 0 auto;
             width: 100%;
             flex: 1 0 auto;
-            /* Allows container to grow and push footer down */
         }
 
         header {
@@ -52,53 +51,89 @@
 
         .back-link {
             text-decoration: none;
-            color: var(--primary-accent);
+            color: var(--text-muted);
             font-weight: 700;
             font-size: 0.9rem;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
             margin-bottom: 15px;
+            transition: 0.2s;
+        }
+
+        .back-link:hover {
+            color: var(--primary-accent);
         }
 
         h1 {
             font-family: 'Outfit', sans-serif;
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             font-weight: 800;
             margin: 0;
-            color: var(--text-main);
+            background: linear-gradient(135deg, var(--text-main) 30%, var(--primary-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .comp-meta {
             color: var(--text-muted);
             margin-top: 10px;
-            font-size: 1.1rem;
+            font-size: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
         }
 
-        /* Results Table */
+        .wca-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--primary-accent);
+            border: 1px solid var(--primary-accent);
+            padding: 6px 14px;
+            border-radius: 99px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .wca-btn:hover {
+            background: var(--primary-accent);
+            color: var(--bg-body);
+        }
+
         .results-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 20px;
+            border-radius: 24px;
             overflow: hidden;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
             margin-bottom: 40px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             text-align: left;
+            min-width: 800px;
         }
 
         th {
             background: var(--table-header);
-            padding: 16px 20px;
-            font-size: 0.75rem;
+            padding: 18px 20px;
+            font-size: 0.7rem;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            border-bottom: 2px solid var(--border);
+            font-weight: 800;
+            border-bottom: 1px solid var(--border);
         }
 
         td {
@@ -107,23 +142,24 @@
             vertical-align: middle;
         }
 
-        tr:last-child td {
-            border-bottom: none;
-        }
-
         .event-cell {
             display: flex;
             align-items: center;
             gap: 12px;
-            font-weight: 700;
-            color: var(--text-main);
+            font-weight: 800;
+            font-family: 'Outfit';
+        }
+
+        .cubing-icon {
+            font-size: 1.4rem;
+            color: var(--primary-accent);
         }
 
         .winner-name {
             text-decoration: none;
             color: var(--primary-accent);
             font-weight: 700;
-            transition: 0.2s;
+            display: block;
         }
 
         .winner-name:hover {
@@ -137,17 +173,18 @@
         }
 
         .solves-cell {
-            font-family: monospace;
-            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
             color: var(--text-muted);
-            letter-spacing: -0.02em;
+            line-height: 1.4;
+            max-width: 300px;
+            white-space: normal;
         }
 
-        /* Footer Styling */
         .site-footer {
             flex-shrink: 0;
             text-align: center;
-            padding: 30px 20px;
+            padding: 40px 20px;
             border-top: 1px solid var(--border);
             color: var(--text-muted);
             font-size: 0.85rem;
@@ -160,14 +197,17 @@
             font-weight: 700;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .hide-mobile {
                 display: none;
             }
 
             h1 {
-                font-size: 1.8rem;
+                font-size: 2rem;
+            }
+
+            .comp-meta {
+                gap: 10px;
             }
         }
     </style>
@@ -176,62 +216,76 @@
 <body>
     <div class="container">
         <header>
-            <a href="javascript:history.back()" class="back-link">
-                <i class="fa-solid fa-arrow-left"></i> BACK TO PROFILE
+            <a href="/" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i> LEADERBOARD
             </a>
             <h1>{{ comp_name }}</h1>
             <div class="comp-meta">
-                <i class="fa-solid fa-calendar-days"></i> {{ comp_date }} &bull;
-                <i class="fa-solid fa-location-dot"></i> {{ comp_location }}
+                <span><i class="fa-solid fa-calendar-days"></i> {{ comp_date }}</span>
+                <span><i class="fa-solid fa-location-dot"></i> {{ comp_location }}</span>
+
+                {% if competition_id %}
+                <a href="https://www.worldcubeassociation.org/competitions/{{ competition_id }}" target="_blank"
+                    class="wca-btn">
+                    <i class="fa-solid fa-external-link"></i> WCA PAGE
+                </a>
+                {% endif %}
             </div>
         </header>
 
         <div class="results-card">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Event</th>
-                        <th>Winner</th>
-                        <th style="text-align: center;">Best</th>
-                        <th style="text-align: center;">Average</th>
-                        <th class="hide-mobile">Solves</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for result in winners %}
-                    <tr class="result-row">
-                        <td>
-                            <div class="event-cell">
-                                <i class="fa-solid fa-cube" style="color: var(--text-muted); font-size: 0.8rem;"></i>
-                                {{ result.event_name }}
-                            </div>
-                        </td>
-                        <td>
-                            <a href="/person/{{ result.winner_id }}" class="winner-name">
-                                {{ result.winner_name }}
-                            </a>
-                            <div style="font-size: 0.75rem; color: var(--text-muted);">{{ result.representing }}</div>
-                        </td>
-                        <td style="text-align: center;" class="stat-bold">
-                            {{ result.best }}
-                        </td>
-                        <td style="text-align: center;" class="stat-bold">
-                            {{ result.average if result.average else 'DNF' }}
-                        </td>
-                        <td class="solves-cell hide-mobile">
-                            {{ result.solves_list | join(', ') }}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Event</th>
+                            <th>Winner</th>
+                            <th style="text-align: center;">Best</th>
+                            <th style="text-align: center;">Average</th>
+                            <th class="hide-mobile">Solves</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for result in winners %}
+                        <tr class="result-row">
+                            <td>
+                                <div class="event-cell">
+                                    <span
+                                        class="cubing-icon icon-{{ result.event_id if '_' not in result.event_id else result.event_id.split('_')[0] }}"></span>
+                                    {{ result.event_name }}
+                                </div>
+                            </td>
+                            <td>
+                                <a href="/person/{{ result.winner_id }}" class="winner-name">
+                                    {{ result.winner_name }}
+                                </a>
+                                <div style="font-size: 0.75rem; color: var(--text-muted);">
+                                    {{ result.representing }}
+                                </div>
+                            </td>
+                            <td style="text-align: center;" class="stat-bold">
+                                {{ result.best }}
+                            </td>
+                            <td style="text-align: center;" class="stat-bold">
+                                {{ result.average if result.average else '-' }}
+                            </td>
+                            <td class="solves-cell hide-mobile">
+                                {{ result.solves_joined }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
+        <footer class="site-footer">
+            Results are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC
+                BY-SA
+                4.0</a> | Latest export: v1 (3/19/2026)
+        </footer>
     </div>
 
-    <footer class="site-footer">
-        Results powered by WCA Data | Licensed under
-        <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY SA 4.0</a>
-    </footer>
+
 </body>
 
 </html>

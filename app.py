@@ -8,8 +8,7 @@ import pycountry_convert as pc
 import os
 
 app = Flask(__name__)
-# Set debug to False for production performance
-app.debug = False 
+app.debug = True 
 
 # --- CACHE CONFIGURATION ---
 # Simple cache is best for Vercel's ephemeral nature
@@ -54,7 +53,6 @@ def get_region_info(code):
         return code, "Other"
 
 # --- DATA PERSISTENCE ---
-# Global dictionary to keep data in memory across requests in a single worker
 GLOBAL_DATA = {}
 
 def load_and_process_data():
@@ -62,25 +60,22 @@ def load_and_process_data():
         return GLOBAL_DATA['res'], GLOBAL_DATA['exp'], GLOBAL_DATA['pers'], GLOBAL_DATA['ev'], GLOBAL_DATA['cont']
 
     try:
-        # Optimization: Only read needed columns if your CSV is huge
-        res_df = pd.read_csv("export_results.csv")
-        pers_df = pd.read_csv("export_persons.csv")
+        # Vercel Optimization: Read only strictly necessary columns
+        res_df = pd.read_csv("export_results.csv", usecols=['competition_id', 'person_ids', 'event_id', 'round_id', 'best', 'average', 'ranking', 'attempts', 'regional_single_record', 'regional_average_record'])
+        pers_df = pd.read_csv("export_persons.csv", usecols=['id', 'name', 'wca_id', 'region_code'])
         ev_df = pd.read_csv("export_events.csv")
-        rounds_df = pd.read_csv("export_rounds.csv")
+        rounds_df = pd.read_csv("export_rounds.csv", usecols=['competition_id', 'id', 'round_type_id'])
         contests_df = pd.read_csv("export_contests.csv")
         
         event_names = ev_df.set_index('event_id')['name'].to_dict()
         
-        # Pre-process Region Info
         region_data = pers_df['region_code'].apply(get_region_info)
         pers_df['full_country'] = [x[0] for x in region_data]
         pers_df['continent'] = [x[1] for x in region_data]
         pers_df['id'] = pers_df['id'].astype(str)
 
-        # Merge and Explode (Logic Kept Exactly As Requested)
-        res_df = res_df.merge(rounds_df[['competition_id', 'id', 'round_type_id']], 
-                             left_on=['competition_id', 'round_id'], 
-                             right_on=['competition_id', 'id'], how='left')
+        # Merge and Explode
+        res_df = res_df.merge(rounds_df, left_on=['competition_id', 'round_id'], right_on=['competition_id', 'id'], how='left', suffixes=('', '_round'))
 
         res_df['pid_list'] = res_df['person_ids'].apply(lambda x: ast.literal_eval(x) if str(x).startswith('[') else [x])
         res_exploded = res_df.explode('pid_list').rename(columns={'pid_list': 'person_id'})
@@ -150,7 +145,14 @@ def kinch_leaderboard():
     return render_template('leaderboard.html', leaderboard=final_data, event_names=event_names, 
                            event_ids=selected_events, all_events=ALL_TARGET_EVENTS,
                            regions=unique_countries, current_region=target_region, continents=CONTINENTS)
-
+def format_round(r):
+    return {
+        'f': 'Final',
+        's': 'Semi Final',
+        '1': 'First Round',
+        '2': 'Second Round',
+        '3': 'Third Round'
+    }.get(str(r), str(r))
 @app.route('/person/<person_id>')
 def person_profile(person_id):
     _, res_exploded, pers_df, event_names, _ = load_and_process_data()
@@ -162,9 +164,9 @@ def person_profile(person_id):
     p_res = res_exploded[res_exploded['person_id'] == person_id].copy()
 
     medals = {
-        'gold': int((p_res['ranking'] == 1).sum()) if 'ranking' in p_res.columns else 0,
-        'silver': int((p_res['ranking'] == 2).sum()) if 'ranking' in p_res.columns else 0,
-        'bronze': int((p_res['ranking'] == 3).sum()) if 'ranking' in p_res.columns else 0
+        'gold': int((p_res['ranking'] == 1).sum()),
+        'silver': int((p_res['ranking'] == 2).sum()),
+        'bronze': int((p_res['ranking'] == 3).sum())
     }
 
     wr_count = (p_res['regional_single_record'] == 'WR').sum() + (p_res['regional_average_record'] == 'WR').sum()
@@ -174,7 +176,6 @@ def person_profile(person_id):
 
     pbs = p_res.groupby('event_id').agg({'best': 'min', 'average': lambda x: x[x > 0].min() if not x[x > 0].empty else 0}).to_dict('index')
     
-    p_res = p_res.sort_values(['date', 'event_id'], ascending=[False, True])
     grouped_results = {}
     for eid in p_res['event_id'].unique():
         ev_list = []
@@ -187,7 +188,7 @@ def person_profile(person_id):
 
             ev_list.append({
                 'competition_id': row['competition_id'], 'event_name': event_names.get(eid, eid),
-                'round_id': row.get('round_type_id', row.get('round_id', "-")),
+                'round_id': format_round(row.get('round_type_id', row.get('round_id', "-"))),
                 'ranking': int(row['ranking']) if pd.notna(row['ranking']) else "-",
                 'single_formatted': format_time(row['best'], eid),
                 'average_formatted': format_time(row['average'], eid, True) if row['average'] > 0 else "-",
@@ -228,20 +229,32 @@ def competition_page(competition_id):
     
     display_name = comp_info.iloc[0]['name'] if not comp_info.empty else competition_id.replace('_', ' ')
     location = f"{comp_info.iloc[0]['city']}, {comp_info.iloc[0]['venue']}" if not comp_info.empty else "Unknown Location"
-    date_val = comp_info.iloc[0]['start_date'].split('T')[0] if not comp_info.empty and pd.notna(comp_info.iloc[0]['start_date']) else ""
+    date_val = str(comp_info.iloc[0]['start_date']).split('T')[0] if not comp_info.empty else ""
 
     comp_results = res_df[res_df['competition_id'] == competition_id]
     winners_list = []
+    
+    # Process only winners with solves logic
     for _, row in comp_results[comp_results['ranking'] == 1].iterrows():
+        eid = row['event_id']
         pids = row.get('pid_list', [])
         p_info = pers_df[pers_df['id'] == str(pids[0])] if pids else pd.DataFrame()
+        
+        try:
+            atts = ast.literal_eval(row['attempts'])
+            f_solves = [("(DNF)" if a['result'] == -1 else "(DNS)" if a['result'] == -2 else format_time(a['result'], eid)) for a in atts]
+            solves_joined = ", ".join(f_solves)
+        except: 
+            solves_joined = "-"
+
         winners_list.append({
-            'event_name': event_names.get(row['event_id'], row['event_id']),
+            'event_name': event_names.get(eid, eid),
             'winner_name': p_info.iloc[0]['name'] if not p_info.empty else "Unknown",
             'winner_id': pids[0] if pids else None,
             'representing': p_info.iloc[0]['full_country'] if not p_info.empty else "",
-            'best': format_time(row['best'], row['event_id']),
-            'average': format_time(row['average'], row['event_id'], True) if row['average'] > 0 else None,
+            'best': format_time(row['best'], eid),
+            'average': format_time(row['average'], eid, True) if row['average'] > 0 else None,
+            'solves_joined': solves_joined
         })
 
     return render_template('competition.html', comp_name=display_name, comp_location=location, comp_date=date_val, winners=winners_list)

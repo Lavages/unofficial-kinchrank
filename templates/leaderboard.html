@@ -266,6 +266,22 @@
                 min-width: 160px;
             }
         }
+
+        .site-footer {
+            flex-shrink: 0;
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: auto;
+        }
+
+        .site-footer a {
+            color: var(--primary-accent);
+            text-decoration: none;
+            font-weight: 700;
+        }
     </style>
 </head>
 
@@ -356,8 +372,8 @@
     </div>
 
     <footer class="site-footer">
-        Results powered by WCA Data | <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY SA
-            4.0</a>
+        Results are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA
+            4.0</a> | Latest export: v1 (3/19/2026)
     </footer>
 
     <script>
@@ -385,6 +401,7 @@
             });
         }
     </script>
+
 </body>
 
 </html>

@@ -8,10 +8,12 @@ import pycountry_convert as pc
 import os
 
 app = Flask(__name__)
-app.debug = True 
+
+# --- VERCEL PATH FIX ---
+# This ensures Python finds your CSVs in the root directory
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # --- CACHE CONFIGURATION ---
-# Simple cache is best for Vercel's ephemeral nature
 cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
 # --- CONFIGURATION ---
@@ -56,43 +58,26 @@ def get_region_info(code):
 GLOBAL_DATA = {}
 
 def load_and_process_data():
+    global GLOBAL_DATA
     if GLOBAL_DATA:
         return GLOBAL_DATA['res'], GLOBAL_DATA['exp'], GLOBAL_DATA['pers'], GLOBAL_DATA['ev'], GLOBAL_DATA['cont']
 
     try:
-        # Vercel Optimization: Read necessary columns + record_category for filtering
-        res_df = pd.read_csv("export_results.csv", usecols=[
+        # Load files using absolute paths for Vercel
+        res_df = pd.read_csv(os.path.join(BASE_DIR, "export_results.csv"), usecols=[
             'competition_id', 'person_ids', 'event_id', 'round_id', 'best', 
             'average', 'ranking', 'attempts', 'regional_single_record', 
             'regional_average_record', 'record_category'
         ])
-        pers_df = pd.read_csv("export_persons.csv", usecols=['id', 'name', 'wca_id', 'region_code'])
-        ev_df = pd.read_csv("export_events.csv")
-        rounds_df = pd.read_csv("export_rounds.csv", usecols=['competition_id', 'id', 'round_type_id'])
-        contests_df = pd.read_csv("export_contests.csv")
+        pers_df = pd.read_csv(os.path.join(BASE_DIR, "export_persons.csv"), usecols=['id', 'name', 'wca_id', 'region_code'])
+        ev_df = pd.read_csv(os.path.join(BASE_DIR, "export_events.csv"))
+        rounds_df = pd.read_csv(os.path.join(BASE_DIR, "export_rounds.csv"), usecols=['competition_id', 'id', 'round_type_id'])
+        contests_df = pd.read_csv(os.path.join(BASE_DIR, "export_contests.csv"))
         
-        # --- NEW FILTERING LOGIC ---
-        
-        # 1. Filter Meetups: Keep only if event is 333_cube_mile or category is NOT meetups
-        res_df = res_df[
-            (res_df['record_category'] != 'meetups') | 
-            (res_df['event_id'] == '333_cube_mile')
-        ]
-
-        # 2. Filter Video-Based: Only allow specific events for video-based-results
-        allowed_video_events = {
-            '333mbo', '666bf', '777bf', '888bf', '999bf', '101010bf', 
-            '111111bf', '444mbf', '555mbf', '2345relay_bld', '234567relay_bld', 
-            '2345678relay_bld', 'miniguild_bld', 'minx_bld', 'minx444_bld', 
-            'minx555_bld', 'minx2345relay_bld', 'pyram_crystal_bld', '333_speed_bld'
-        }
-        
-        res_df = res_df[
-            (res_df['record_category'] != 'video-based-results') | 
-            (res_df['event_id'].isin(allowed_video_events))
-        ]
-
-        # --- END FILTERING LOGIC ---
+        # --- FILTERING LOGIC ---
+        res_df = res_df[(res_df['record_category'] != 'meetups') | (res_df['event_id'] == '333_cube_mile')]
+        allowed_video = {'333mbo', '666bf', '777bf', '888bf', '999bf', '101010bf', '111111bf', '444mbf', '555mbf', '2345relay_bld', '234567relay_bld', '2345678relay_bld', 'miniguild_bld', 'minx_bld', 'minx444_bld', 'minx555_bld', 'minx2345relay_bld', 'pyram_crystal_bld', '333_speed_bld'}
+        res_df = res_df[(res_df['record_category'] != 'video-based-results') | (res_df['event_id'].isin(allowed_video))]
 
         event_names = ev_df.set_index('event_id')['name'].to_dict()
         
@@ -101,20 +86,18 @@ def load_and_process_data():
         pers_df['continent'] = [x[1] for x in region_data]
         pers_df['id'] = pers_df['id'].astype(str)
 
-        # Merge and Explode
         res_df = res_df.merge(rounds_df, left_on=['competition_id', 'round_id'], right_on=['competition_id', 'id'], how='left', suffixes=('', '_round'))
-
         res_df['pid_list'] = res_df['person_ids'].apply(lambda x: ast.literal_eval(x) if str(x).startswith('[') else [x])
         res_exploded = res_df.explode('pid_list').rename(columns={'pid_list': 'person_id'})
         res_exploded['person_id'] = res_exploded['person_id'].astype(str)
         
-        GLOBAL_DATA.update({
+        GLOBAL_DATA = {
             'res': res_df, 'exp': res_exploded, 'pers': pers_df, 
             'ev': event_names, 'cont': contests_df
-        })
-        return load_and_process_data()
+        }
+        return GLOBAL_DATA['res'], GLOBAL_DATA['exp'], GLOBAL_DATA['pers'], GLOBAL_DATA['ev'], GLOBAL_DATA['cont']
     except Exception as e:
-        print(f"File Error: {e}")
+        print(f"Data Loading Error: {e}")
         return pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), {}, pd.DataFrame()
 
 @app.route('/', methods=['GET', 'POST'])
@@ -125,7 +108,7 @@ def kinch_leaderboard():
     if not selected_events: selected_events = CORE_AVG + CORE_SIN
 
     _, res_exploded, persons, event_names, _ = load_and_process_data()
-    if res_exploded.empty: return "Error: Data missing."
+    if res_exploded.empty: return "Internal Server Error: Data could not be loaded. Check Vercel logs.", 500
 
     unique_countries = sorted(persons['full_country'].unique().tolist())
 
@@ -142,8 +125,7 @@ def kinch_leaderboard():
         return render_template('leaderboard.html', leaderboard=[], event_names=event_names, 
                                event_ids=selected_events, all_events=ALL_TARGET_EVENTS,
                                regions=unique_countries, current_region=target_region, continents=CONTINENTS,
-                           CORE_AVG=CORE_AVG,    # <--- Add this
-                           CORE_SIN=CORE_SIN)
+                               CORE_AVG=CORE_AVG, CORE_SIN=CORE_SIN)
 
     pb_avg = valid[valid['average'] > 0].groupby(['person_id', 'event_id'])['average'].min().unstack()
     pb_sin = valid.groupby(['person_id', 'event_id'])['best'].min().unstack()
@@ -174,16 +156,11 @@ def kinch_leaderboard():
     return render_template('leaderboard.html', leaderboard=final_data, event_names=event_names, 
                            event_ids=selected_events, all_events=ALL_TARGET_EVENTS,
                            regions=unique_countries, current_region=target_region, continents=CONTINENTS,
-                           CORE_AVG=CORE_AVG,    # <--- Add this
-                           CORE_SIN=CORE_SIN)
+                           CORE_AVG=CORE_AVG, CORE_SIN=CORE_SIN)
+
 def format_round(r):
-    return {
-        'f': 'Final',
-        's': 'Semi Final',
-        '1': 'First Round',
-        '2': 'Second Round',
-        '3': 'Third Round'
-    }.get(str(r), str(r))
+    return {'f': 'Final', 's': 'Semi Final', '1': 'First Round', '2': 'Second Round', '3': 'Third Round'}.get(str(r), str(r))
+
 @app.route('/person/<person_id>')
 def person_profile(person_id):
     _, res_exploded, pers_df, event_names, _ = load_and_process_data()
@@ -265,7 +242,6 @@ def competition_page(competition_id):
     comp_results = res_df[res_df['competition_id'] == competition_id]
     winners_list = []
     
-    # Process only winners with solves logic
     for _, row in comp_results[comp_results['ranking'] == 1].iterrows():
         eid = row['event_id']
         pids = row.get('pid_list', [])
@@ -275,8 +251,7 @@ def competition_page(competition_id):
             atts = ast.literal_eval(row['attempts'])
             f_solves = [("(DNF)" if a['result'] == -1 else "(DNS)" if a['result'] == -2 else format_time(a['result'], eid)) for a in atts]
             solves_joined = ", ".join(f_solves)
-        except: 
-            solves_joined = "-"
+        except: solves_joined = "-"
 
         winners_list.append({
             'event_name': event_names.get(eid, eid),
@@ -290,7 +265,7 @@ def competition_page(competition_id):
 
     return render_template('competition.html', comp_name=display_name, comp_location=location, comp_date=date_val, winners=winners_list)
 
-# Vercel entry point
+# The 'app' variable MUST be exposed for Vercel
 app = app
 
 if __name__ == '__main__':

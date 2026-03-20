@@ -4,4 +4,3 @@ pandas
 numpy
 pycountry
 pycountry-convert
-gunicorn

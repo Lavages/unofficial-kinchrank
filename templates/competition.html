@@ -116,13 +116,16 @@
 
         .table-wrapper {
             overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            /* Smooth scroll for iOS */
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             text-align: left;
-            min-width: 800px;
+            min-width: 700px;
+            /* Reduced slightly to prevent aggressive early overflow */
         }
 
         th {
@@ -153,6 +156,7 @@
         .cubing-icon {
             font-size: 1.4rem;
             color: var(--primary-accent);
+            flex-shrink: 0;
         }
 
         .winner-name {
@@ -197,17 +201,58 @@
             font-weight: 700;
         }
 
+        /* --- MOBILE REFINEMENTS --- */
         @media (max-width: 768px) {
+            body {
+                padding: 20px 12px 0 12px;
+            }
+
             .hide-mobile {
                 display: none;
             }
 
             h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
+                line-height: 1.2;
+            }
+
+            header {
+                margin-bottom: 25px;
             }
 
             .comp-meta {
-                gap: 10px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+                font-size: 0.9rem;
+            }
+
+            .results-card {
+                border-radius: 16px;
+                margin-bottom: 20px;
+            }
+
+            table {
+                min-width: 500px;
+                /* Allow it to be narrower on mobile */
+            }
+
+            th,
+            td {
+                padding: 12px 15px;
+            }
+
+            .event-cell {
+                font-size: 0.9rem;
+                gap: 8px;
+            }
+
+            .cubing-icon {
+                font-size: 1.1rem;
+            }
+
+            .stat-bold {
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -284,8 +329,6 @@
                 4.0</a> | Latest export: v1 (3/19/2026)
         </footer>
     </div>
-
-
 </body>
 
 </html>

@@ -227,31 +227,68 @@
             font-size: 1.4rem;
         }
 
+        /* --- FIXED ALIGNMENT LOGIC --- */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 0 0 12px 12px;
+            border: 1px solid var(--border);
+            border-top: none;
+        }
+
         .results-table {
             width: 100%;
             border-collapse: collapse;
             background: var(--bg-card);
             font-size: 0.95rem;
-            border-radius: 0 0 12px 12px;
+            min-width: 800px;
+            /* Increased to prevent squishing */
+            table-layout: fixed;
+            /* Forces columns to obey width rules */
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
             overflow: hidden;
-            border: 1px solid var(--border);
-            border-top: none;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .results-table th {
             text-align: left;
-            padding: 14px;
             background: rgba(0, 0, 0, 0.05);
             color: var(--text-muted);
             font-size: 0.7rem;
-            border-bottom: 1px solid var(--border);
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
 
-        .results-table td {
-            padding: 12px 14px;
-            border-bottom: 1px solid var(--border);
+        /* Enforced Column Widths for perfect alignment across all tables */
+        .col-comp {
+            width: 25%;
+        }
+
+        .col-round {
+            width: 12%;
+        }
+
+        .col-place {
+            width: 8%;
+        }
+
+        .col-single {
+            width: 12%;
+        }
+
+        .col-avg {
+            width: 12%;
+        }
+
+        .col-solves {
+            width: 31%;
         }
 
         .results-table tr:hover {
@@ -304,19 +341,50 @@
         }
 
         .site-footer {
-            flex-shrink: 0;
             text-align: center;
             padding: 40px 20px;
             border-top: 1px solid var(--border);
             color: var(--text-muted);
             font-size: 0.85rem;
-            margin-top: auto;
+            margin-top: 40px;
         }
 
         .site-footer a {
             color: var(--primary-accent);
             text-decoration: none;
             font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+
+            .name-banner {
+                font-size: 1.8rem;
+            }
+
+            .profile-card {
+                padding: 25px 15px;
+            }
+
+            .info-row {
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+            }
+
+            .collections-row {
+                grid-template-columns: 1fr;
+            }
+
+            .tab-link {
+                padding: 10px 12px;
+                font-size: 0.9rem;
+            }
+
+            .results-table {
+                font-size: 0.85rem;
+            }
         }
     </style>
 </head>
@@ -328,7 +396,7 @@
                 <i class="fa-solid fa-arrow-left"></i> BACK
             </a>
             <button class="theme-toggle" onclick="toggleTheme()">
-                <i class="fa-solid fa-circle-half-stroke"></i> TOGGLE MODE
+                <i class="fa-solid fa-circle-half-stroke"></i> MODE
             </button>
         </header>
 
@@ -337,14 +405,11 @@
             <div class="info-row">
                 <div class="info-item"><span class="label">Region</span><span class="val">{{ person.full_country
                         }}</span></div>
-                <div class="info-item"><span class="label">WCA ID</span><span class="val">{% if person.wca_id %}
+                <div class="info-item"><span class="label">WCA ID</span><span class="val">
+                        {% if person.wca_id %}
                         <a href="https://www.worldcubeassociation.org/persons/{{ person.wca_id }}" target="_blank"
-                            style="color:inherit; text-decoration:none;">
-                            {{ person.wca_id }}
-                        </a>
-                        {% else %}
-                        -
-                        {% endif %}</span></div>
+                            style="color:inherit; text-decoration:none;">{{ person.wca_id }}</a>
+                        {% else %}-{% endif %}</span></div>
                 <div class="info-item"><span class="label">Gender</span><span class="val">{{ person.gender or 'Male'
                         }}</span></div>
                 <div class="info-item"><span class="label">Competitions</span><span class="val">{{ stats.comps }}</span>
@@ -381,7 +446,7 @@
 
         <nav class="tabs-nav">
             <div class="tab-link active" onclick="openTab(event, 'results-tab')">Results</div>
-            <div class="tab-link" onclick="openTab(event, 'records-tab')">Personal Records</div>
+            <div class="tab-link" onclick="openTab(event, 'records-tab')">Records</div>
         </nav>
 
         <div id="results-tab" class="tab-content active">
@@ -390,7 +455,7 @@
                 <a href="#event-{{ event_id }}" class="event-icon-btn">
                     {% if event_id in ['dino','gigaminx','my_custom_event'] %}
                     <img src="{{ url_for('static', filename='icons/' ~ event_id ~ '.svg') }}"
-                        alt="{{ results[0].event_name }}" style="width: 1.4rem; height: 1.4rem;">
+                        style="width: 1.4rem; height: 1.4rem;">
                     {% else %}
                     <span class="cubing-icon event-{{ event_id }}"></span>
                     {% endif %}
@@ -401,93 +466,85 @@
             {% for event_id, results in grouped_results.items() %}
             <div id="event-{{ event_id }}">
                 <div class="event-group-header">
-                    {% if event_id in ['dino','gigaminx','my_custom_event'] %}
-                    <img src="{{ url_for('static', filename='icons/' ~ event_id ~ '.svg') }}"
-                        alt="{{ results[0].event_name }}" style="width: 1.4rem; height: 1.4rem; margin-right: 0.5rem;">
-                    {% else %}
                     <span class="cubing-icon event-{{ event_id }}"></span>
-                    {% endif %}
                     {{ results[0].event_name }}
                 </div>
-                <table class="results-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 35%;">Competition</th>
-                            <th>Round</th>
-                            <th>Place</th>
-                            <th>Single</th>
-                            <th>Average</th>
-                            <th style="width: 25%;">Solves</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for res in results %}
-                        <tr>
-                            <td>
-                                {% if res.round_id == 'Final' %}
-                                <a href="/competition/{{ res.competition_id }}" class="comp-name">
-                                    {{ res.competition_id | replace('_', ' ') }}
-                                </a>
-                                {% else %}
-                                -
-                                {% endif %}
-                            </td>
-                            <td>{{ res.round_id }}</td>
-                            <td>{{ res.ranking }}</td>
-                            <td class="best-val {% if res.single_is_pb %}red-text{% endif %}">{{ res.single_formatted }}
-                            </td>
-                            <td class="best-val {% if res.average_is_pb %}red-text{% endif %}">{{ res.average_formatted
-                                }}</td>
-                            <td class="solve-list">{{ res.solves_joined }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="table-wrapper">
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th class="col-comp">Competition</th>
+                                <th class="col-round">Round</th>
+                                <th class="col-place">Place</th>
+                                <th class="col-single">Single</th>
+                                <th class="col-avg">Average</th>
+                                <th class="col-solves">Solves</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for res in results %}
+                            <tr>
+                                <td class="col-comp"><a href="/competition/{{ res.competition_id }}"
+                                        class="comp-name">{{ res.competition_id | replace('_', ' ') }}</a></td>
+                                <td class="col-round">{{ res.round_id }}</td>
+                                <td class="col-place">{{ res.ranking }}</td>
+                                <td class="col-single best-val {% if res.single_is_pb %}red-text{% endif %}">{{
+                                    res.single_formatted }}</td>
+                                <td class="col-avg best-val {% if res.average_is_pb %}red-text{% endif %}">{{
+                                    res.average_formatted }}</td>
+                                <td class="col-solves solve-list">{{ res.solves_joined }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
             {% endfor %}
         </div>
 
         <div id="records-tab" class="tab-content">
-            <table class="results-table">
-                <thead>
-                    <tr>
-                        <th rowspan="2">Event</th>
-                        <th colspan="4" class="group-header">Single</th>
-                        <th colspan="4" class="group-header">Average</th>
-                    </tr>
-                    <tr>
-                        <th>NR</th>
-                        <th>CR</th>
-                        <th>WR</th>
-                        <th>Best</th>
-                        <th>Best</th>
-                        <th>WR</th>
-                        <th>CR</th>
-                        <th>NR</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for rec in records %}
-                    <tr>
-                        <td style="font-weight:700;"><span class="cubing-icon event-{{ rec.event_id }}"></span> {{
-                            rec.event_name }}</td>
-                        <td>{{ rec.nr_s }}</td>
-                        <td>{{ rec.cr_s }}</td>
-                        <td>{{ rec.wr_s }}</td>
-                        <td class="red-text best-val">{{ format_time(rec.single, rec.event_id) }}</td>
-                        <td class="red-text best-val">{{ format_time(rec.average, rec.event_id, True) }}</td>
-                        <td>{{ rec.wr_a }}</td>
-                        <td>{{ rec.cr_a }}</td>
-                        <td>{{ rec.nr_a }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="table-wrapper">
+                <table class="results-table" style="min-width: 900px;">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">Event</th>
+                            <th colspan="4" class="group-header">Single</th>
+                            <th colspan="4" class="group-header">Average</th>
+                        </tr>
+                        <tr>
+                            <th>NR</th>
+                            <th>CR</th>
+                            <th>WR</th>
+                            <th>Best</th>
+                            <th>Best</th>
+                            <th>WR</th>
+                            <th>CR</th>
+                            <th>NR</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rec in records %}
+                        <tr>
+                            <td style="font-weight:700;"><span class="cubing-icon event-{{ rec.event_id }}"></span> {{
+                                rec.event_name }}</td>
+                            <td>{{ rec.nr_s }}</td>
+                            <td>{{ rec.cr_s }}</td>
+                            <td>{{ rec.wr_s }}</td>
+                            <td class="red-text best-val">{{ format_time(rec.single, rec.event_id) }}</td>
+                            <td class="red-text best-val">{{ format_time(rec.average, rec.event_id, True) }}</td>
+                            <td>{{ rec.wr_a }}</td>
+                            <td>{{ rec.cr_a }}</td>
+                            <td>{{ rec.nr_a }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
+
         <footer class="site-footer">
             Results are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC
-                BY-SA
-                4.0</a> | Latest export: v1 (3/19/2026)
+                BY-SA 4.0</a>
         </footer>
     </div>
 
@@ -512,7 +569,6 @@
         const savedTheme = localStorage.getItem('theme') || 'dark';
         document.documentElement.setAttribute('data-theme', savedTheme);
     </script>
-
 </body>
 
 </html>

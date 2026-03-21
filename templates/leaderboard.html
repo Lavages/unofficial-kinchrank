@@ -40,9 +40,11 @@
             background: var(--bg-body);
             color: var(--text-main);
             margin: 0;
-            padding: 20px;
+            padding: 15px;
+            /* Slightly reduced for mobile edge spacing */
             line-height: 1.5;
-            /* REVISED: Removed overflow-x: hidden to prevent mobile scroll locking */
+            /* Changed from hidden to auto to allow the table to exist */
+            overflow-x: auto;
         }
 
         .container {
@@ -68,7 +70,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* --- SEARCH BAR DESIGN --- */
         .search-wrap {
             display: flex;
             gap: 8px;
@@ -194,28 +195,29 @@
             border-color: var(--secondary);
         }
 
+        /* --- CRITICAL TABLE FIXES --- */
         .table-outer {
             border: 1px solid var(--border);
             border-radius: 16px;
             overflow: hidden;
-            /* Keeps corner radius clean */
             background: var(--bg-card);
-            max-width: 100%;
-            /* REVISED: Ensures container doesn't exceed screen */
+            width: 100%;
         }
 
         .scroll-box {
             overflow: auto;
-            max-height: 65vh;
-            -webkit-overflow-scrolling: touch;
+            max-height: 70vh;
             width: 100%;
-            /* REVISED: Explicit width for scroll trigger */
+            display: block;
+            -webkit-overflow-scrolling: touch;
         }
 
         table {
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
+            min-width: 600px;
+            /* Ensures table doesn't squish into oblivion on tiny screens */
         }
 
         th {
@@ -230,9 +232,45 @@
             border-bottom: 2px solid var(--border);
         }
 
+        /* Prevent columns from disappearing */
+        .col-rank {
+            position: sticky;
+            left: 0;
+            z-index: 21;
+            background: var(--sticky-bg);
+            width: 50px;
+            min-width: 50px;
+            text-align: center;
+            border-right: 1px solid var(--border);
+            font-weight: 800;
+        }
+
+        .col-name {
+            position: sticky;
+            left: 50px;
+            /* Adjusted to match Rank width */
+            z-index: 21;
+            background: var(--sticky-bg);
+            min-width: 160px;
+            border-right: 3px solid var(--border);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .col-name {
+                min-width: 130px;
+                font-size: 0.85rem;
+            }
+
+            .search-wrap {
+                min-width: 100%;
+            }
+        }
+
         thead th.col-rank,
         thead th.col-name {
             z-index: 101;
+            /* Must be higher than body cells but share sticky context */
         }
 
         th .header-icon-wrap {
@@ -244,11 +282,11 @@
 
         th .cubing-icon,
         th img {
-            width: 28px !important;
-            height: 28px !important;
-            min-width: 28px;
-            min-height: 28px;
-            font-size: 28px;
+            width: 24px !important;
+            height: 24px !important;
+            min-width: 24px;
+            min-height: 24px;
+            font-size: 24px;
             object-fit: contain;
         }
 
@@ -261,26 +299,6 @@
             border-bottom: 1px solid var(--border);
             white-space: nowrap;
             font-size: 0.95rem;
-        }
-
-        .col-rank {
-            position: sticky;
-            left: 0;
-            z-index: 20;
-            background: var(--sticky-bg);
-            width: 60px;
-            text-align: center;
-            border-right: 1px solid var(--border);
-            font-weight: 800;
-        }
-
-        .col-name {
-            position: sticky;
-            left: 60px;
-            z-index: 20;
-            background: var(--sticky-bg);
-            min-width: 200px;
-            border-right: 3px solid var(--border);
         }
 
         .score-box {
@@ -341,7 +359,6 @@
     <div class="container">
         <header>
             <div class="logo">Unofficial Kinchranks</div>
-
             <div class="search-wrap">
                 <input type="text" id="mainSearch" class="search-input" placeholder="ID, Name, or Comp...">
                 <button class="btn" style="padding: 10px 15px;" onclick="executeSearch()"><i
@@ -406,7 +423,6 @@
                             alt="Corner Helicopter 2x2">
                         {% else %}
                         <img src="/static/icons/{{ eid }}.svg" alt="{{ eid }}"
-                            style="width: 100%; height: 100%; transform: scale(1.1); transform-origin: center;"
                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="txt" style="display:none;">{{ event_names[eid] or eid }}</div>
                         {% endif %}
@@ -502,11 +518,7 @@
             rows.forEach(row => {
                 const name = row.getAttribute('data-name').toLowerCase();
                 const id = row.getAttribute('data-id').toLowerCase();
-                if (name.includes(query) || id.includes(query)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
+                row.style.display = (name.includes(query) || id.includes(query)) ? '' : 'none';
             });
         }
 

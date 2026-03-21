@@ -5,7 +5,7 @@ id,event_id,name,category,rank,format,default_round_format,participants,submissi
 4,555,5x5x5 Cube,wca,40,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.887Z
 5,666,6x6x6 Cube,wca,50,time,m,1,FALSE,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.894Z
 6,777,7x7x7 Cube,wca,60,time,m,1,FALSE,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.904Z
-7,333bf,3x3x3 Blindfolded,wca,70,time,3,1,FALSE,FALSE,TRUE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.912Z
+7,333bf,3x3x3 Blindfolded,wca,70,time,5,1,FALSE,FALSE,TRUE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.912Z
 8,333fm,3x3x3 Fewest Moves,wca,80,number,m,1,FALSE,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.919Z
 9,333oh,3x3x3 One-Handed,wca,90,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.929Z
 10,clock,Clock,wca,110,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.941Z
@@ -214,7 +214,7 @@ id,event_id,name,category,rank,format,default_round_format,participants,submissi
 140,clock_mbld,Clock Multi-Blind,miscellaneous,3155,multi,1,1,TRUE,FALSE,TRUE,FALSE,,,,2026-01-11T09:36:26.446Z,2026-01-11T09:36:26.446Z
 141,777_illusion,7x7x7 Illusion Cube,removed,4070,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2026-01-14T11:20:23.725Z,2026-01-14T11:20:23.725Z
 142,334_cuboid,3x3x4 Cuboid,miscellaneous,3723,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2026-01-14T11:40:43.632Z,2026-01-14T11:40:43.632Z
-143,clock_bld,Clock Blindfolded,miscellaneous,3151,time,a,1,FALSE,FALSE,FALSE,TRUE,,,,2026-01-14T11:41:42.937Z,2026-01-14T11:41:42.937Z
+143,clock_bld,Clock Blindfolded,miscellaneous,3151,time,5,1,FALSE,FALSE,FALSE,FALSE,,,,2026-01-14T11:41:42.937Z,2026-03-20T21:41:10.674Z
 144,333_bets,3x3x3 Bets,miscellaneous,3050,time,3,1,FALSE,FALSE,FALSE,FALSE,"Write down a time prediction on the scorecard and try to get a solve faster than or equal to the predicted time. If the solve is slower, the result is DNF.",,"- At the start of the attempt, the competitor writes down a time on the scorecard (without signing).
 - The competitor does the attempt as normal, but trying to achieve a result faster than or equal to the predicted time.
 - The recorded time is the one written down on the scorecard (the ""bet""). Penalty for the final time on the timer being higher than the predicted time: DNF.",2026-01-17T20:14:08.165Z,2026-01-17T20:14:08.165Z

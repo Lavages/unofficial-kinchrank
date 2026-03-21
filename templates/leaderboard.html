@@ -41,15 +41,18 @@
             color: var(--text-main);
             margin: 0;
             padding: 15px;
-            /* Slightly reduced for mobile edge spacing */
             line-height: 1.5;
-            /* Changed from hidden to auto to allow the table to exist */
             overflow-x: auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .container {
             max-width: 100%;
             margin: 0 auto;
+            flex: 1;
+            /* Pushes footer to bottom */
         }
 
         header {
@@ -195,7 +198,6 @@
             border-color: var(--secondary);
         }
 
-        /* --- CRITICAL TABLE FIXES --- */
         .table-outer {
             border: 1px solid var(--border);
             border-radius: 16px;
@@ -216,8 +218,7 @@
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
-            min-width: 600px;
-            /* Ensures table doesn't squish into oblivion on tiny screens */
+            min-width: 800px;
         }
 
         th {
@@ -232,45 +233,51 @@
             border-bottom: 2px solid var(--border);
         }
 
-        /* Prevent columns from disappearing */
-        .col-rank {
-            position: sticky;
-            left: 0;
-            z-index: 21;
-            background: var(--sticky-bg);
-            width: 50px;
-            min-width: 50px;
-            text-align: center;
-            border-right: 1px solid var(--border);
-            font-weight: 800;
-        }
+        /* Desktop Sticky Logic */
+        @media (min-width: 769px) {
+            .col-rank {
+                position: sticky;
+                left: 0;
+                z-index: 21;
+                background: var(--sticky-bg);
+                width: 50px;
+                min-width: 50px;
+                text-align: center;
+                border-right: 1px solid var(--border);
+                font-weight: 800;
+            }
 
-        .col-name {
-            position: sticky;
-            left: 50px;
-            /* Adjusted to match Rank width */
-            z-index: 21;
-            background: var(--sticky-bg);
-            min-width: 160px;
-            border-right: 3px solid var(--border);
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 600px) {
             .col-name {
-                min-width: 130px;
-                font-size: 0.85rem;
+                position: sticky;
+                left: 50px;
+                z-index: 21;
+                background: var(--sticky-bg);
+                min-width: 200px;
+                border-right: 3px solid var(--border);
+            }
+
+            thead th.col-rank,
+            thead th.col-name {
+                z-index: 101;
+            }
+        }
+
+        /* Mobile Un-sticky Logic */
+        @media (max-width: 768px) {
+
+            .col-rank,
+            .col-name {
+                position: static !important;
+                background: transparent;
+            }
+
+            table {
+                min-width: 600px;
             }
 
             .search-wrap {
                 min-width: 100%;
             }
-        }
-
-        thead th.col-rank,
-        thead th.col-name {
-            z-index: 101;
-            /* Must be higher than body cells but share sticky context */
         }
 
         th .header-icon-wrap {
@@ -344,6 +351,22 @@
             padding: 6px 12px;
             font-size: 0.75rem;
             margin-left: 8px;
+        }
+
+        /* FOOTER DESIGN */
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
         }
     </style>
 </head>
@@ -490,6 +513,12 @@
             </div>
         </div>
     </div>
+
+    <footer class="site-footer">
+        Results are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC
+            BY-SA
+            4.0</a> | Latest export: v1 (3/21/2026)
+    </footer>
 
     <script>
         function toggleAll(checked) {

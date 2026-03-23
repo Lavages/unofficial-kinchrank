@@ -839,26 +839,16 @@
         {% if has_wc_podiums.found %}
         <div id="championships-tab" class="tab-content">
             {% set wc_comps = [] %}
-            {# Collect unique WC IDs that actually have podiums in finals #}
             {% for eid, results in grouped_results.items() %}
             {% for res in results %}
-            {% if res.competition_id and res.competition_id and res.competition_id[:2] == 'WC' and res.ranking|int <= 3
-                and res.round_id=='f' %} {% if res.competition_id not in wc_comps %} {% set
-                _=wc_comps.append(res.competition_id) %} {% endif %} {% endif %} {% endfor %} {% endfor %} {% if
-                wc_comps %} {% for comp_id in wc_comps | sort(reverse=true) %} <div class="wc-group">
+            {% if res.competition_id[:2] == 'WC' and res.ranking|int <= 3 and res.round_id=='f' %} {% if
+                res.competition_id not in wc_comps %} {% set _=wc_comps.append(res.competition_id) %} {% endif %} {%
+                endif %} {% endfor %} {% endfor %} {% for comp_id in wc_comps | sort(reverse=true) %} <div
+                class="wc-group">
                 <div class="wc-header">
-                    {# Look for the name in results; fallback to ID if missing #}
-                    {% set comp_display_name = namespace(val=comp_id) %}
-                    {% for eid, results in grouped_results.items() %}
-                    {% for res in results %}
-                    {% if res.competition_id == comp_id and res.competition_name %}
-                    {% set comp_display_name.val = res.competition_name %}
-                    {% endif %}
-                    {% endfor %}
-                    {% endfor %}
-
                     <a href="/competition/{{ comp_id }}" class="wc-link">
-                        {{ comp_display_name.val }}
+                        <i class="fa-solid fa-trophy" style="margin-right: 10px; color: var(--primary-accent);"></i>
+                        {{ comp_id | replace('_', ' ') }}
                     </a>
                 </div>
 
@@ -866,29 +856,31 @@
                     <table class="results-table podium-table">
                         <thead>
                             <tr>
-                                <th style="width: 25%;">Event</th>
-                                <th style="width: 10%; text-align: center;">Place</th>
-                                <th style="width: 15%;">Single</th>
-                                <th style="width: 15%;">Average</th>
-                                <th style="width: 35%;">Solves</th>
+                                <th style="width: 30%;">Event</th>
+                                <th style="width: 20%; text-align: center;">Rank</th>
+                                <th style="width: 25%;">Result</th>
+                                <th style="width: 25%;">Type</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for event_id, results in grouped_results.items() %}
+                            {% for eid, results in grouped_results.items() %}
                             {% for res in results %}
                             {% if res.competition_id == comp_id and res.ranking|int <= 3 and res.round_id=='f' %} <tr>
                                 <td class="event-name-cell">
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        {{ get_icon(event_id) | safe }}
-                                        {{ res.event_name }}
-                                    </div>
+                                    {{ get_icon(res.event_id) | safe }}
+                                    {{ res.event_name }}
                                 </td>
                                 <td class="podium-rank rank-{{ res.ranking }}">
                                     {{ res.ranking }}
                                 </td>
-                                <td class="best-val">{{ res.single_formatted }}</td>
-                                <td class="best-val">{{ res.average_formatted }}</td>
-                                <td class="solve-list">{{ res.solves_joined }}</td>
+                                <td class="best-val">
+                                    {{ res.average_formatted if res.average_formatted and res.average_formatted !=
+                                    '0.00' else res.single_formatted }}
+                                </td>
+                                <td style="color: var(--text-muted); font-size: 0.85rem;">
+                                    {{ 'Average' if res.average_formatted and res.average_formatted != '0.00' else
+                                    'Single' }}
+                                </td>
                                 </tr>
                                 {% endif %}
                                 {% endfor %}
@@ -898,52 +890,43 @@
                 </div>
         </div>
         {% endfor %}
-        {% else %}
-        <div style="text-align:center; padding: 60px; color: var(--text-muted);">
-            <i class="fa-solid fa-award" style="font-size: 3rem; margin-bottom: 20px; opacity: 0.2;"></i>
-            <p>No Championship podiums found for this competitor.</p>
         </div>
         {% endif %}
-        </div>
-        {% endif %}
+
         <footer class="site-footer">
-            Results are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC
-                BY-SA 4.0</a>
+            <p>Data provided by the worldwide unofficial rankings database.</p>
+            <p>&copy; 2026 {{ person.name }}. Built with <a href="https://flask.palletsprojects.com/">Flask</a>.</p>
         </footer>
         </div>
 
         <script>
             function openTab(evt, tabName) {
                 var i, tabcontent, tablinks;
-
-                // Hide all tab content by removing the 'active' class
                 tabcontent = document.getElementsByClassName("tab-content");
                 for (i = 0; i < tabcontent.length; i++) {
                     tabcontent[i].classList.remove("active");
-                    // Reset inline style in case it was set by previous buggy script
-                    tabcontent[i].style.display = "";
                 }
-
-                // Remove 'active' from all tab links
                 tablinks = document.getElementsByClassName("tab-link");
                 for (i = 0; i < tablinks.length; i++) {
                     tablinks[i].classList.remove("active");
                 }
-
-                // Show the current tab and add 'active' class to the link
                 document.getElementById(tabName).classList.add("active");
                 evt.currentTarget.classList.add("active");
             }
 
             function toggleTheme() {
                 const html = document.documentElement;
-                const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-                html.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
+                const current = html.getAttribute('data-theme');
+                const target = current === 'dark' ? 'light' : 'dark';
+                html.setAttribute('data-theme', target);
+                localStorage.setItem('theme', target);
             }
 
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            document.documentElement.setAttribute('data-theme', savedTheme);
+            // Initialize theme from local storage
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            }
         </script>
 </body>
 

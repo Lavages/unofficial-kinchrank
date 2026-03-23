@@ -211,6 +211,10 @@ def person_profile(person_id):
     country, continent = person['full_country'], person['continent']
     p_res = res_exploded[res_exploded['person_id'] == person_id].copy()
 
+    # --- SAFETY FIX: Ensure IDs are strings and Rankings are numbers ---
+    p_res['competition_id'] = p_res['competition_id'].apply(lambda x: str(x) if pd.notna(x) else "")
+    p_res['ranking'] = pd.to_numeric(p_res['ranking'], errors='coerce').fillna(0)
+
     medals = {
         'gold': int((p_res['ranking'] == 1).sum()),
         'silver': int((p_res['ranking'] == 2).sum()),
@@ -223,7 +227,7 @@ def person_profile(person_id):
     cr_count = p_res['regional_single_record'].isin(cr_list).sum() + p_res['regional_average_record'].isin(cr_list).sum()
 
     pbs = p_res.groupby('event_id').agg({'best': 'min', 'average': lambda x: x[x > 0].min() if not x[x > 0].empty else 0}).to_dict('index')
-    p_res['competition_id'] = p_res['competition_id'].astype(str)
+    
     grouped_results = {}
     
     # Sort globally by competition date: Most recent first
@@ -252,7 +256,9 @@ def person_profile(person_id):
         for idx, row in event_results.iterrows():
             try:
                 try:
-                    atts = ast.literal_eval(row['attempts'])
+                    # Robust check for attempts
+                    raw_attempts = row['attempts']
+                    atts = ast.literal_eval(raw_attempts) if isinstance(raw_attempts, str) and raw_attempts.startswith('[') else []
                     raw_results = [a.get('result', 0) for a in atts if isinstance(a, dict)]
                 except:
                     raw_results = []
@@ -272,7 +278,6 @@ def person_profile(person_id):
                 else:
                     f_solves = ["DNF" if v == -1 else "DNS" if v == -2 else format_time(v, eid) for v in raw_results]
                 
-                # Single line, space-separated
                 solves_joined = " ".join(f_solves)
             except:
                 solves_joined = "-"
@@ -282,15 +287,16 @@ def person_profile(person_id):
 
             meta = history_meta.get(idx, {'pr_s': False, 'pr_a': False})
 
+            # Style classes
             s_class = "pink-text" if s_label else ("red-text" if meta['pr_s'] else "")
             a_class = "pink-text" if a_label else ("red-text" if meta['pr_a'] else "")
 
             ev_list.append({
-                'competition_id': row['competition_id'],
+                'competition_id': str(row['competition_id']), # Extra string cast for safety
                 'event_name': event_names.get(eid, eid),
                 'round_name': format_round(row.get('round_type_id', row.get('round_id', "-"))),
                 'round_id': row.get('round_type_id', row.get('round_id', "-")),
-                'ranking': int(row['ranking']) if pd.notna(row['ranking']) else "-",
+                'ranking': int(row['ranking']) if row['ranking'] > 0 else "-",
                 'single_formatted': format_time(row['best'], eid),
                 'average_formatted': format_time(row['average'], eid, True) if row['average'] > 0 else "-",
                 'solves_joined': solves_joined,
@@ -299,6 +305,7 @@ def person_profile(person_id):
             })
         grouped_results[eid] = ev_list
 
+    # --- PB Calculation for Records Tab ---
     all_pbs = res_exploded.groupby(['person_id', 'event_id']).agg({'best': 'min', 'average': lambda x: x[x > 0].min() if not x[x > 0].empty else 0}).reset_index()
     all_pbs = all_pbs.merge(pers_df[['id', 'full_country', 'continent']], left_on='person_id', right_on='id')
 

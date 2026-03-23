@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ person.name }} | Profile</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.cubing.net/v0/css/@cubing/icons/css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cubing-icons@1.0.1/css/cubing-icons.min.css">
     <link
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;600;800&display=swap"
@@ -38,6 +39,17 @@
             margin: 0;
             padding: 40px 20px;
             transition: background 0.3s ease;
+        }
+
+        /* Icon Consistency Filters */
+        .event-icon-btn img,
+        .event-group-header img,
+        .col-comp img,
+        .event-name-cell img {
+            filter: invert(72%) sepia(9%) saturate(838%) hue-rotate(182deg) brightness(91%) contrast(89%);
+            object-fit: contain;
+            width: 1.4rem;
+            height: 1.4rem;
         }
 
         .container {
@@ -168,11 +180,13 @@
 
         .tab-content {
             display: none;
+            /* Hidden by default */
             animation: fadeIn 0.3s ease;
         }
 
         .tab-content.active {
-            display: block;
+            display: block !important;
+            /* Shown when active class is present */
         }
 
         @keyframes fadeIn {
@@ -204,6 +218,8 @@
             color: var(--text-muted);
             transition: 0.2s;
             text-decoration: none;
+            display: flex;
+            align-items: center;
         }
 
         .event-icon-btn:hover {
@@ -222,19 +238,13 @@
             margin-top: 40px;
         }
 
-        .event-group-header [class^="cubing-icon"] {
-            margin-right: 12px;
-            font-size: 1.4rem;
-        }
-
-        /* --- FIXED ALIGNMENT LOGIC --- */
         .table-wrapper {
             width: 100%;
             overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
             border-radius: 0 0 12px 12px;
             border: 1px solid var(--border);
             border-top: none;
+            background: var(--bg-card);
         }
 
         .results-table {
@@ -243,18 +253,12 @@
             background: var(--bg-card);
             font-size: 0.95rem;
             min-width: 800px;
-            /* Increased to prevent squishing */
-            table-layout: fixed;
-            /* Forces columns to obey width rules */
         }
 
         .results-table th,
         .results-table td {
             padding: 12px 14px;
             border-bottom: 1px solid var(--border);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
         }
 
         .results-table th {
@@ -266,7 +270,6 @@
             letter-spacing: 0.05em;
         }
 
-        /* Enforced Column Widths for perfect alignment across all tables */
         .col-comp {
             width: 25%;
         }
@@ -291,20 +294,11 @@
             width: 31%;
         }
 
-        .results-table tr:hover {
-            background: var(--bg-hover);
-        }
-
         .comp-name {
             color: #f97316;
             text-decoration: none;
             font-weight: 700;
             transition: 0.2s;
-        }
-
-        .comp-name:hover {
-            text-decoration: underline;
-            color: var(--primary-accent);
         }
 
         .best-val {
@@ -313,13 +307,29 @@
         }
 
         .red-text {
-            color: #f43f5e;
+            color: #ef4444 !important;
+            font-weight: 700;
+        }
+
+        .record-tag {
+            font-size: 0.7rem;
+            font-weight: 900;
+            margin-left: 5px;
+            text-transform: uppercase;
+        }
+
+        .wr-tag {
+            color: #38bdf8;
+        }
+
+        .cr-tag {
+            color: #f472b6;
         }
 
         .solve-list {
             font-size: 0.8rem;
             color: var(--text-muted);
-            font-family: monospace;
+            font-family: 'JetBrains Mono', monospace;
         }
 
         .theme-toggle {
@@ -330,7 +340,6 @@
             border-radius: 12px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.85rem;
         }
 
         .group-header {
@@ -356,40 +365,26 @@
         }
 
         @media (max-width: 768px) {
-            body {
-                padding: 20px 10px;
-            }
-
             .name-banner {
                 font-size: 1.8rem;
             }
 
-            .profile-card {
-                padding: 25px 15px;
-            }
-
             .info-row {
                 grid-template-columns: 1fr 1fr;
-                gap: 15px;
-            }
-
-            .collections-row {
-                grid-template-columns: 1fr;
-            }
-
-            .tab-link {
-                padding: 10px 12px;
-                font-size: 0.9rem;
-            }
-
-            .results-table {
-                font-size: 0.85rem;
             }
         }
     </style>
 </head>
 
 <body>
+    {# Lists from leaderboard.html to ensure logic works #}
+    {% set wca =
+    ['333','222','444','555','666','777','333bf','333fm','333oh','clock','minx','pyram','skewb','sq1','444bf','555bf','333mbf','333ft','333mbo','magic','mmagic']
+    %}
+    {% set github_unofficial =
+    ['222bf','222oh','234567relay','234567relay_2_person','23456relay','2345relay','234relay','333_linear_fm','333_mirror_blocks','333_mirror_blocks_bld','333_oh_bld_relay','333_oh_bld_team_relay','333_oven_mitts','333_siamese','333_speed_bld','333_team_bld','333_team_factory','333bf_2_person_relay','333bf_3_person_relay','333bf_4_person_relay','333bf_8_person_relay','333mts','444ft','666bf','777bf','baby_fto','cmetrick_mini','corner_helicopter_222','crazy_333','curvycopter','dino','fisher','fto','gear','gigaminx','helicopter','ivy','kilominx','magic_oh','miniguild','miniguild_2_person','miniguild_bld','minx_bld','mpyram','mskewb','mtetram','pyraminx_crystal','pyramorphix','redi','sq1_bld','sq2','super_sq1','ufo']
+    %}
+
     <div class="container">
         <header>
             <a href="/" style="text-decoration:none; color:var(--text-muted); font-weight:700;">
@@ -446,29 +441,25 @@
 
         <nav class="tabs-nav">
             <div class="tab-link active" onclick="openTab(event, 'results-tab')">Results</div>
+            <div class="tab-link" onclick="openTab(event, 'pr-tab')">Personal Bests</div>
             <div class="tab-link" onclick="openTab(event, 'records-tab')">Records</div>
         </nav>
 
         <div id="results-tab" class="tab-content active">
-            <div class="event-icons-bar">
-                {% for event_id in grouped_results.keys() %}
-                <a href="#event-{{ event_id }}" class="event-icon-btn">
-                    {% if event_id in ['dino','gigaminx','my_custom_event'] %}
-                    <img src="{{ url_for('static', filename='icons/' ~ event_id ~ '.svg') }}"
-                        style="width: 1.4rem; height: 1.4rem;">
-                    {% else %}
-                    <span class="cubing-icon event-{{ event_id }}"></span>
-                    {% endif %}
-                </a>
-                {% endfor %}
-            </div>
-
             {% for event_id, results in grouped_results.items() %}
             <div id="event-{{ event_id }}">
                 <div class="event-group-header">
-                    <span class="cubing-icon event-{{ event_id }}"></span>
+                    {% if event_id in wca %}
+                    <span class="cubing-icon event-{{ event_id }}" style="margin-right:12px;"></span>
+                    {% else %}
+                    <img src="/static/icons/{{ event_id }}.svg" style="width:24px; margin-right:12px;"
+                        onerror="this.style.display='none'">
+                    {% endif %}
+
+                    {# DISPLAY EVENT NAME #}
                     {{ results[0].event_name }}
                 </div>
+
                 <div class="table-wrapper">
                     <table class="results-table">
                         <thead>
@@ -484,14 +475,42 @@
                         <tbody>
                             {% for res in results %}
                             <tr>
-                                <td class="col-comp"><a href="/competition/{{ res.competition_id }}"
-                                        class="comp-name">{{ res.competition_id | replace('_', ' ') }}</a></td>
+                                <td class="col-comp">
+                                    {# Only show name if it's the first result for this competition in the list #}
+                                    {% if loop.first or results[loop.index0 - 1].competition_id != res.competition_id %}
+                                    <a href="/competition/{{ res.competition_id }}" class="comp-name">
+                                        {# Use .competition_name if available, else fallback to formatted ID #}
+                                        {{ res.competition_name if res.competition_name else res.competition_id |
+                                        replace('_', ' ') }}
+                                    </a>
+                                    {% endif %}
+                                </td>
                                 <td class="col-round">{{ res.round_id }}</td>
                                 <td class="col-place">{{ res.ranking }}</td>
-                                <td class="col-single best-val {% if res.single_is_pb %}red-text{% endif %}">{{
-                                    res.single_formatted }}</td>
-                                <td class="col-avg best-val {% if res.average_is_pb %}red-text{% endif %}">{{
-                                    res.average_formatted }}</td>
+
+                                {# Color logic with Pink for Records #}
+                                <td class="col-single best-val"
+                                    style="{% if res.s_label %}color: #ff69b4 !important;{% elif res.s_class == 'red-text' %}color: red;{% endif %}">
+                                    {{ res.single_formatted }}
+                                    {% if res.s_label %}
+                                    <span class="record-tag"
+                                        style="background: #000; color: #fff; padding: 2px 5px; border-radius: 4px; margin-left: 5px; font-weight: bold; font-size: 0.8rem; -webkit-text-fill-color: white;">
+                                        {{ res.s_label }}
+                                    </span>
+                                    {% endif %}
+                                </td>
+
+                                <td class="col-avg best-val"
+                                    style="{% if res.a_label %}color: #ff69b4 !important;{% elif res.a_class == 'red-text' %}color: red;{% endif %}">
+                                    {{ res.average_formatted }}
+                                    {% if res.a_label %}
+                                    <span class="record-tag"
+                                        style="background: #000; color: #fff; padding: 2px 5px; border-radius: 4px; margin-left: 5px; font-weight: bold; font-size: 0.8rem; -webkit-text-fill-color: white;">
+                                        {{ res.a_label }}
+                                    </span>
+                                    {% endif %}
+                                </td>
+
                                 <td class="col-solves solve-list">{{ res.solves_joined }}</td>
                             </tr>
                             {% endfor %}
@@ -502,7 +521,7 @@
             {% endfor %}
         </div>
 
-        <div id="records-tab" class="tab-content">
+        <div id="pr-tab" class="tab-content">
             <div class="table-wrapper">
                 <table class="results-table" style="min-width: 900px;">
                     <thead>
@@ -525,8 +544,20 @@
                     <tbody>
                         {% for rec in records %}
                         <tr>
-                            <td style="font-weight:700;"><span class="cubing-icon event-{{ rec.event_id }}"></span> {{
-                                rec.event_name }}</td>
+                            <td class="event-name-cell">
+                                <div style="display: inline-flex; align-items: center; gap: 5px;">
+                                    {% if rec.event_id in wca %}
+                                    <span class="cubing-icon event-{{ rec.event_id }}"></span>
+                                    {% elif rec.event_id in github_unofficial %}
+                                    <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/{{ rec.event_id }}.svg"
+                                        style="width:1.2rem;">
+                                    {% else %}
+                                    <img src="/static/icons/{{ rec.event_id }}.svg" style="width:1.2rem;"
+                                        onerror="this.style.display='none'">
+                                    {% endif %}
+                                    {{ rec.event_name }}
+                                </div>
+                            </td>
                             <td>{{ rec.nr_s }}</td>
                             <td>{{ rec.cr_s }}</td>
                             <td>{{ rec.wr_s }}</td>
@@ -541,6 +572,95 @@
                 </table>
             </div>
         </div>
+        <div id="records-tab" class="tab-content">
+            {% set record_types = [
+            {'id': 'WR', 'title': 'History of World Records'},
+            {'id': 'CR', 'title': 'History of Continental Records'},
+            {'id': 'NR', 'title': 'History of National Records'}
+            ] %}
+
+            {% for type in record_types %}
+            {# First, check if the competitor has ANY records of this type #}
+            {% set has_type = false %}
+            {% for eid, results in grouped_results.items() %}
+            {% for res in results %}
+            {% if res.s_label == type.id or res.a_label == type.id %}
+            {% set has_type = true %}
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+
+            {% if has_type %}
+            <h2 style="text-align: center; font-family: 'Outfit'; margin-top: 40px; font-weight: 600;">{{ type.title }}
+            </h2>
+
+            {% for event_id, results in grouped_results.items() %}
+            {# Check if this specific event has records of the current type #}
+            {% set event_has_record = false %}
+            {% for res in results %}
+            {% if res.s_label == type.id or res.a_label == type.id %}
+            {% set event_has_record = true %}
+            {% endif %}
+            {% endfor %}
+
+            {% if event_has_record %}
+            <div class="event-group-header"
+                style="background: #eee; color: #333; font-size: 0.9rem; padding: 5px 15px; margin-top: 10px; border: 1px solid var(--border); border-bottom: none;">
+                {% if event_id in wca %}
+                <span class="cubing-icon event-{{ event_id }}" style="margin-right:10px;"></span>
+                {% else %}
+                <img src="/static/icons/{{ event_id }}.svg" style="width:1.1rem; margin-right:10px;"
+                    onerror="this.style.display='none'">
+                {% endif %}
+                {{ results[0].event_name }}
+            </div>
+
+            <div class="table-wrapper"
+                style="border-radius: 0; border-top: 1px solid var(--border); margin-bottom: 20px;">
+                <table class="results-table">
+                    <thead>
+                        <tr style="background: transparent;">
+                            <th style="width: 10%;">Single</th>
+                            <th style="width: 10%;">Average</th>
+                            <th style="width: 35%;">Competition</th>
+                            <th style="width: 15%;">Round</th>
+                            <th style="width: 30%;">Solves</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for res in results %}
+                        {% if res.s_label == type.id or res.a_label == type.id %}
+                        <tr>
+                            <td class="best-val">{{ res.single_formatted if res.s_label == type.id else '' }}</td>
+                            <td class="best-val">{{ res.average_formatted if res.a_label == type.id else '' }}</td>
+                            <td>
+                                <a href="/competition/{{ res.competition_id }}" class="comp-name">
+                                    {{ res.competition_name if res.competition_name else res.competition_id |
+                                    replace('_', ' ') }}
+                                </a>
+                            </td>
+                            <td>{{ res.round_id }}</td>
+                            <td class="solve-list">{{ res.solves_joined }}</td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% endfor %}
+
+            {# If absolutely no records exist across all types #}
+            {% set total_records = stats.records.wr + stats.records.cr + stats.records.nr %}
+            {% if total_records == 0 %}
+            <div style="text-align:center; padding: 60px; color: var(--text-muted);">
+                <i class="fa-solid fa-medal" style="font-size: 3rem; margin-bottom: 20px; opacity: 0.3;"></i>
+                <p>No regional or world records have been established by this competitor.</p>
+            </div>
+            {% endif %}
+        </div>
 
         <footer class="site-footer">
             Results are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC
@@ -551,11 +671,23 @@
     <script>
         function openTab(evt, tabName) {
             var i, tabcontent, tablinks;
+
+            // Hide all tab content by removing the 'active' class
             tabcontent = document.getElementsByClassName("tab-content");
-            for (i = 0; i < tabcontent.length; i++) { tabcontent[i].style.display = "none"; }
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+                // Reset inline style in case it was set by previous buggy script
+                tabcontent[i].style.display = "";
+            }
+
+            // Remove 'active' from all tab links
             tablinks = document.getElementsByClassName("tab-link");
-            for (i = 0; i < tablinks.length; i++) { tablinks[i].classList.remove("active"); }
-            document.getElementById(tabName).style.display = "block";
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+
+            // Show the current tab and add 'active' class to the link
+            document.getElementById(tabName).classList.add("active");
             evt.currentTarget.classList.add("active");
         }
 

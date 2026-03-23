@@ -238,5 +238,4 @@ And https://www.jaapsch.net/puzzles/magicsuper.htm",,,2026-01-31T12:08:46.877Z,2
 153,miniguild_oh,Mini Guildford One-Handed,miscellaneous,3955,time,3,1,FALSE,FALSE,FALSE,TRUE,"Solve all of these puzzles one-handed: 2x2x2, two 3x3x3s, 4x4x4, 5x5x5, Pyraminx, Megaminx, Skewb, Square-1, Clock.",,"- This is a relay event (see above).
 - Solve all of these puzzles one-handed: 2x2x2, 3x3x3, 4x4x4, 5x5x5, Pyraminx, Megaminx, Skewb, Square-1, Clock.
 - A box should be used to transport and cover all of the puzzles before the start of each attempt.",2026-02-28T01:50:40.467Z,2026-03-04T11:27:57.460Z
-154,333_assembly,3x3x3 Assembly,miscellaneous,3021,time,3,1,FALSE,FALSE,FALSE,TRUE,,,Assemble the pieces of a 3x3 around a core into a solved state as quickly as possible,2026-03-15T03:19:58.156Z,2026-03-15T03:19:58.156Z
-155,cap_on_pen,Cap on Pen,miscellaneous,3445,time,a,1,FALSE,FALSE,FALSE,TRUE,,,Remove the pen cover from the back of the pen and place it on correctly,2026-03-15T03:27:09.917Z,2026-03-15T03:27:09.917Z
+154,333_assembly,3x3x3 Assembly,miscellaneous,3021,time,3,1,FALSE,FALSE,FALSE,TRUE,"Assemble the pieces of a 3x3x3 Cube around a core as quickly as possible, ending in a solved state",,,2026-03-15T03:19:58.156Z,2026-03-21T21:24:15.569Z

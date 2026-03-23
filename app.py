@@ -10,7 +10,6 @@ import os
 app = Flask(__name__)
 
 # --- VERCEL PATH FIX ---
-# This ensures Python finds your CSVs in the root directory
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # --- CACHE CONFIGURATION ---
@@ -19,7 +18,7 @@ cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 # --- CONFIGURATION ---
 CORE_AVG = ['fto', '333_team_bld', '333_mirror_blocks', '333_mirror_blocks_bld', 'mpyram', 'kilominx', 'redi', 'magic', 'mmagic', '333_linear_fm', '333ft']
 CORE_SIN = ['333_speed_bld', 'miniguild', 'miniguild_2_person', '333mts']
-MISC_AVG_EVENTS = ['222_blanker', '222_mirror_blocks', '444_mirror_blocks', '555_mirror_blocks', 'fisher', '333_windmill_cube', '333_axis_cube', '333_twist_cube', '333_void', '333_cube_mile', '333_siamese', '223_cuboid', '133_cuboid','233_cuboid', '334_cuboid', 'super_133', '888', '999', '101010', 'mkilominx', 'gigaminx', 'baby_fto', 'mfto', 'cto', '2pentahedron', '3pentahedron', 'pyramorphix', 'pyram_duo', 'dino', 'ivy_cube', 'rainbow_cube', 'corner_heli222', 'helicopter', 'curvycopter', 'gear_cube', 'super_gear_cube', 'magic_oh', '222fm', '444fm', 'snake', '15puzzle', '8puzzle','222oh','444oh','clock_oh','333_oven_mitts','333_paw_mitts','222bf','new_penta_clock','penta_clock','minx_oh','clock_doubles']
+MISC_AVG_EVENTS = ['222_blanker', '222_mirror_blocks', '444_mirror_blocks', '555_mirror_blocks', 'fisher', '333_windmill_cube', '333_axis_cube', '333_twist_cube', '333_void', '333_cube_mile', '333_siamese', '223_cuboid', '133_cuboid','233_cuboid', '334_cuboid', 'super_133', '888', '999', '101010', 'mkilominx', 'gigaminx', 'baby_fto', 'mfto', 'cto', '2pentahedron', '3pentahedron', 'pyramorphix', 'pyram_duo', 'dino', 'ivy_cube', 'rainbow_cube', 'corner_heli222', 'helicopter', 'curvycopter', 'gear_cube', 'super_gear_cube', 'magic_oh', '222fm', '444fm', 'snake', '15puzzle', '8puzzle','222oh','444oh','clock_oh','333_oven_mitts','333_paw_mitts','222bf','new_penta_clock','penta_clock','minx_oh','skewb_oh','clock_doubles']
 MISC_SIN_EVENTS = ['333_bets', '333_supersolve', '333bf_bottle', '333_braille_bld','234567relay','2345relay_bld',]
 
 AVG_EVENTS = set(CORE_AVG + MISC_AVG_EVENTS)
@@ -63,7 +62,6 @@ def load_and_process_data():
         return GLOBAL_DATA['res'], GLOBAL_DATA['exp'], GLOBAL_DATA['pers'], GLOBAL_DATA['ev'], GLOBAL_DATA['cont']
 
     try:
-        # Load files using absolute paths for Vercel
         res_df = pd.read_csv(os.path.join(BASE_DIR, "export_results.csv"), usecols=[
             'competition_id', 'person_ids', 'event_id', 'round_id', 'best', 
             'average', 'ranking', 'attempts', 'regional_single_record', 
@@ -74,6 +72,11 @@ def load_and_process_data():
         rounds_df = pd.read_csv(os.path.join(BASE_DIR, "export_rounds.csv"), usecols=['competition_id', 'id', 'round_type_id'])
         contests_df = pd.read_csv(os.path.join(BASE_DIR, "export_contests.csv"))
         
+        # Merge competition start dates into results for accurate chronological sorting
+        contests_dates = contests_df[['competition_id', 'start_date']].copy()
+        res_df = res_df.merge(contests_dates, on='competition_id', how='left')
+        res_df['start_date'] = pd.to_datetime(res_df['start_date'])
+
         # --- FILTERING LOGIC ---
         res_df = res_df[(res_df['record_category'] != 'meetups') | (res_df['event_id'] == '333_cube_mile')]
         allowed_video = {'333mbo', '666bf', '777bf', '888bf', '999bf', '101010bf', '111111bf', '444mbf', '555mbf', '2345relay_bld', '234567relay_bld', '2345678relay_bld', 'miniguild_bld', 'minx_bld', 'minx444_bld', 'minx555_bld', 'minx2345relay_bld', 'pyram_crystal_bld', '333_speed_bld'}
@@ -99,6 +102,23 @@ def load_and_process_data():
     except Exception as e:
         print(f"Data Loading Error: {e}")
         return pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), {}, pd.DataFrame()
+# Add this near your other helpers
+def get_event_icon_tag(event_id):
+    # 1. Check Local Directory (Assumes icons are in static/icons/event_id.svg)
+    local_path = os.path.join(app.root_path, 'static', 'icons', f"{event_id}.svg")
+    if os.path.exists(local_path):
+        return f'<img src="/static/icons/{event_id}.svg" class="event-icon" alt="{event_id}">'
+
+    # 2. Fallback to GitHub Raw for Unofficial Icons (if not in cubing-icons font)
+    # This points to the repo you mentioned
+    github_fallback_url = f"https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/{event_id}.svg"
+    
+    # 3. Default to the Web Font class (Cubing.net)
+    # We return the span but include a style to handle the GitHub fallback if needed
+    return f'<span class="cubing-icon event-{event_id} unofficial-{event_id}"></span>'
+
+# Register it so you can use it in HTML
+app.jinja_env.globals.update(get_icon=get_event_icon_tag)
 
 @app.route('/', methods=['GET', 'POST'])
 def kinch_leaderboard():
@@ -185,23 +205,71 @@ def person_profile(person_id):
     pbs = p_res.groupby('event_id').agg({'best': 'min', 'average': lambda x: x[x > 0].min() if not x[x > 0].empty else 0}).to_dict('index')
     
     grouped_results = {}
+    
+    # Sort globally by competition date: Most recent first
+    p_res = p_res.sort_values(by='start_date', ascending=False)
+
     for eid in p_res['event_id'].unique():
         ev_list = []
-        for _, row in p_res[p_res['event_id'] == eid].iterrows():
+        event_results = p_res[p_res['event_id'] == eid]
+        
+        # Chronological sort for historical PR calculation
+        chronological = event_results.sort_values(by='start_date', ascending=True)
+        running_best_single = float('inf')
+        running_best_avg = float('inf')
+        history_meta = {}
+
+        for idx, row in chronological.iterrows():
+            is_pr_single = (0 < row['best'] < running_best_single)
+            is_pr_avg = (0 < row['average'] < running_best_avg)
+            
+            if is_pr_single: running_best_single = row['best']
+            if is_pr_avg: running_best_avg = row['average']
+            
+            history_meta[idx] = {'pr_s': is_pr_single, 'pr_a': is_pr_avg}
+
+        # Build list using the global descending sort
+        for idx, row in event_results.iterrows():
             try:
                 atts = ast.literal_eval(row['attempts'])
-                f_solves = [("(DNF)" if a['result'] == -1 else "(DNS)" if a['result'] == -2 else format_time(a['result'], eid)) for a in atts]
-                solves_joined = ", ".join(f_solves)
-            except: solves_joined = "-"
+                raw_results = [a['result'] for a in atts]
+                
+                f_solves = []
+                if len(raw_results) == 5:
+                    proc_values = [v if v > 0 else float('inf') for v in raw_results]
+                    best_idx = proc_values.index(min(proc_values))
+                    worst_idx = proc_values.index(max(proc_values))
+                    
+                    for i, v in enumerate(raw_results):
+                        time_str = "DNF" if v == -1 else "DNS" if v == -2 else format_time(v, eid)
+                        if i == best_idx or i == worst_idx:
+                            f_solves.append(f"({time_str})")
+                        else:
+                            f_solves.append(time_str)
+                else:
+                    f_solves = ["DNF" if v == -1 else "DNS" if v == -2 else format_time(v, eid) for v in raw_results]
+                
+                # Single line, space-separated
+                solves_joined = " ".join(f_solves)
+            except:
+                solves_joined = "-"
+
+            s_label = row.get('regional_single_record') if pd.notna(row.get('regional_single_record')) else None
+            a_label = row.get('regional_average_record') if pd.notna(row.get('regional_average_record')) else None
+
+            s_class = "pink-text" if s_label else ("red-text" if history_meta[idx]['pr_s'] else "")
+            a_class = "pink-text" if a_label else ("red-text" if history_meta[idx]['pr_a'] else "")
 
             ev_list.append({
-                'competition_id': row['competition_id'], 'event_name': event_names.get(eid, eid),
+                'competition_id': row['competition_id'],
+                'event_name': event_names.get(eid, eid),
                 'round_id': format_round(row.get('round_type_id', row.get('round_id', "-"))),
                 'ranking': int(row['ranking']) if pd.notna(row['ranking']) else "-",
                 'single_formatted': format_time(row['best'], eid),
                 'average_formatted': format_time(row['average'], eid, True) if row['average'] > 0 else "-",
-                'solves_joined': solves_joined, 'single_is_pb': row['best'] == pbs[eid]['best'],
-                'average_is_pb': row['average'] == pbs[eid]['average'] and row['average'] > 0
+                'solves_joined': solves_joined,
+                's_label': s_label, 'a_label': a_label,
+                's_class': s_class, 'a_class': a_class
             })
         grouped_results[eid] = ev_list
 
@@ -249,8 +317,8 @@ def competition_page(competition_id):
         
         try:
             atts = ast.literal_eval(row['attempts'])
-            f_solves = [("(DNF)" if a['result'] == -1 else "(DNS)" if a['result'] == -2 else format_time(a['result'], eid)) for a in atts]
-            solves_joined = ", ".join(f_solves)
+            f_solves = [("DNF" if a['result'] == -1 else "DNS" if a['result'] == -2 else format_time(a['result'], eid)) for a in atts]
+            solves_joined = " ".join(f_solves)
         except: solves_joined = "-"
 
         winners_list.append({
@@ -265,7 +333,6 @@ def competition_page(competition_id):
 
     return render_template('competition.html', comp_name=display_name, comp_location=location, comp_date=date_val, winners=winners_list)
 
-# The 'app' variable MUST be exposed for Vercel
 app = app
 
 if __name__ == '__main__':

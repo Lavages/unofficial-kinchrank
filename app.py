@@ -223,7 +223,7 @@ def person_profile(person_id):
     cr_count = p_res['regional_single_record'].isin(cr_list).sum() + p_res['regional_average_record'].isin(cr_list).sum()
 
     pbs = p_res.groupby('event_id').agg({'best': 'min', 'average': lambda x: x[x > 0].min() if not x[x > 0].empty else 0}).to_dict('index')
-    
+    p_res['competition_id'] = p_res['competition_id'].astype(str)
     grouped_results = {}
     
     # Sort globally by competition date: Most recent first
@@ -251,8 +251,11 @@ def person_profile(person_id):
         # Build list using the global descending sort
         for idx, row in event_results.iterrows():
             try:
-                atts = ast.literal_eval(row['attempts'])
-                raw_results = [a['result'] for a in atts]
+                try:
+                    atts = ast.literal_eval(row['attempts'])
+                    raw_results = [a.get('result', 0) for a in atts if isinstance(a, dict)]
+                except:
+                    raw_results = []
                 
                 f_solves = []
                 if len(raw_results) == 5:
@@ -277,8 +280,10 @@ def person_profile(person_id):
             s_label = row.get('regional_single_record') if pd.notna(row.get('regional_single_record')) else None
             a_label = row.get('regional_average_record') if pd.notna(row.get('regional_average_record')) else None
 
-            s_class = "pink-text" if s_label else ("red-text" if history_meta[idx]['pr_s'] else "")
-            a_class = "pink-text" if a_label else ("red-text" if history_meta[idx]['pr_a'] else "")
+            meta = history_meta.get(idx, {'pr_s': False, 'pr_a': False})
+
+            s_class = "pink-text" if s_label else ("red-text" if meta['pr_s'] else "")
+            a_class = "pink-text" if a_label else ("red-text" if meta['pr_a'] else "")
 
             ev_list.append({
                 'competition_id': row['competition_id'],

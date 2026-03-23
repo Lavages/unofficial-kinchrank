@@ -563,8 +563,9 @@
     {% for event_id, results in grouped_results.items() %}
     {% for res in results %}
     {# Filter: World Championship ID AND Rank 1-3 AND Final Round #}
-    {% if res.competition_id.startswith('WC') and res.ranking|int <= 3 and res.round_id=='f' %} {% set
-        has_wc_podiums.found=true %} {% endif %} {% endfor %} {% endfor %} <div class="container">
+    {% if res.competition_id and res.competition_id and res.competition_id[:2] == 'WC' and res.ranking|int <= 3 and
+        res.round_id=='f' %} {% set has_wc_podiums.found=true %} {% endif %} {% endfor %} {% endfor %} <div
+        class="container">
         <header>
             <a href="/" style="text-decoration:none; color:var(--text-muted); font-weight:700;">
                 <i class="fa-solid fa-arrow-left"></i> BACK
@@ -841,10 +842,10 @@
             {# Collect unique WC IDs that actually have podiums in finals #}
             {% for eid, results in grouped_results.items() %}
             {% for res in results %}
-            {% if res.competition_id.startswith('WC') and res.ranking|int <= 3 and res.round_id=='f' %} {% if
-                res.competition_id not in wc_comps %} {% set _=wc_comps.append(res.competition_id) %} {% endif %} {%
-                endif %} {% endfor %} {% endfor %} {% if wc_comps %} {% for comp_id in wc_comps | sort(reverse=true) %}
-                <div class="wc-group">
+            {% if res.competition_id and res.competition_id and res.competition_id[:2] == 'WC' and res.ranking|int <= 3
+                and res.round_id=='f' %} {% if res.competition_id not in wc_comps %} {% set
+                _=wc_comps.append(res.competition_id) %} {% endif %} {% endif %} {% endfor %} {% endfor %} {% if
+                wc_comps %} {% for comp_id in wc_comps | sort(reverse=true) %} <div class="wc-group">
                 <div class="wc-header">
                     {# Look for the name in results; fallback to ID if missing #}
                     {% set comp_display_name = namespace(val=comp_id) %}

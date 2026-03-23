@@ -1,6 +1,6 @@
-flask
+Flask
 flask-caching
 pandas
 numpy
 pycountry
-pycountry-convert
+pycountry_convert

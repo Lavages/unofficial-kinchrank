@@ -468,4 +468,5 @@ def competition_page(competition_id):
 app = app
 
 if __name__ == '__main__':
-    app.run()
+    # Enable debug mode as requested
+    app.run(debug=True)

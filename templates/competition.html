@@ -19,14 +19,16 @@
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --border: #334155;
-            --table-header: rgba(0, 0, 0, 0.2);
-            --row-hover: #334155;
+            --table-header: rgba(15, 23, 42, 0.6);
+            --row-hover: #1e293b;
+            --row-alt: #1a2335;
         }
 
         html,
         body {
             height: 100%;
             margin: 0;
+            -webkit-font-smoothing: antialiased;
         }
 
         body {
@@ -46,19 +48,19 @@
         }
 
         header {
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         .back-link {
             text-decoration: none;
             color: var(--text-muted);
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             display: inline-flex;
             align-items: center;
             gap: 8px;
             margin-bottom: 15px;
-            transition: 0.2s;
+            transition: color 0.2s ease;
         }
 
         .back-link:hover {
@@ -67,74 +69,96 @@
 
         h1 {
             font-family: 'Outfit', sans-serif;
-            font-size: 2.8rem;
+            font-size: 3rem;
             font-weight: 800;
             margin: 0;
-            background: linear-gradient(135deg, var(--text-main) 30%, var(--primary-accent));
+            letter-spacing: -0.02em;
+            background: linear-gradient(to right, #ffffff, var(--primary-accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .comp-meta {
             color: var(--text-muted);
-            margin-top: 10px;
-            font-size: 1rem;
+            margin-top: 12px;
+            font-size: 0.95rem;
             display: flex;
             flex-wrap: wrap;
+            gap: 24px;
+            align-items: center;
+        }
+
+        /* --- Tabs Navigation --- */
+        .tabs-nav {
+            display: flex;
             gap: 20px;
-            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border);
         }
 
-        .wca-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--primary-accent);
-            border: 1px solid var(--primary-accent);
-            padding: 6px 14px;
-            border-radius: 99px;
-            text-decoration: none;
-            font-size: 0.85rem;
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 12px 4px;
+            font-family: 'Outfit', sans-serif;
             font-weight: 700;
-            transition: 0.2s;
+            cursor: pointer;
+            font-size: 1rem;
+            position: relative;
+            transition: color 0.2s;
         }
 
-        .wca-btn:hover {
+        .tab-btn.active {
+            color: var(--primary-accent);
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
             background: var(--primary-accent);
-            color: var(--bg-body);
         }
 
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* --- Results Styles --- */
         .results-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 24px;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
             margin-bottom: 40px;
         }
 
         .table-wrapper {
             overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            /* Smooth scroll for iOS */
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             text-align: left;
-            min-width: 700px;
-            /* Reduced slightly to prevent aggressive early overflow */
+            min-width: 800px;
         }
 
         th {
             background: var(--table-header);
-            padding: 18px 20px;
+            padding: 20px;
             font-size: 0.7rem;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.12em;
             font-weight: 800;
             border-bottom: 1px solid var(--border);
         }
@@ -148,45 +172,57 @@
         .event-cell {
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-weight: 800;
-            font-family: 'Outfit';
+            gap: 14px;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.05rem;
         }
 
         .cubing-icon {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             color: var(--primary-accent);
-            flex-shrink: 0;
         }
 
         .winner-name {
             text-decoration: none;
-            color: var(--primary-accent);
+            color: var(--text-main);
             font-weight: 700;
-            display: block;
         }
 
         .winner-name:hover {
-            text-decoration: underline;
+            color: var(--primary-accent);
         }
 
         .stat-bold {
             font-family: 'Outfit', sans-serif;
             font-weight: 800;
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
 
         .solves-cell {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.75rem;
             color: var(--text-muted);
-            line-height: 1.4;
-            max-width: 300px;
-            white-space: normal;
+        }
+
+        /* --- Podium Specific Styles --- */
+        .podium-section {
+            margin-bottom: 30px;
+        }
+
+        .podium-rank-1 {
+            color: #fbbf24;
+        }
+
+        .podium-rank-2 {
+            color: #94a3b8;
+        }
+
+        .podium-rank-3 {
+            color: #d97706;
         }
 
         .site-footer {
-            flex-shrink: 0;
             text-align: center;
             padding: 40px 20px;
             border-top: 1px solid var(--border);
@@ -198,61 +234,15 @@
         .site-footer a {
             color: var(--primary-accent);
             text-decoration: none;
-            font-weight: 700;
         }
 
-        /* --- MOBILE REFINEMENTS --- */
         @media (max-width: 768px) {
-            body {
-                padding: 20px 12px 0 12px;
+            h1 {
+                font-size: 2rem;
             }
 
             .hide-mobile {
                 display: none;
-            }
-
-            h1 {
-                font-size: 1.8rem;
-                line-height: 1.2;
-            }
-
-            header {
-                margin-bottom: 25px;
-            }
-
-            .comp-meta {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-                font-size: 0.9rem;
-            }
-
-            .results-card {
-                border-radius: 16px;
-                margin-bottom: 20px;
-            }
-
-            table {
-                min-width: 500px;
-                /* Allow it to be narrower on mobile */
-            }
-
-            th,
-            td {
-                padding: 12px 15px;
-            }
-
-            .event-cell {
-                font-size: 0.9rem;
-                gap: 8px;
-            }
-
-            .cubing-icon {
-                font-size: 1.1rem;
-            }
-
-            .stat-bold {
-                font-size: 0.9rem;
             }
         }
     </style>
@@ -261,74 +251,177 @@
 <body>
     <div class="container">
         <header>
-            <a href="/" class="back-link">
-                <i class="fa-solid fa-arrow-left"></i> LEADERBOARD
-            </a>
+            <a href="/" class="back-link"><i class="fa-solid fa-chevron-left"></i> LEADERBOARD</a>
             <h1>{{ comp_name }}</h1>
             <div class="comp-meta">
-                <span><i class="fa-solid fa-calendar-days"></i> {{ comp_date }}</span>
-                <span><i class="fa-solid fa-location-dot"></i> {{ comp_location }}</span>
-
+                <span><i class="fa-solid fa-calendar"></i> {{ comp_date }}</span>
+                <span><i class="fa-solid fa-map-pin"></i> {{ comp_location }}</span>
                 {% if competition_id %}
                 <a href="https://www.worldcubeassociation.org/competitions/{{ competition_id }}" target="_blank"
                     class="wca-btn">
-                    <i class="fa-solid fa-external-link"></i> WCA PAGE
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> WCA PAGE
                 </a>
                 {% endif %}
             </div>
         </header>
 
-        <div class="results-card">
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Event</th>
-                            <th>Winner</th>
-                            <th style="text-align: center;">Best</th>
-                            <th style="text-align: center;">Average</th>
-                            <th class="hide-mobile">Solves</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for result in winners %}
-                        <tr class="result-row">
-                            <td>
-                                <div class="event-cell">
-                                    <span
-                                        class="cubing-icon icon-{{ result.event_id if '_' not in result.event_id else result.event_id.split('_')[0] }}"></span>
-                                    {{ result.event_name }}
-                                </div>
-                            </td>
-                            <td>
-                                <a href="/person/{{ result.winner_id }}" class="winner-name">
-                                    {{ result.winner_name }}
-                                </a>
-                                <div style="font-size: 0.75rem; color: var(--text-muted);">
-                                    {{ result.representing }}
-                                </div>
-                            </td>
-                            <td style="text-align: center;" class="stat-bold">
-                                {{ result.best }}
-                            </td>
-                            <td style="text-align: center;" class="stat-bold">
-                                {{ result.average if result.average else '-' }}
-                            </td>
-                            <td class="solves-cell hide-mobile">
-                                {{ result.solves_joined }}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+        <nav class="tabs-nav">
+            <button class="tab-btn active" onclick="openTab(event, 'winners-tab')">Winners</button>
+            <button class="tab-btn" onclick="openTab(event, 'podiums-tab')">Podiums</button>
+        </nav>
+
+        <div id="winners-tab" class="tab-content active">
+            <div class="results-card">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Event</th>
+                                <th>Winner</th>
+                                <th style="text-align: center;">Best</th>
+                                <th style="text-align: center;">Average</th>
+                                <th class="hide-mobile">Solves</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for result in winners %}
+                            <tr class="result-row">
+                                <td>
+                                    <div class="event-cell">
+                                        <span
+                                            class="cubing-icon icon-{{ result.event_id if '_' not in result.event_id else result.event_id.split('_')[0] }}"></span>
+                                        {{ result.event_name }}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="winner-group">
+                                        {% for member in result.team_members %}
+                                        <a href="/person/{{ member.id }}" class="winner-name">{{ member.name }}</a>
+                                        {% if result.team_members|length == 2 %}
+                                        {% if loop.first %} & {% endif %}
+                                        {% else %}
+                                        {% if not loop.last %}, {% endif %}
+                                        {% endif %}
+                                        {% endfor %}
+                                        <div style="font-size: 0.75rem; color: var(--text-muted);">{{
+                                            result.representing }}</div>
+                                    </div>
+                                </td>
+                                <td style="text-align: center;" class="stat-bold">{{ result.best }}</td>
+                                <td style="text-align: center;" class="stat-bold">{{ result.average if result.average
+                                    else '-' }}</td>
+                                <td class="solves-cell hide-mobile">
+                                    {% if result.solves|length == 5 %}
+                                    {% for solve in result.solves %}
+                                    {% if loop.index0 == result.best_idx or loop.index0 == result.worst_idx %}
+                                    ({{ solve }})
+                                    {% else %}
+                                    {{ solve }}
+                                    {% endif %}
+                                    {% if not loop.last %} &nbsp; {% endif %}
+                                    {% endfor %}
+                                    {% else %}
+                                    {{ result.solves|join(' ') }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
+        </div>
+
+        <div id="podiums-tab" class="tab-content">
+            {% for event in podiums.values() %}
+            <div class="podium-section">
+                <h3
+                    style="font-family: 'Outfit'; margin: 25px 0 15px 10px; display: flex; align-items: center; gap: 12px; font-size: 1.4rem;">
+                    <span
+                        class="cubing-icon icon-{{ event.event_id if '_' not in event.event_id else event.event_id.split('_')[0] }}"></span>
+                    {{ event.event_name }}
+                </h3>
+                <div class="results-card">
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 50px; text-align: center;">#</th>
+                                    <th>Name</th>
+                                    <th>Best</th>
+                                    <th>Average</th>
+                                    <th>Representing</th>
+                                    <th class="hide-mobile">Solves</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for res in event.results %}
+                                {% if res %}
+                                <tr class="result-row">
+                                    <td style="text-align: center; font-weight: 800;"
+                                        class="podium-rank-{{ loop.index }}">
+                                        {{ loop.index }}
+                                    </td>
+                                    <td>
+                                        <a href="/person/{{ res.person_id }}" class="winner-name">
+                                            {{ res.name }}
+                                        </a>
+                                    </td>
+                                    <td class="stat-bold">{{ res.best }}</td>
+                                    <td class="stat-bold">
+                                        {{ res.average if res.average and res.average != '0' else res.best }}
+                                    </td>
+                                    <td style="color: var(--text-muted); font-size: 0.9rem;">
+                                        {{ res.representing }}
+                                    </td>
+                                    <td class="solves-cell hide-mobile">
+                                        {% if res.solves|length == 5 %}
+                                        {% for solve in res.solves %}
+                                        {% if loop.index0 == res.best_idx or loop.index0 == res.worst_idx %}
+                                        ({{ solve }})
+                                        {% else %}
+                                        {{ solve }}
+                                        {% endif %}
+                                        {% if not loop.last %} &nbsp; {% endif %}
+                                        {% endfor %}
+                                        {% else %}
+                                        {{ res.solves|join(' ') }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
         </div>
         <footer class="site-footer">
             Results are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC
-                BY-SA
-                4.0</a> | Latest export: v1 (3/21/2026)
+                BY-SA 4.0</a><br>
+            Latest export: v1 (3/21/2026)
         </footer>
     </div>
+
+    <script>
+        function openTab(evt, tabName) {
+            let tabcontent = document.getElementsByClassName("tab-content");
+            let tablinks = document.getElementsByClassName("tab-btn");
+
+            for (let i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+
+            for (let i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+    </script>
 </body>
 
 </html>

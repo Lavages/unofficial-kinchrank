@@ -104,22 +104,42 @@ def load_and_process_data():
         return pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), {}, pd.DataFrame()
 # Add this near your other helpers
 def get_event_icon_tag(event_id):
-    # 1. Check Local Directory (Assumes icons are in static/icons/event_id.svg)
+    # --- WCA OFFICIAL EVENTS (use font directly FIRST) ---
+    wca_events = {
+        '333','222','444','555','666','777','333bf','333fm','333oh',
+        'clock','minx','pyram','skewb','sq1','444bf','555bf',
+        '333mbf','333ft','333mbo','magic','mmagic'
+    }
+
+    if event_id in wca_events:
+        return f'<span class="cubing-icon event-{event_id}"></span>'
+
+    # --- SPECIAL CASES (naming mismatch) ---
+    special_map = {
+        'gear_cube': 'gear',
+        'ivy_cube': 'ivy',
+        'corner_heli222': 'corner_helicopter_222'
+    }
+
+    if event_id in special_map:
+        return f'<img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/{special_map[event_id]}.svg" class="event-icon" alt="{event_id}">'
+
+    # --- LOCAL ICONS ---
     local_path = os.path.join(app.root_path, 'static', 'icons', f"{event_id}.svg")
     if os.path.exists(local_path):
         return f'<img src="/static/icons/{event_id}.svg" class="event-icon" alt="{event_id}">'
 
-    # 2. Fallback to GitHub Raw for Unofficial Icons (if not in cubing-icons font)
-    # This points to the repo you mentioned
-    github_fallback_url = f"https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/{event_id}.svg"
-    
-    # 3. Default to the Web Font class (Cubing.net)
-    # We return the span but include a style to handle the GitHub fallback if needed
-    return f'<span class="cubing-icon event-{event_id} unofficial-{event_id}"></span>'
+    # --- GITHUB FALLBACK ---
+    return f'''
+    <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/{event_id}.svg"
+         class="event-icon"
+         alt="{event_id}"
+         onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+    <span class="cubing-icon event-{event_id}" style="display:none;"></span>
+    '''
 
 # Register it so you can use it in HTML
 app.jinja_env.globals.update(get_icon=get_event_icon_tag)
-
 @app.route('/', methods=['GET', 'POST'])
 def kinch_leaderboard():
     selected_events = request.form.getlist('events') if request.method == 'POST' else request.args.getlist('events')
@@ -263,7 +283,8 @@ def person_profile(person_id):
             ev_list.append({
                 'competition_id': row['competition_id'],
                 'event_name': event_names.get(eid, eid),
-                'round_id': format_round(row.get('round_type_id', row.get('round_id', "-"))),
+                'round_name': format_round(row.get('round_type_id', row.get('round_id', "-"))),
+                'round_id': row.get('round_type_id', row.get('round_id', "-")),
                 'ranking': int(row['ranking']) if pd.notna(row['ranking']) else "-",
                 'single_formatted': format_time(row['best'], eid),
                 'average_formatted': format_time(row['average'], eid, True) if row['average'] > 0 else "-",
@@ -301,37 +322,143 @@ def person_profile(person_id):
 @app.route('/competition/<competition_id>')
 def competition_page(competition_id):
     res_df, _, pers_df, event_names, contests_df = load_and_process_data()
-    comp_info = contests_df[contests_df['competition_id'] == competition_id]
     
+    # Load event order from CSV
+    ev_df = pd.read_csv(os.path.join(BASE_DIR, "export_events.csv"))
+    ev_df = ev_df.sort_values('id')
+
+    ordered_events = ev_df['event_id'].tolist()
+    event_order = ev_df.set_index('event_id')['id'].to_dict()
+
+    comp_info = contests_df[contests_df['competition_id'] == competition_id]
     display_name = comp_info.iloc[0]['name'] if not comp_info.empty else competition_id.replace('_', ' ')
     location = f"{comp_info.iloc[0]['city']}, {comp_info.iloc[0]['venue']}" if not comp_info.empty else "Unknown Location"
     date_val = str(comp_info.iloc[0]['start_date']).split('T')[0] if not comp_info.empty else ""
 
-    comp_results = res_df[res_df['competition_id'] == competition_id]
+    comp_results = res_df[res_df['competition_id'] == competition_id].copy()
+
+    comp_results['pid_list'] = comp_results['person_ids'].apply(
+    lambda x: ast.literal_eval(x) if str(x).startswith('[') else [x]
+)
+    # Sort competition results based on the ID from export_events.csv
+    comp_results['sort_order'] = comp_results['event_id'].map(event_order).fillna(999)
+    comp_results = comp_results.sort_values('sort_order')
+
+    podiums = {}
     winners_list = []
-    
-    for _, row in comp_results[comp_results['ranking'] == 1].iterrows():
-        eid = row['event_id']
-        pids = row.get('pid_list', [])
-        p_info = pers_df[pers_df['id'] == str(pids[0])] if pids else pd.DataFrame()
+
+    # Filter for Finals only
+    finals = comp_results[comp_results['round_type_id'] == 'f']
+
+    for eid in ordered_events:
+        if eid not in finals['event_id'].values:
+            continue
+        event_finals = finals[finals['event_id'] == eid].sort_values('ranking')
+        event_podium = []
         
-        try:
-            atts = ast.literal_eval(row['attempts'])
-            f_solves = [("DNF" if a['result'] == -1 else "DNS" if a['result'] == -2 else format_time(a['result'], eid)) for a in atts]
-            solves_joined = " ".join(f_solves)
-        except: solves_joined = "-"
+        # Get Top 3 for Podiums Tab
+        for _, row in event_finals[event_finals['ranking'] <= 3].iterrows():
+            pids = row.get('pid_list', [])
+            members = []
+            for pid in pids:
+                p_info = pers_df[pers_df['id'] == str(pid)]
+                if not p_info.empty:
+                    members.append({'id': str(pid), 'name': p_info.iloc[0]['name'], 'country': p_info.iloc[0]['full_country']})
+            
+            formatted_row = {
+                'rank': int(row['ranking']),
+                'members': members,
+                'best': format_time(row['best'], eid),
+                'average': format_time(row['average'], eid, True) if row['average'] > 0 else "-",
+                'solves': " ".join(["DNF" if a['result'] == -1 else "DNS" if a['result'] == -2 else format_time(a['result'], eid) for a in ast.literal_eval(row['attempts'])])
+            }
+            event_podium.append(formatted_row)
+            
+            # Keep existing logic for the "Results" (Winners) tab
+            if row['ranking'] == 1:
+                attempts = ast.literal_eval(row['attempts'])
+                raw = [a['result'] for a in attempts]
 
-        winners_list.append({
+                formatted_solves = []
+                best_idx = -1
+                worst_idx = -1
+
+                # Only apply for Ao5
+                if len(raw) == 5:
+                    valid = [v if v > 0 else float('inf') for v in raw]
+
+                    best_val = min(valid)
+                    worst_val = max(valid)
+
+                    best_idx = valid.index(best_val)
+                    worst_idx = valid.index(worst_val)
+
+                    # If best and worst end up same (edge case), only mark once
+                    if best_idx == worst_idx:
+                        worst_idx = -1
+
+                # Format solves
+                for v in raw:
+                    if v == -1:
+                        formatted_solves.append("DNF")
+                    elif v == -2:
+                        formatted_solves.append("DNS")
+                    else:
+                        formatted_solves.append(format_time(v, eid))
+
+                winners_list.append({
+                    'event_id': eid,
+                    'event_name': event_names.get(eid, eid),
+                    'team_members': members,
+                    'representing': ", ".join(set(m['country'] for m in members)),
+                    'best': formatted_row['best'],
+                    'average': formatted_row['average'] if row['average'] > 0 else None,
+                    'solves': formatted_solves,
+                    'best_idx': best_idx,
+                    'worst_idx': worst_idx
+                })
+        results_list = []
+
+        for row in event_podium:
+            if row['members']:
+                m = row['members'][0]
+
+                attempts = ast.literal_eval(event_finals[event_finals['ranking'] == row['rank']].iloc[0]['attempts'])
+                raw = [a['result'] for a in attempts]
+
+                best_idx = worst_idx = -1
+                if len(raw) == 5:
+                    valid = [v if v > 0 else float('inf') for v in raw]
+                    best_idx = valid.index(min(valid))
+                    worst_idx = valid.index(max(valid))
+
+                results_list.append({
+                    'person_id': m['id'],
+                    'name': m['name'],
+                    'representing': m['country'],
+                    'best': row['best'],
+                    'average': row['average'],
+                    'solves': [
+                        "DNF" if v == -1 else "DNS" if v == -2 else format_time(v, eid)
+                        for v in raw
+                    ],
+                    'best_idx': best_idx,
+                    'worst_idx': worst_idx
+                })
+
+        podiums[eid] = {
+            'event_id': eid,
             'event_name': event_names.get(eid, eid),
-            'winner_name': p_info.iloc[0]['name'] if not p_info.empty else "Unknown",
-            'winner_id': pids[0] if pids else None,
-            'representing': p_info.iloc[0]['full_country'] if not p_info.empty else "",
-            'best': format_time(row['best'], eid),
-            'average': format_time(row['average'], eid, True) if row['average'] > 0 else None,
-            'solves_joined': solves_joined
-        })
+            'results': results_list
+        }
 
-    return render_template('competition.html', comp_name=display_name, comp_location=location, comp_date=date_val, winners=winners_list)
+    return render_template('competition.html', 
+                           comp_name=display_name, 
+                           comp_location=location, 
+                           comp_date=date_val, 
+                           winners=winners_list, 
+                           podiums=podiums,
+                           competition_id=competition_id)
 
 app = app
 

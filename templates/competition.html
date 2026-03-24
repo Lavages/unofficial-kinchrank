@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ comp_name }} - Results</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cubing-icons@1.0.1/css/cubing-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.cubing.net/v0/css/@cubing/icons/css">
     <link
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@300;600;800&family=JetBrains+Mono&display=swap"
         rel="stylesheet">
@@ -245,10 +245,102 @@
                 display: none;
             }
         }
+
+        /* 🔹 EVENT GRID (Leaderboard-style) */
+        .event-navbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        /* 🔹 CHIP STYLE (same as leaderboard) */
+        .event-btn {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 10px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.2);
+
+            transition: all 0.2s ease;
+
+            min-width: 58px;
+            min-height: 58px;
+        }
+
+        /* ICON SIZE */
+        .event-btn span.cubing-icon,
+        .event-btn img {
+            width: 38px !important;
+            height: 38px !important;
+            font-size: 38px;
+            object-fit: contain;
+        }
+
+        /* DEFAULT SVG COLOR */
+        .event-btn img {
+            filter: invert(72%) sepia(9%) saturate(838%) hue-rotate(182deg) brightness(91%) contrast(89%);
+        }
+
+        /* ACTIVE */
+        .event-btn.active {
+            border-color: var(--primary-accent);
+            background: rgba(56, 189, 248, 0.1);
+        }
+
+        /* ACTIVE ICON COLOR */
+        .event-btn.active span {
+            color: var(--primary-accent);
+        }
+
+        .event-btn.active img {
+            filter: invert(65%) sepia(85%) saturate(1500%) hue-rotate(170deg) brightness(100%) contrast(100%);
+        }
+
+        /* HOVER */
+        .event-btn:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary-accent);
+        }
+
+        /* TEXT FALLBACK */
+        .event-btn .event-text {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-align: center;
+            line-height: 1.1;
+            padding: 0 4px;
+        }
+
+        .event-btn span,
+        .event-btn img {
+            display: block;
+        }
+
+        :root {
+            --icon-filter: invert(72%) sepia(9%) saturate(838%) hue-rotate(182deg) brightness(91%) contrast(89%);
+        }
     </style>
 </head>
 
 <body>
+    {% set gh_base = "https://raw.githubusercontent.com/cubing/icons/main/src/svg" %}
+    {% set official_events =
+    ['333','222','444','555','666','777','333bf','333fm','333oh','clock','minx','pyram','skewb','sq1','444bf','555bf','333mbf','333ft','333mbo','magic','mmagic']
+    %}
+    {% set github_unofficial = ['222bf', '222oh', '234567relay', '23456relay', '2345relay', '234relay', '333_linear_fm',
+    '333_mirror_blocks', '333_mirror_blocks_bld', '333_oh_bld_relay', '333_oh_bld_team_relay', '333_oven_mitts',
+    '333_siamese', '333_speed_bld', '333_team_bld', '333_team_factory', '333bf_2_person_relay', '333bf_3_person_relay',
+    '333bf_4_person_relay', '333bf_8_person_relay', '333mts', '444ft', '666bf', '777bf', 'baby_fto', 'cmetrick_mini',
+    'corner_helicopter_222', 'crazy_333', 'curvycopter', 'dino', 'fisher', 'fto', 'gear', 'gigaminx', 'helicopter',
+    'ivy', 'kilominx', 'magic_oh', 'miniguild', 'miniguild_2_person', 'miniguild_bld', 'minx_bld', 'mpyram', 'mskewb',
+    'mtetram', 'pyraminx_crystal', 'pyramorphix', 'redi', 'sq1_bld', 'sq2', 'super_sq1', 'ufo'] %}
+
     <div class="container">
         <header>
             <a href="/" class="back-link"><i class="fa-solid fa-chevron-left"></i> LEADERBOARD</a>
@@ -268,6 +360,8 @@
         <nav class="tabs-nav">
             <button class="tab-btn active" onclick="openTab(event, 'winners-tab')">Winners</button>
             <button class="tab-btn" onclick="openTab(event, 'podiums-tab')">Podiums</button>
+            <button class="tab-btn" onclick="openTab(event, 'all-results-tab')">All Results</button>
+            <button class="tab-btn" onclick="openTab(event, 'by-person-tab')">By Person</button>
         </nav>
 
         <div id="winners-tab" class="tab-content active">
@@ -285,11 +379,22 @@
                         </thead>
                         <tbody>
                             {% for result in winners %}
+                            {% set clean_eid = result.event_id|replace('-', '_') %}
                             <tr class="result-row">
                                 <td>
                                     <div class="event-cell">
-                                        <span
-                                            class="cubing-icon icon-{{ result.event_id if '_' not in result.event_id else result.event_id.split('_')[0] }}"></span>
+                                        {# Tiered SVG Logic for Winners #}
+                                        {% if result.event_id in official_events %}
+                                        <img src="{{ gh_base }}/event/{{ result.event_id }}.svg"
+                                            style="width: 24px; height: 24px; filter: var(--icon-filter);">
+                                        {% elif clean_eid in github_unofficial %}
+                                        <img src="{{ gh_base }}/unofficial/{{ clean_eid }}.svg"
+                                            style="width: 24px; height: 24px; filter: var(--icon-filter);">
+                                        {% else %}
+                                        <img src="/static/icons/{{ clean_eid }}.svg"
+                                            style="width: 24px; height: 24px; filter: var(--icon-filter);"
+                                            onerror="this.style.display='none';">
+                                        {% endif %}
                                         {{ result.event_name }}
                                     </div>
                                 </td>
@@ -297,11 +402,8 @@
                                     <div class="winner-group">
                                         {% for member in result.team_members %}
                                         <a href="/person/{{ member.id }}" class="winner-name">{{ member.name }}</a>
-                                        {% if result.team_members|length == 2 %}
-                                        {% if loop.first %} & {% endif %}
-                                        {% else %}
-                                        {% if not loop.last %}, {% endif %}
-                                        {% endif %}
+                                        {% if result.team_members|length == 2 %}{% if loop.first %} & {% endif %}
+                                        {% else %}{% if not loop.last %}, {% endif %}{% endif %}
                                         {% endfor %}
                                         <div style="font-size: 0.75rem; color: var(--text-muted);">{{
                                             result.representing }}</div>
@@ -311,18 +413,7 @@
                                 <td style="text-align: center;" class="stat-bold">{{ result.average if result.average
                                     else '-' }}</td>
                                 <td class="solves-cell hide-mobile">
-                                    {% if result.solves|length == 5 %}
-                                    {% for solve in result.solves %}
-                                    {% if loop.index0 == result.best_idx or loop.index0 == result.worst_idx %}
-                                    ({{ solve }})
-                                    {% else %}
-                                    {{ solve }}
-                                    {% endif %}
-                                    {% if not loop.last %} &nbsp; {% endif %}
-                                    {% endfor %}
-                                    {% else %}
                                     {{ result.solves|join(' ') }}
-                                    {% endif %}
                                 </td>
                             </tr>
                             {% endfor %}
@@ -337,8 +428,21 @@
             <div class="podium-section">
                 <h3
                     style="font-family: 'Outfit'; margin: 25px 0 15px 10px; display: flex; align-items: center; gap: 12px; font-size: 1.4rem;">
-                    <span
-                        class="cubing-icon icon-{{ event.event_id if '_' not in event.event_id else event.event_id.split('_')[0] }}"></span>
+                    {% set clean_eid = event.event_id|replace('-', '_') %}
+
+                    {# Tiered SVG Logic for Podium Headers #}
+                    {% if event.event_id in official_events %}
+                    <img src="{{ gh_base }}/event/{{ event.event_id }}.svg"
+                        style="width: 32px; height: 32px; filter: var(--icon-filter);">
+                    {% elif clean_eid in github_unofficial %}
+                    <img src="{{ gh_base }}/unofficial/{{ clean_eid }}.svg"
+                        style="width: 32px; height: 32px; filter: var(--icon-filter);">
+                    {% else %}
+                    <img src="/static/icons/{{ clean_eid }}.svg"
+                        style="width: 32px; height: 32px; filter: var(--icon-filter);"
+                        onerror="this.style.display='none';">
+                    {% endif %}
+
                     {{ event.event_name }}
                 </h3>
                 <div class="results-card">
@@ -369,7 +473,8 @@
                                     </td>
                                     <td class="stat-bold">{{ res.best }}</td>
                                     <td class="stat-bold">
-                                        {{ res.average if res.average and res.average != '0' else res.best }}
+                                        {{ res.average if res.average and res.average != '0' and res.average != '' else
+                                        res.best }}
                                     </td>
                                     <td style="color: var(--text-muted); font-size: 0.9rem;">
                                         {{ res.representing }}
@@ -378,7 +483,7 @@
                                         {% if res.solves|length == 5 %}
                                         {% for solve in res.solves %}
                                         {% if loop.index0 == res.best_idx or loop.index0 == res.worst_idx %}
-                                        ({{ solve }})
+                                        <span style="opacity: 0.5;">({{ solve }})</span>
                                         {% else %}
                                         {{ solve }}
                                         {% endif %}
@@ -390,6 +495,166 @@
                                     </td>
                                 </tr>
                                 {% endif %}
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div id="all-results-tab" class="tab-content">
+            <div class="event-navbar" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;">
+                {% for eid, event_data in all_rounds.items() %}
+                {% set clean_eid = eid|replace('-', '_') %}
+
+                <button class="event-btn" onclick="showEvent('{{ eid }}', this)" title="{{ event_data.event_name }}">
+                    {% if eid in official_events %}
+                    <img src="{{ gh_base }}/event/{{ eid }}.svg" class="event-icon-img">
+                    {% elif clean_eid in github_unofficial %}
+                    <img src="{{ gh_base }}/unofficial/{{ clean_eid }}.svg" class="event-icon-img">
+                    {% else %}
+                    <img src="/static/icons/{{ clean_eid }}.svg" class="event-icon-img"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <span class="event-text" style="display:none; font-size: 0.7rem;">{{ event_data.event_name[:3]|upper
+                        }}</span>
+                    {% endif %}
+                </button>
+                {% endfor %}
+            </div>
+
+            {% for eid, event_data in all_rounds.items() %}
+            {% set clean_eid = eid|replace('-', '_') %}
+
+            <div class="event-group" id="event-{{ eid }}"
+                style="display:none; margin-bottom: 50px; opacity:0; transition: opacity 0.25s ease;">
+
+                <h2
+                    style="font-family: 'Outfit'; border-bottom: 2px solid var(--primary-accent); padding-bottom: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px;">
+
+                    {% if eid in official_events %}
+                    <img src="{{ gh_base }}/event/{{ eid }}.svg"
+                        style="width: 32px; height: 32px; filter: var(--icon-filter);">
+                    {% elif clean_eid in github_unofficial %}
+                    <img src="{{ gh_base }}/unofficial/{{ clean_eid }}.svg"
+                        style="width: 32px; height: 32px; filter: var(--icon-filter);">
+                    {% else %}
+                    <img src="/static/icons/{{ clean_eid }}.svg"
+                        style="width: 32px; height: 32px; filter: var(--icon-filter);"
+                        onerror="this.style.display='none';">
+                    {% endif %}
+
+                    {{ event_data.event_name }}
+                </h2>
+
+                {% for round in event_data.rounds %}
+                <div class="round-section" style="margin-bottom: 30px;">
+                    <h3 style="font-size: 1.1rem; color: var(--text-muted); margin-left: 10px; margin-bottom: 10px;">
+                        {{ round.round_name }}
+                    </h3>
+
+                    <div class="results-card">
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th style="width: 40px; text-align: center;">#</th>
+                                        <th>Name</th>
+                                        <th style="text-align: center;">Best</th>
+                                        <th style="text-align: center;">Average</th>
+                                        <th>Representing</th>
+                                        <th class="hide-mobile">Solves</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for res in round.results %}
+                                    <tr class="result-row">
+                                        <td style="text-align: center; color: var(--text-muted); font-weight: 700;">
+                                            {{ res.rank }}
+                                        </td>
+                                        <td><a href="/person/{{ res.person_id }}" class="winner-name">{{ res.name }}</a>
+                                        </td>
+                                        <td style="text-align: center;" class="stat-bold">{{ res.best }}</td>
+                                        <td style="text-align: center;" class="stat-bold">
+                                            {{ res.average if res.average and res.average != '0' else res.best }}
+                                        </td>
+                                        <td style="font-size: 0.85rem; color: var(--text-muted);">{{ res.representing }}
+                                        </td>
+                                        <td class="solves-cell hide-mobile">
+                                            {% for solve in res.solves %}
+                                            {% if loop.index0 == res.best_idx or loop.index0 == res.worst_idx %}
+                                            <span style="opacity: 0.6;">({{ solve }})</span>
+                                            {% else %}
+                                            {{ solve }}
+                                            {% endif %}
+                                            {% if not loop.last %}&nbsp;{% endif %}
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </div>
+        <div id="by-person-tab" class="tab-content">
+            {% for person_id, data in results_by_person.items() %}
+            <div class="person-section" style="margin-bottom: 40px;">
+                <h2
+                    style="font-family: 'Outfit'; border-bottom: 2px solid var(--primary-accent); padding-bottom: 10px; margin-bottom: 20px;">
+                    <a href="/person/{{ person_id }}" class="winner-name" style="font-size: 1.8rem;">{{ data.name }}</a>
+                    <span style="font-size: 1rem; color: var(--text-muted); font-weight: 400; margin-left: 10px;">
+                        {{ data.representing }}
+                    </span>
+                </h2>
+
+                <div class="results-card">
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Event</th>
+                                    <th>Round</th>
+                                    <th style="text-align: center;">#</th>
+                                    <th style="text-align: center;">Best</th>
+                                    <th style="text-align: center;">Average</th>
+                                    <th class="hide-mobile">Solves</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for res in data.results %}
+                                {% set clean_eid = res.event_id|replace('-', '_') %}
+                                <tr class="result-row">
+                                    <td>
+                                        <div class="event-cell" style="font-size: 0.9rem;">
+                                            {% if res.event_id in official_events %}
+                                            <img src="{{ gh_base }}/event/{{ res.event_id }}.svg"
+                                                style="width: 20px; height: 20px; filter: var(--icon-filter);">
+                                            {% elif clean_eid in github_unofficial %}
+                                            <img src="{{ gh_base }}/unofficial/{{ clean_eid }}.svg"
+                                                style="width: 20px; height: 20px; filter: var(--icon-filter);">
+                                            {% else %}
+                                            <img src="/static/icons/{{ clean_eid }}.svg"
+                                                style="width: 20px; height: 20px; filter: var(--icon-filter);"
+                                                onerror="this.style.display='none';">
+                                            {% endif %}
+                                            {{ res.event_name }}
+                                        </div>
+                                    </td>
+                                    <td style="color: var(--text-muted); font-size: 0.85rem;">{{ res.round_name }}</td>
+                                    <td style="text-align: center; font-weight: 700;">{{ res.rank }}</td>
+                                    <td style="text-align: center;" class="stat-bold">{{ res.best }}</td>
+                                    <td style="text-align: center;" class="stat-bold">{{ res.average if res.average and
+                                        res.average != '0' else res.best }}</td>
+                                    <td class="solves-cell hide-mobile">
+                                        {{ res.solves|join(' ') }}
+                                    </td>
+                                </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
@@ -412,15 +677,67 @@
 
             for (let i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].classList.remove("active");
+                tabcontent[i].style.display = "none"; // Ensure it's hidden
             }
 
             for (let i = 0; i < tablinks.length; i++) {
                 tablinks[i].classList.remove("active");
             }
 
-            document.getElementById(tabName).classList.add("active");
+            const activeTab = document.getElementById(tabName);
+            activeTab.classList.add("active");
+            activeTab.style.display = "block";
             evt.currentTarget.classList.add("active");
+
+            // Special handling for All Results tab to trigger the first event chip
+            if (tabName === "all-results-tab") {
+                setTimeout(() => {
+                    const firstEvent = document.querySelector("#all-results-tab .event-btn");
+                    if (firstEvent) firstEvent.click();
+                }, 50);
+            }
         }
+        function showEvent(eid, el) {
+            const groups = document.querySelectorAll('#all-results-tab .event-group');
+            const buttons = document.querySelectorAll('#all-results-tab .event-btn');
+
+            groups.forEach(ev => {
+                ev.style.display = 'none';
+                ev.style.opacity = '0';
+            });
+
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            const target = document.getElementById('event-' + eid);
+            if (target) {
+                target.style.display = 'block';
+                setTimeout(() => {
+                    target.style.opacity = '1';
+                }, 10);
+            }
+
+            if (el) el.classList.add('active');
+
+            localStorage.setItem('lastEvent', eid);
+
+            el.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll(".event-btn").forEach(btn => {
+                const icon = btn.querySelector(".cubing-icon");
+                const text = btn.querySelector(".event-text");
+
+                if (icon) {
+                    const style = window.getComputedStyle(icon, '::before');
+                    if (!icon.textContent && (!style || style.content === 'none' || style.content === '')) {
+                        if (text) {
+                            icon.style.display = "none";
+                            text.style.display = "block";
+                        }
+                    }
+                }
+            });
+        });
     </script>
 </body>
 

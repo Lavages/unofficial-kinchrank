@@ -41,7 +41,6 @@
             transition: background 0.3s ease;
         }
 
-        /* Icon Consistency Filters */
         .event-icon-btn img,
         .event-group-header img,
         .col-comp img,
@@ -180,13 +179,11 @@
 
         .tab-content {
             display: none;
-            /* Hidden by default */
             animation: fadeIn 0.3s ease;
         }
 
         .tab-content.active {
             display: block !important;
-            /* Shown when active class is present */
         }
 
         @keyframes fadeIn {
@@ -201,135 +198,133 @@
             }
         }
 
-        .event-icons-bar {
+        /* Results Tab Specific Styling */
+        .event-nav {
             display: flex;
-            justify-content: center;
-            gap: 12px;
             flex-wrap: wrap;
-            margin-bottom: 30px;
-            background: var(--bg-card);
+            gap: 12px;
             padding: 15px;
-            border-radius: 12px;
+            justify-content: center;
+            background: rgba(15, 23, 42, 0.2);
+            border-radius: 20px;
             border: 1px solid var(--border);
         }
 
-        .event-icon-btn {
-            font-size: 1.4rem;
-            color: var(--text-muted);
-            transition: 0.2s;
-            text-decoration: none;
+        .event-nav-item {
+            width: 52px;
+            height: 52px;
             display: flex;
             align-items: center;
+            justify-content: center;
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            flex-shrink: 0;
         }
 
-        .event-icon-btn:hover {
-            color: var(--primary-accent);
+        .event-nav-item:hover {
+            border-color: var(--primary-accent);
             transform: translateY(-3px);
+            background: var(--bg-hover);
+        }
+
+        .event-nav-item.active {
+            border-color: var(--primary-accent);
+            background: rgba(56, 189, 248, 0.1);
+            box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .event-nav-item .cubing-icon,
+        .event-nav-item img {
+            width: 28px !important;
+            height: 28px !important;
+            font-size: 28px;
+            object-fit: contain;
+        }
+
+        .event-nav-item .fallback-text {
+            font-size: 0.5rem;
+            font-weight: 800;
+            text-align: center;
+            line-height: 1;
+            padding: 2px;
+            text-transform: uppercase;
         }
 
         .event-group-header {
-            background: var(--primary-accent);
-            color: #0f172a;
-            padding: 10px 20px;
+            background: var(--bg-card);
+            color: var(--primary-accent);
+            padding: 16px 24px;
             font-weight: 800;
+            font-family: 'Outfit';
+            font-size: 1.2rem;
             display: flex;
             align-items: center;
-            border-radius: 14px 14px 0 0;
-            margin-top: 40px;
+            border-radius: 18px 18px 0 0;
+            margin-top: 30px;
+            gap: 12px;
+            border: 1px solid var(--border);
+            border-bottom: 2px solid var(--primary-accent);
         }
 
         .table-wrapper {
             width: 100%;
             overflow-x: auto;
-            border-radius: 14px;
-            /* slightly rounded */
+            border-radius: 0 0 18px 18px;
             border: 1px solid var(--border);
+            border-top: none;
             background: var(--bg-card);
             margin-bottom: 25px;
         }
 
         .results-table {
             width: 100%;
-            border-collapse: separate;
-            /* MATCH PR TAB */
-            border-spacing: 0;
-            background: var(--bg-card);
+            border-collapse: collapse;
             font-size: 0.95rem;
-            min-width: 800px;
-        }
-
-        .results-table td {
-            padding: 15px 12px;
-            border-bottom: 1px solid var(--border);
-            transition: background 0.2s ease;
         }
 
         .results-table thead th {
             text-align: left;
-            background: rgba(0, 0, 0, 0.1);
+            background: rgba(15, 23, 42, 0.4);
             color: var(--text-muted);
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
             font-weight: 800;
-            padding: 15px 12px;
-            border-bottom: 2px solid var(--border);
+            padding: 18px 15px;
+            border-bottom: 1px solid var(--border);
         }
 
-        .col-comp {
-            width: 25%;
+        .results-table td {
+            padding: 18px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
         }
 
-        .col-round {
-            width: 12%;
-        }
-
-        .col-place {
-            width: 8%;
-        }
-
-        .col-single {
-            width: 12%;
-        }
-
-        .col-avg {
-            width: 12%;
-        }
-
-        .col-solves {
-            width: 31%;
+        .results-table tbody tr:last-child td {
+            border-bottom: none;
         }
 
         .comp-name {
             color: #f97316;
             text-decoration: none;
             font-weight: 700;
-            transition: 0.2s;
         }
 
         .best-val {
             font-weight: 800;
             font-family: 'Outfit';
-        }
-
-        .red-text {
-            color: #ef4444 !important;
-            font-weight: 700;
+            font-size: 1.05rem;
         }
 
         .record-tag {
             font-size: 0.7rem;
             font-weight: 900;
+            padding: 2px 6px;
+            border-radius: 4px;
             margin-left: 5px;
-            text-transform: uppercase;
-        }
-
-        .wr-tag {
-            color: #38bdf8;
-        }
-
-        .cr-tag {
-            color: #f472b6;
+            background: #000;
+            color: #fff !important;
         }
 
         .solve-list {
@@ -338,6 +333,11 @@
             font-family: 'JetBrains Mono', monospace;
         }
 
+        .event-section.hidden {
+            display: none;
+        }
+
+        /* Generic Styles Remaining */
         .theme-toggle {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -348,11 +348,28 @@
             font-weight: 600;
         }
 
-        .group-header {
-            background: var(--border) !important;
-            text-align: center !important;
-            color: var(--text-main) !important;
-            font-weight: 800 !important;
+        .event-name-cell {
+            font-weight: 700;
+            color: var(--primary-accent);
+            background: rgba(56, 189, 248, 0.03);
+        }
+
+        .rank-val {
+            font-family: 'Outfit';
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .pr-val {
+            background: rgba(239, 68, 68, 0.05);
+            color: #ef4444 !important;
+            border-left: 1px solid rgba(239, 68, 68, 0.1);
+            border-right: 1px solid rgba(239, 68, 68, 0.1);
+        }
+
+        .group-divider {
+            border-left: 1px solid var(--border) !important;
         }
 
         .site-footer {
@@ -364,208 +381,55 @@
             margin-top: 40px;
         }
 
-        .site-footer a {
-            color: var(--primary-accent);
-            text-decoration: none;
-            font-weight: 700;
-        }
-
-        @media (max-width: 768px) {
-            .name-banner {
-                font-size: 1.8rem;
-            }
-
-            .info-row {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        /* Enhanced PR Table Styling */
-        #pr-tab .results-table {
-            border-collapse: separate;
-            border-spacing: 0;
-        }
-
-        #pr-tab thead th {
-            background: rgba(0, 0, 0, 0.1);
-            padding: 15px 10px;
-            border-bottom: 2px solid var(--border);
-        }
-
-        #pr-tab .group-header {
-            background: var(--bg-hover) !important;
-            letter-spacing: 2px;
-            font-size: 0.75rem;
-            border-left: 1px solid var(--border);
-        }
-
-        #pr-tab td {
-            padding: 16px 12px;
-            transition: background 0.2s;
-        }
-
-        #pr-tab tr:hover td {
-            background: var(--bg-hover);
-        }
-
-        /* Event Column styling */
-        .event-name-cell {
-            font-weight: 700;
-            color: var(--primary-accent);
-            background: rgba(56, 189, 248, 0.03);
-            /* Subtle tint */
-        }
-
-        /* Ranking columns (NR, CR, WR) */
-        .rank-val {
-            font-family: 'Outfit';
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        /* Highlight the 'Best' (PR) column */
-        .pr-val {
-            background: rgba(239, 68, 68, 0.05);
-            /* Very subtle red tint */
-            color: #ef4444 !important;
-            font-size: 1.1rem;
-            border-left: 1px solid rgba(239, 68, 68, 0.1);
-            border-right: 1px solid rgba(239, 68, 68, 0.1);
-        }
-
-        /* Vertical dividers for groups */
-        .group-divider {
-            border-left: 1px solid var(--border) !important;
-        }
-
-        /* Championship Podium Tab Enhancements */
         .wc-group {
             margin-bottom: 30px;
             border: 1px solid var(--border);
             border-radius: 16px;
             overflow: hidden;
             background: var(--bg-card);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
         .wc-header {
             background: var(--bg-hover);
-            /* Uses your existing dark/light hover color */
             padding: 16px 20px;
             border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
         }
 
-        .wc-link {
-            color: var(--text-main);
-            text-decoration: none;
-            font-weight: 800;
-            font-size: 1.1rem;
-            font-family: 'Outfit', sans-serif;
-            letter-spacing: -0.02em;
-            transition: all 0.2s ease;
-        }
-
-        .wc-link:hover {
-            color: var(--primary-accent);
-        }
-
-        .podium-rank {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.4rem;
-            font-weight: 800;
-            text-align: center;
-        }
-
-        /* Rank Colors - Kept metallic but removed the orange-bronze tint */
         .rank-1 {
             color: #ffd700 !important;
-            /* Pure Gold */
             text-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
         }
 
         .rank-2 {
             color: #e2e8f0 !important;
-            /* Bright Silver/White */
         }
 
         .rank-3 {
             color: #cd7f32 !important;
-            /* Clean Copper */
         }
 
-        .podium-table .event-name-cell {
-            background: transparent !important;
-            font-weight: 700;
-            color: var(--primary-accent);
-        }
-
-        /* Row Hover effect */
-        .podium-table tr:hover td {
-            background: rgba(56, 189, 248, 0.05);
-            /* Very subtle tint of your primary accent */
-        }
-
-        /* === MATCH PR TAB INTERACTION === */
-
-        /* Row hover */
-        .results-table tbody tr:hover td {
-            background: var(--bg-hover);
-        }
-
-        /* Rounded corners */
-        .results-table thead th:first-child {
-            border-top-left-radius: 14px;
-        }
-
-        .results-table thead th:last-child {
-            border-top-right-radius: 14px;
-        }
-
-        .results-table tbody tr:last-child td:first-child {
-            border-bottom-left-radius: 14px;
-        }
-
-        .results-table tbody tr:last-child td:last-child {
-            border-bottom-right-radius: 14px;
-        }
-
-        /* Slightly enhance numbers */
-        .best-val {
-            font-weight: 800;
-            font-family: 'Outfit';
-            font-size: 1.05rem;
-        }
-
-        /* Solve text consistency */
-        .solve-list {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
+        /* Keep the filter for WCA icons, but allow local ones to be clean */
+        .event-nav-item img,
+        .event-group-header img {
+            object-fit: contain;
+            width: 1.4rem;
+            height: 1.4rem;
+            /* Remove the filter here if you want your local icons to show original colors */
+            filter: none;
         }
     </style>
 </head>
 
 <body>
-    {# Lists from leaderboard.html to ensure logic works #}
     {% set wca =
     ['333','222','444','555','666','777','333bf','333fm','333oh','clock','minx','pyram','skewb','sq1','444bf','555bf','333mbf','333ft','333mbo','magic','mmagic']
     %}
-    {% set github_unofficial =
-    ['222bf','222oh','234567relay','234567relay_2_person','23456relay','2345relay','234relay','333_linear_fm','333_mirror_blocks','333_mirror_blocks_bld','333_oh_bld_relay','333_oh_bld_team_relay','333_oven_mitts','333_siamese','333_speed_bld','333_team_bld','333_team_factory','333bf_2_person_relay','333bf_3_person_relay','333bf_4_person_relay','333bf_8_person_relay','333mts','444ft','666bf','777bf','baby_fto','cmetrick_mini','corner_helicopter_222','crazy_333','curvycopter','dino','fisher','fto','gear','gigaminx','helicopter','ivy','kilominx','magic_oh','miniguild','miniguild_2_person','miniguild_bld','minx_bld','mpyram','mskewb','mtetram','pyraminx_crystal','pyramorphix','redi','sq1_bld','sq2','super_sq1','ufo']
-    %}
-    {# 1. Initialize the namespace to check for WC Podiums #}
-    {% set has_wc_podiums = namespace(found=false) %}
 
-    {# 2. Run the check across all grouped results #}
+    {% set has_wc_podiums = namespace(found=false) %}
     {% for event_id, results in grouped_results.items() %}
     {% for res in results %}
-    {# Filter: World Championship ID AND Rank 1-3 AND Final Round #}
-    {% if res.competition_id and res.competition_id and res.competition_id[:2] == 'WC' and res.ranking|int <= 3 and
-        res.round_id=='f' %} {% set has_wc_podiums.found=true %} {% endif %} {% endfor %} {% endfor %} <div
-        class="container">
+    {% if res.competition_id and res.competition_id[:2] == 'WC' and res.ranking|int <= 3 and res.round_id=='f' %} {% set
+        has_wc_podiums.found=true %} {% endif %} {% endfor %} {% endfor %} <div class="container">
         <header>
             <a href="/" style="text-decoration:none; color:var(--text-muted); font-weight:700;">
                 <i class="fa-solid fa-arrow-left"></i> BACK
@@ -628,83 +492,90 @@
             {% endif %}
         </nav>
 
+        {% macro get_event_icon(event_id, event_name) %}
+        {# Check if it's a standard WCA event #}
+        {% if event_id in
+        ['333','222','444','555','666','777','333bf','333fm','333oh','clock','minx','pyram','skewb','sq1','444bf','555bf','333mbf','333ft','333mbo','magic','mmagic']
+        %}
+        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/event/{{ event_id }}.svg"
+            onerror="this.src='/static/icons/{{ event_id }}.svg';">
+        {% else %}
+        {# Try unofficial GitHub, then local, then text fallback #}
+        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/{{ event_id }}.svg"
+            onerror="this.onerror=null; this.src='/static/icons/{{ event_id }}.svg'; this.addEventListener('error', function(){ this.outerHTML='<span class=\'fallback-text\'>{{ event_name[:3] }}</span>'; }, {once: true});">
+        {% endif %}
+        {% endmacro %}
         <div id="results-tab" class="tab-content active">
-            {% for event_id, results in grouped_results.items() %}
-            <div id="event-{{ event_id }}">
-                <div class="event-group-header">
-                    {{ get_icon(event_id) | safe }}
-
-                    {# DISPLAY EVENT NAME #}
-                    {{ results[0].event_name }}
+            <div class="event-nav">
+                {% for event_id, results in grouped_results.items() %}
+                <div class="event-nav-item" onclick="filterEvent('{{ event_id }}', this)"
+                    title="{{ results[0].event_name }}">
+                    {{ get_event_icon(event_id, results[0].event_name) }}
                 </div>
-
-                <div class="table-wrapper">
-                    <table class="results-table">
-                        <thead>
-                            <tr>
-                                <th class="col-comp">Competition</th>
-                                <th class="col-round">Round</th>
-                                <th class="col-place">Place</th>
-                                <th class="col-single">Single</th>
-                                <th class="col-avg">Average</th>
-                                <th class="col-solves">Solves</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for res in results %}
-                            <tr>
-                                <td class="col-comp">
-                                    {# Only show name if it's the first result for this competition in the list #}
-                                    {% if loop.first or results[loop.index0 - 1].competition_id != res.competition_id %}
-                                    <a href="/competition/{{ res.competition_id }}" class="comp-name">
-                                        {# Use .competition_name if available, else fallback to formatted ID #}
-                                        {{ res.competition_name if res.competition_name else res.competition_id |
-                                        replace('_', ' ') }}
-                                    </a>
-                                    {% endif %}
-                                </td>
-                                <td class="col-round">{{ res.round_name }}</td>
-                                <td class="col-place">{{ res.ranking }}</td>
-
-                                {# Color logic with Pink for Records #}
-                                <td class="col-single best-val"
-                                    style="{% if res.s_label %}color: #ff69b4 !important;{% elif res.s_class == 'red-text' %}color: red;{% endif %}">
-                                    {{ res.single_formatted }}
-                                    {% if res.s_label %}
-                                    <span class="record-tag"
-                                        style="background: #000; color: #fff; padding: 2px 5px; border-radius: 4px; margin-left: 5px; font-weight: bold; font-size: 0.8rem; -webkit-text-fill-color: white;">
-                                        {{ res.s_label }}
-                                    </span>
-                                    {% endif %}
-                                </td>
-
-                                <td class="col-avg best-val"
-                                    style="{% if res.a_label %}color: #ff69b4 !important;{% elif res.a_class == 'red-text' %}color: red;{% endif %}">
-                                    {{ res.average_formatted }}
-                                    {% if res.a_label %}
-                                    <span class="record-tag"
-                                        style="background: #000; color: #fff; padding: 2px 5px; border-radius: 4px; margin-left: 5px; font-weight: bold; font-size: 0.8rem; -webkit-text-fill-color: white;">
-                                        {{ res.a_label }}
-                                    </span>
-                                    {% endif %}
-                                </td>
-
-                                <td class="col-solves solve-list">{{ res.solves_joined }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
-        </div>
 
+            <div id="event-tables-container">
+                {% for event_id, results in grouped_results.items() %}
+                <div class="event-section {% if not loop.first %}hidden{% endif %}" id="section-{{ event_id }}">
+                    <div class="event-group-header">
+
+                        {{ results[0].event_name }}
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="results-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 32%;">Competition</th>
+                                    <th style="width: 12%;">Round</th>
+                                    <th style="width: 6%;">Pos</th>
+                                    <th style="width: 12%;">Single</th>
+                                    <th style="width: 12%;">Average</th>
+                                    <th style="width: 26%;">Solves</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {# Sort: Competition ID descending #}
+                                {% for res in results|sort(attribute='competition_id', reverse=true) %}
+                                <tr>
+                                    <td>
+                                        {# Only show competition name if the round is a Final ('f') #}
+                                        {% if res.round_id == 'f' %}
+                                        <a href="/competition/{{ res.competition_id }}" class="comp-name">
+                                            {{ res.competition_name or res.competition_id | replace('_', ' ') }}
+                                        </a>
+                                        {% else %}
+                                        <span
+                                            style="color: var(--text-muted); font-size: 0.85rem; opacity: 0.3;">—</span>
+                                        {% endif %}
+                                    </td>
+                                    <td style="font-weight: 600;">{{ res.round_name }}</td>
+                                    <td>{{ res.ranking }}</td>
+                                    <td class="best-val" style="{% if res.s_label %}color: #ff69b4;{% endif %}">
+                                        {{ res.single_formatted }}
+                                        {% if res.s_label %}<span class="record-tag">{{ res.s_label }}</span>{% endif %}
+                                    </td>
+                                    <td class="best-val" style="{% if res.a_label %}color: #ff69b4;{% endif %}">
+                                        {{ res.average_formatted }}
+                                        {% if res.a_label %}<span class="record-tag">{{ res.a_label }}</span>{% endif %}
+                                    </td>
+                                    <td class="solve-list">{{ res.solves_joined }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
         <div id="pr-tab" class="tab-content">
-            <div class="table-wrapper">
-                <table class="results-table" style="min-width: 900px;">
+            <div class="table-wrapper"
+                style="border-radius: 14px; margin-top: 20px; border-top: 1px solid var(--border);">
+                <table class="results-table">
                     <thead>
                         <tr>
-                            <th rowspan="2" style="border-radius: 12px 0 0 0;">Event</th>
+                            <th rowspan="2">Event</th>
                             <th class="group-divider">NR</th>
                             <th>CR</th>
                             <th>WR</th>
@@ -722,22 +593,17 @@
                                 <div style="display: inline-flex; align-items: center; gap: 8px;">
                                     {% if rec.event_id in wca %}
                                     <span class="cubing-icon event-{{ rec.event_id }}"></span>
-                                    {% elif rec.event_id in github_unofficial %}
+                                    {% else %}
                                     <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/{{ rec.event_id }}.svg"
                                         style="width:1.2rem;">
-                                    {% else %}
-                                    <img src="/static/icons/{{ rec.event_id }}.svg" style="width:1.2rem;"
-                                        onerror="this.style.display='none'">
                                     {% endif %}
                                     {{ rec.event_name }}
                                 </div>
                             </td>
-
                             <td class="rank-val group-divider">{{ rec.nr_s }}</td>
                             <td class="rank-val">{{ rec.cr_s }}</td>
                             <td class="rank-val">{{ rec.wr_s }}</td>
                             <td class="pr-val best-val">{{ format_time(rec.single, rec.event_id) }}</td>
-
                             <td class="pr-val best-val group-divider">{{ format_time(rec.average, rec.event_id, True) }}
                             </td>
                             <td class="rank-val">{{ rec.wr_a }}</td>
@@ -749,69 +615,48 @@
                 </table>
             </div>
         </div>
+
         <div id="records-tab" class="tab-content">
-            {% set record_types = [
-            {'id': 'WR', 'title': 'History of World Records'},
-            {'id': 'CR', 'title': 'History of Continental Records'},
-            {'id': 'NR', 'title': 'History of National Records'}
-            ] %}
-
+            {% set record_types = [{'id': 'WR', 'title': 'History of World Records'}, {'id': 'CR', 'title': 'History of
+            Continental Records'}, {'id': 'NR', 'title': 'History of National Records'}] %}
             {% for type in record_types %}
-            {# First, check if the competitor has ANY records of this type #}
             {% set ns = namespace(has_type=false) %}
-            {% for eid, results in grouped_results.items() %}
-            {% for res in results %}
-            {% if res.s_label == type.id or res.a_label == type.id %}
-            {% set ns.has_type = true %}
-            {% endif %}
-            {% endfor %}
-            {% endfor %}
-
+            {% for eid, results in grouped_results.items() %}{% for res in results %}{% if res.s_label == type.id or
+            res.a_label == type.id %}{% set ns.has_type = true %}{% endif %}{% endfor %}{% endfor %}
             {% if ns.has_type %}
-            <h2 style="text-align: center; font-family: 'Outfit'; margin-top: 40px; font-weight: 600;">{{ type.title }}
-            </h2>
-
+            <h2
+                style="text-align: center; font-family: 'Outfit'; margin-top: 50px; font-weight: 800; color: var(--text-main);">
+                {{ type.title }}</h2>
             {% for event_id, results in grouped_results.items() %}
-            {# Check if this specific event has records of the current type #}
-            {% set ns = namespace(event_has_record=false) %}
-
-            {% for res in results %}
-            {% if res.s_label == type.id or res.a_label == type.id %}
-            {% set ns.event_has_record = true %}
-            {% endif %}
-            {% endfor %}
-
-            {% if ns.event_has_record %}
+            {% set ens = namespace(event_has_record=false) %}
+            {% for res in results %}{% if res.s_label == type.id or res.a_label == type.id %}{% set ens.event_has_record
+            = true %}{% endif %}{% endfor %}
+            {% if ens.event_has_record %}
             <div class="event-group-header"
-                style="background: #eee; color: #333; font-size: 0.9rem; padding: 5px 15px; margin-top: 10px; border: 1px solid var(--border); border-bottom: none;">
-                {{ get_icon(event_id) | safe }}
-                {{ results[0].event_name }}
+                style="background: var(--bg-hover); color: var(--primary-accent); border: 1px solid var(--border); border-bottom: none;">
+                {{ get_icon(event_id) | safe }} {{ results[0].event_name }}
             </div>
-
-            <div class="table-wrapper"
-                style="border-radius: 0; border-top: 1px solid var(--border); margin-bottom: 20px;">
+            <div class="table-wrapper" style="border-radius: 0 0 14px 14px;">
                 <table class="results-table">
                     <thead>
-                        <tr style="background: transparent;">
-                            <th style="width: 10%;">Single</th>
-                            <th style="width: 10%;">Average</th>
-                            <th style="width: 35%;">Competition</th>
+                        <tr>
+                            <th style="width: 12%;">Single</th>
+                            <th style="width: 12%;">Average</th>
+                            <th style="width: 30%;">Competition</th>
                             <th style="width: 15%;">Round</th>
-                            <th style="width: 30%;">Solves</th>
+                            <th style="width: 31%;">Solves</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for res in results %}
                         {% if res.s_label == type.id or res.a_label == type.id %}
                         <tr>
-                            <td class="best-val">{{ res.single_formatted if res.s_label == type.id else '' }}</td>
-                            <td class="best-val">{{ res.average_formatted if res.a_label == type.id else '' }}</td>
-                            <td>
-                                <a href="/competition/{{ res.competition_id }}" class="comp-name">
-                                    {{ res.competition_name if res.competition_name else res.competition_id |
-                                    replace('_', ' ') }}
-                                </a>
-                            </td>
+                            <td class="best-val" style="color: #ff69b4;">{{ res.single_formatted if res.s_label ==
+                                type.id else '' }}</td>
+                            <td class="best-val" style="color: #ff69b4;">{{ res.average_formatted if res.a_label ==
+                                type.id else '' }}</td>
+                            <td><a href="/competition/{{ res.competition_id }}" class="comp-name">{{
+                                    res.competition_name or res.competition_id | replace('_', ' ') }}</a></td>
                             <td>{{ res.round_name }}</td>
                             <td class="solve-list">{{ res.solves_joined }}</td>
                         </tr>
@@ -824,63 +669,41 @@
             {% endfor %}
             {% endif %}
             {% endfor %}
-
-            {# If absolutely no records exist across all types #}
-            {% set total_records = stats.records.wr + stats.records.cr + stats.records.nr %}
-            {% if total_records == 0 %}
-            <div style="text-align:center; padding: 60px; color: var(--text-muted);">
-                <i class="fa-solid fa-medal" style="font-size: 3rem; margin-bottom: 20px; opacity: 0.3;"></i>
-                <p>No regional or world records have been established by this competitor.</p>
-            </div>
-            {% endif %}
         </div>
 
-        {# ONLY RENDER IF PODIUMS EXIST #}
         {% if has_wc_podiums.found %}
         <div id="championships-tab" class="tab-content">
             {% set wc_comps = [] %}
-            {% for eid, results in grouped_results.items() %}
-            {% for res in results %}
-            {% if res.competition_id[:2] == 'WC' and res.ranking|int <= 3 and res.round_id=='f' %} {% if
-                res.competition_id not in wc_comps %} {% set _=wc_comps.append(res.competition_id) %} {% endif %} {%
-                endif %} {% endfor %} {% endfor %} {% for comp_id in wc_comps | sort(reverse=true) %} <div
-                class="wc-group">
+            {% for eid, results in grouped_results.items() %}{% for res in results %}{% if res.competition_id[:2] ==
+            'WC' and res.ranking|int <= 3 and res.round_id=='f' %}{% if res.competition_id not in wc_comps %}{% set
+                _=wc_comps.append(res.competition_id) %}{% endif %}{% endif %}{% endfor %}{% endfor %} {% for comp_id in
+                wc_comps | sort(reverse=true) %} <div class="wc-group">
                 <div class="wc-header">
-                    <a href="/competition/{{ comp_id }}" class="wc-link">
-                        <i class="fa-solid fa-trophy" style="margin-right: 10px; color: var(--primary-accent);"></i>
-                        {{ comp_id | replace('_', ' ') }}
+                    <a href="/competition/{{ comp_id }}"
+                        style="text-decoration: none; color: inherit; font-weight: 800; font-family: 'Outfit';">
+                        <i class="fa-solid fa-trophy" style="margin-right: 10px; color: var(--primary-accent);"></i> {{
+                        comp_id | replace('_', ' ') }}
                     </a>
                 </div>
-
                 <div class="table-wrapper" style="border: none; border-radius: 0;">
-                    <table class="results-table podium-table">
+                    <table class="results-table">
                         <thead>
                             <tr>
                                 <th style="width: 30%;">Event</th>
                                 <th style="width: 20%; text-align: center;">Rank</th>
                                 <th style="width: 25%;">Result</th>
-                                <th style="width: 25%;">Type</th>
+                                <th style="width: 25%;">Average</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for eid, results in grouped_results.items() %}
                             {% for res in results %}
                             {% if res.competition_id == comp_id and res.ranking|int <= 3 and res.round_id=='f' %} <tr>
-                                <td class="event-name-cell">
-                                    {{ get_icon(res.event_id) | safe }}
-                                    {{ res.event_name }}
-                                </td>
-                                <td class="podium-rank rank-{{ res.ranking }}">
-                                    {{ res.ranking }}
-                                </td>
-                                <td class="best-val">
-                                    {{ res.average_formatted if res.average_formatted and res.average_formatted !=
-                                    '0.00' else res.single_formatted }}
-                                </td>
-                                <td style="color: var(--text-muted); font-size: 0.85rem;">
-                                    {{ 'Average' if res.average_formatted and res.average_formatted != '0.00' else
-                                    'Single' }}
-                                </td>
+                                <td class="event-name-cell">{{ res.event_name }}</td>
+                                <td style="text-align: center; font-weight: 800; font-family: 'Outfit'; font-size: 1.2rem;"
+                                    class="rank-{{ res.ranking }}">{{ res.ranking }}</td>
+                                <td class="best-val">{{ res.single_formatted }}</td>
+                                <td class="best-val">{{ res.average_formatted }}</td>
                                 </tr>
                                 {% endif %}
                                 {% endfor %}
@@ -894,8 +717,7 @@
         {% endif %}
 
         <footer class="site-footer">
-            <p>Data provided by the worldwide unofficial rankings database.</p>
-            <p>&copy; 2026 {{ person.name }}. Built with <a href="https://flask.palletsprojects.com/">Flask</a>.</p>
+            <p>Data from Unofficial WCA Rankings</p>
         </footer>
         </div>
 
@@ -904,29 +726,40 @@
                 var i, tabcontent, tablinks;
                 tabcontent = document.getElementsByClassName("tab-content");
                 for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
                     tabcontent[i].classList.remove("active");
                 }
                 tablinks = document.getElementsByClassName("tab-link");
                 for (i = 0; i < tablinks.length; i++) {
-                    tablinks[i].classList.remove("active");
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
                 }
+                document.getElementById(tabName).style.display = "block";
                 document.getElementById(tabName).classList.add("active");
-                evt.currentTarget.classList.add("active");
+                evt.currentTarget.className += " active";
             }
 
             function toggleTheme() {
                 const html = document.documentElement;
-                const current = html.getAttribute('data-theme');
-                const target = current === 'dark' ? 'light' : 'dark';
-                html.setAttribute('data-theme', target);
-                localStorage.setItem('theme', target);
+                const currentTheme = html.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                html.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
             }
 
-            // Initialize theme from local storage
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-                document.documentElement.setAttribute('data-theme', savedTheme);
+            function filterEvent(eventId, element) {
+                document.querySelectorAll('.event-nav-item').forEach(nav => nav.classList.remove('active'));
+                element.classList.add('active');
+                document.querySelectorAll('.event-section').forEach(section => section.classList.add('hidden'));
+                const target = document.getElementById('section-' + eventId);
+                if (target) target.classList.remove('hidden');
             }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const firstTab = document.querySelector('.event-nav-item');
+                if (firstTab) firstTab.classList.add('active');
+                const savedTheme = localStorage.getItem('theme') || 'dark';
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            });
         </script>
 </body>
 

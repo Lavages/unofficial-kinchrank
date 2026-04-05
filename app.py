@@ -18,7 +18,7 @@ cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 # --- CONFIGURATION ---
 CORE_AVG = ['fto', '333_team_bld', '333_mirror_blocks', '333_mirror_blocks_bld', 'mpyram', 'kilominx', 'redi', 'magic', 'mmagic', '333_linear_fm', '333ft']
 CORE_SIN = ['333_speed_bld', 'miniguild', 'miniguild_2_person', '333mts']
-MISC_AVG_EVENTS = ['222_blanker', '222_mirror_blocks', '444_mirror_blocks', '555_mirror_blocks', 'fisher', '333_windmill_cube', '333_axis_cube', '333_twist_cube', '333_void', '333_cube_mile', '333_siamese', '223_cuboid', '133_cuboid','233_cuboid', '334_cuboid', 'super_133', '888', '999', '101010', 'mkilominx', 'gigaminx', 'baby_fto', 'mfto', 'cto', '2pentahedron', '3pentahedron', 'pyramorphix', 'pyram_duo', 'dino', 'ivy_cube', 'rainbow_cube', 'corner_heli222', 'helicopter', 'curvycopter', 'gear_cube', 'super_gear_cube', 'magic_oh', '222fm', '444fm', 'snake', '15puzzle', '8puzzle','222oh','444oh','clock_oh','333_oven_mitts','333_paw_mitts','222bf','new_penta_clock','penta_clock','minx_oh','clock_bld','clock_doubles']
+MISC_AVG_EVENTS = ['222_blanker', '222_mirror_blocks', '444_mirror_blocks', '555_mirror_blocks', 'fisher', '333_windmill_cube', '333_axis_cube', '333_twist_cube', '333_void', '333_cube_mile', '333_siamese', '223_cuboid', '133_cuboid','233_cuboid', '334_cuboid', 'super_133', '888', '999', '101010', 'mkilominx', 'gigaminx','pyram_oh', 'baby_fto', 'mfto', 'cto', '2pentahedron', '3pentahedron', 'pyramorphix', 'pyram_duo','333_team_bld_old', 'dino', 'ivy_cube', 'rainbow_cube', 'corner_heli222', 'helicopter', 'curvycopter', 'gear_cube', 'super_gear_cube','skewb_oh', 'magic_oh', '222fm', '444fm', 'snake', '15puzzle', '8puzzle','222oh','444oh','clock_oh','333_oven_mitts','333_paw_mitts','222bf','new_penta_clock','penta_clock','minx_oh','clock_bld','clock_doubles']
 MISC_SIN_EVENTS = ['333_bets', '333_supersolve', '333bf_bottle', '333_braille_bld','234567relay','2345relay_bld',]
 
 AVG_EVENTS = set(CORE_AVG + MISC_AVG_EVENTS)
@@ -30,6 +30,8 @@ CONTINENTS = ['Africa', 'Asia', 'Europe', 'North America', 'Oceania', 'South Ame
 def format_time(value, event_id, is_avg=False):
     try:
         val_float = float(value)
+        if val_float == -1: return "DNF" # Return DNF string for WCA standard
+        if val_float == -2: return "DNS" # Return DNS string for Did Not Start
         if val_float <= 0: return "-"
     except (ValueError, TypeError):
         return "-"
@@ -37,7 +39,7 @@ def format_time(value, event_id, is_avg=False):
     if 'fm' in event_id.lower():
         return f"{val_float / 100.0:.2f}" if is_avg else str(int(val_float))
 
-    seconds = int(val_float) / 100.0
+    seconds = val_float / 100.0
     if seconds < 60:
         return f"{seconds:.2f}"
     return f"{int(seconds // 60)}:{seconds % 60:05.2f}"
@@ -104,7 +106,8 @@ def load_and_process_data():
         return pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), {}, pd.DataFrame()
 # Add this near your other helpers
 def get_event_icon_tag(event_id):
-    # --- WCA OFFICIAL EVENTS (use font directly FIRST) ---
+    # --- WCA OFFICIAL EVENTS ---
+    # Using the 'cubing-icon' class which is usually a font-face
     wca_events = {
         '333','222','444','555','666','777','333bf','333fm','333oh',
         'clock','minx','pyram','skewb','sq1','444bf','555bf',
@@ -120,23 +123,16 @@ def get_event_icon_tag(event_id):
         'ivy_cube': 'ivy',
         'corner_heli222': 'corner_helicopter_222'
     }
+    
+    icon_name = special_map.get(event_id, event_id)
 
-    if event_id in special_map:
-        return f'<img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/{special_map[event_id]}.svg" class="event-icon" alt="{event_id}">'
-
-    # --- LOCAL ICONS ---
-    local_path = os.path.join(app.root_path, 'static', 'icons', f"{event_id}.svg")
-    if os.path.exists(local_path):
-        return f'<img src="/static/icons/{event_id}.svg" class="event-icon" alt="{event_id}">'
-
-    # --- GITHUB FALLBACK ---
-    return f'''
-    <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/{event_id}.svg"
-         class="event-icon"
-         alt="{event_id}"
-         onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
-    <span class="cubing-icon event-{event_id}" style="display:none;"></span>
-    '''
+    # --- UPDATED LOGIC ---
+    # We combine local and github logic into one cleaner img tag 
+    # to avoid the "red <" syntax errors caused by complex multi-line strings.
+    return f'''<img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/{icon_name}.svg" 
+                class="event-icon" 
+                alt="{event_id}" 
+                onerror="this.onerror=null; this.src='/static/icons/{event_id}.svg'; this.style.color='transparent';">'''
 
 # Register it so you can use it in HTML
 app.jinja_env.globals.update(get_icon=get_event_icon_tag)
@@ -216,12 +212,21 @@ def person_profile(person_id):
     p_res['ranking'] = pd.to_numeric(p_res['ranking'], errors='coerce').fillna(0)
 
     # --- SORTING LOGIC FOR FINAL OVER FIRST ROUND ---
-    # Define priority: Finals (f) -> Semi (s) -> Round 3 -> Round 2 -> Round 1
     round_priority = {'f': 0, 's': 1, '3': 2, '2': 3, '1': 4}
     p_res['round_rank'] = p_res['round_type_id'].map(round_priority).fillna(9)
-    
-    # Sort by date (Most Recent) then by Round Rank (Final on top)
     p_res = p_res.sort_values(by=['start_date', 'round_rank'], ascending=[False, True])
+
+    # --- NEW: CALCULATE ACTUAL COMPLETED SOLVES ---
+    total_completed_solves = 0
+    for _, row in p_res.iterrows():
+        try:
+            raw_attempts = row['attempts']
+            # Parse the stringified list of dictionaries
+            atts = ast.literal_eval(raw_attempts) if isinstance(raw_attempts, str) and raw_attempts.startswith('[') else []
+            # result > 0 excludes -1 (DNF) and -2 (DNS)
+            total_completed_solves += sum(1 for a in atts if isinstance(a, dict) and a.get('result', 0) > 0)
+        except:
+            continue
 
     medals = {
         'gold': int((p_res['ranking'] == 1).sum()),
@@ -237,15 +242,12 @@ def person_profile(person_id):
     pbs = p_res.groupby('event_id').agg({'best': 'min', 'average': lambda x: x[x > 0].min() if not x[x > 0].empty else 0}).to_dict('index')
     
     grouped_results = {}
-    
-    # Map competition names for the results tab
     comp_name_map = contests_df.set_index('competition_id')['name'].to_dict()
 
     for eid in p_res['event_id'].unique():
         ev_list = []
         event_results = p_res[p_res['event_id'] == eid]
         
-        # Chronological sort (Oldest First) for historical PR calculation
         chronological = event_results.sort_values(by='start_date', ascending=True)
         running_best_single = float('inf')
         running_best_avg = float('inf')
@@ -258,7 +260,6 @@ def person_profile(person_id):
             if is_pr_avg: running_best_avg = row['average']
             history_meta[idx] = {'pr_s': is_pr_single, 'pr_a': is_pr_avg}
 
-        # Build list using the already sorted p_res (Recent First + Final on top)
         for idx, row in event_results.iterrows():
             try:
                 try:
@@ -286,7 +287,6 @@ def person_profile(person_id):
             a_label = row.get('regional_average_record') if pd.notna(row.get('regional_average_record')) else None
             meta = history_meta.get(idx, {'pr_s': False, 'pr_a': False})
 
-            # Logic to handle Red/Pink text classes
             s_class = "pink-text" if s_label else ("red-text" if meta['pr_s'] else "")
             a_class = "pink-text" if a_label else ("red-text" if meta['pr_a'] else "")
 
@@ -298,14 +298,13 @@ def person_profile(person_id):
                 'round_id': row.get('round_type_id', row.get('round_id', "-")),
                 'ranking': int(row['ranking']) if row['ranking'] > 0 else "-",
                 'single_formatted': format_time(row['best'], eid),
-                'average_formatted': format_time(row['average'], eid, True) if row['average'] > 0 else "-",
-                'solves_joined': solves_joined,
+                'average_formatted': format_time(row['average'], eid, True) if row['average'] != 0 else "-",
                 's_label': s_label, 'a_label': a_label,
-                's_class': s_class, 'a_class': a_class
+                's_class': s_class, 'a_class': a_class,
+                'solves': solves_joined
             })
         grouped_results[eid] = ev_list
 
-    # --- PB Calculation for Records Tab ---
     all_pbs = res_exploded.groupby(['person_id', 'event_id']).agg({'best': 'min', 'average': lambda x: x[x > 0].min() if not x[x > 0].empty else 0}).reset_index()
     all_pbs = all_pbs.merge(pers_df[['id', 'full_country', 'continent']], left_on='person_id', right_on='id')
 
@@ -328,7 +327,12 @@ def person_profile(person_id):
         })
 
     return render_template('profile.html', person=person, records=records_tab_data, 
-                            stats={'comps': p_res['competition_id'].nunique(), 'solves': len(p_res), 'medals': medals, 'records': {'wr': int(wr_count), 'cr': int(cr_count), 'nr': int(nr_count)}}, 
+                            stats={
+                                'comps': p_res['competition_id'].nunique(), 
+                                'solves': total_completed_solves, 
+                                'medals': medals, 
+                                'records': {'wr': int(wr_count), 'cr': int(cr_count), 'nr': int(nr_count)}
+                            }, 
                             grouped_results=grouped_results, format_time=format_time)
 
 @app.route('/competition/<competition_id>')

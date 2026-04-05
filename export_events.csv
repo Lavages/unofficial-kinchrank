@@ -98,7 +98,7 @@ id,event_id,name,category,rank,format,default_round_format,participants,submissi
 68,360_puzzle,360 Puzzle,miscellaneous,3450,time,a,1,FALSE,FALSE,FALSE,FALSE,One example of this puzzle is the Rubik's 360,,,2023-10-21T15:46:46.086Z,2024-12-28T10:18:39.287Z
 69,snake,Snake,miscellaneous,3440,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-10-21T20:06:25.557Z,2024-12-28T10:18:22.496Z
 70,333_x3_relay,Three 3x3x3 Cubes Relay,removed,4020,time,a,1,FALSE,FALSE,FALSE,FALSE,"Solve three 3x3x3 cubes, all scrambled differently. This is not a team event.",,,2023-10-22T08:38:50.014Z,2024-12-29T21:03:17.369Z
-71,222bf,2x2x2 Blindfolded,miscellaneous,3101,time,3,1,FALSE,FALSE,FALSE,FALSE,,,,2023-10-23T09:53:12.649Z,2024-12-28T09:43:31.358Z
+71,222bf,2x2x2 Blindfolded,miscellaneous,3101,time,5,1,FALSE,FALSE,FALSE,FALSE,,,,2023-10-23T09:53:12.649Z,2024-12-28T09:43:31.358Z
 72,222oh,2x2x2 One-Handed,miscellaneous,3103,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-10-23T09:58:40.550Z,2024-12-28T09:43:41.072Z
 73,333_speed_bld,3x3x3 Speed-Blind,unofficial,1210,time,1,1,TRUE,FALSE,FALSE,FALSE,Memorize a 3x3x3 and solve it as fast as possible blindfolded. Only the solution part is timed.,,"- This is a blindfolded event (see above), except the final result only includes the execution phase. The execution phase proceeds like a fully blindfolded event, with the following exceptions:
 - The entire attempt (memorization + execution) is timed by a judge using a stopwatch.
@@ -110,7 +110,7 @@ id,event_id,name,category,rank,format,default_round_format,participants,submissi
 - The recorded time of the execution phase, as timed by the timer, is the final recorded result.",2023-10-23T14:02:46.930Z,2024-07-22T09:51:53.643Z
 74,magic_oh,Magic One-Handed,miscellaneous,3413,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-10-23T14:09:15.901Z,2024-12-28T10:15:34.194Z
 75,rainbow_cube,Rainbow Cube,miscellaneous,3390,time,a,1,FALSE,FALSE,FALSE,FALSE,Cuboctahedron-shaped puzzle,,,2023-10-27T05:17:26.919Z,2024-12-28T10:20:10.474Z
-76,333_siamese,3x3x3 Siamese Cube,miscellaneous,3035,time,m,1,FALSE,FALSE,FALSE,FALSE,Two 3x3x3 puzzles connected with one edge and two corners,,,2023-10-28T08:53:36.739Z,2024-12-28T10:23:50.159Z
+76,333_siamese,3x3x3 Siamese Cube,miscellaneous,3058,time,m,1,FALSE,FALSE,FALSE,FALSE,Two 3x3x3 puzzles connected with one edge and two corners,,,2023-10-28T08:53:36.739Z,2026-04-01T07:09:01.088Z
 77,333_supersolve,3x3x3 Supersolve,miscellaneous,3045,time,1,1,FALSE,FALSE,FALSE,FALSE,Solve a 3x3x3 cube using as much preparation time as needed. The scrambles can be shared ahead of time. Only execution is timed. Only the first timed attempt is accepted.,,,2023-11-05T07:25:15.428Z,2025-07-05T06:42:41.311Z
 78,15puzzle,15 Puzzle,miscellaneous,3430,time,a,1,FALSE,FALSE,FALSE,FALSE,,,"- Scrambling notation: the puzzle is oriented with the empty cell in the bottom right corner. Every move is determined based on how the empty cell is filled: U represents moving one piece up by one cell, filling the empty cell; R represents moving right, D - down, L - left. 2 represents moving two pieces together, 3 represents moving three pieces together. For example: R2 moves two pieces to the right. A move shifting multiple pieces together is still counted as one move.
 - Solved state: all pieces are arranged in numerical order from lowest to highest, going from left to right, top to bottom, with the empty cell in the bottom right corner. The orientation of the pieces does not affect the solved state. Up to one piece may be flipped in place such that the number is not visible. Penalty for more than one flipped piece: DNF.
@@ -204,7 +204,7 @@ id,event_id,name,category,rank,format,default_round_format,participants,submissi
 130,fisher,3x3x3 Fisher Cube,miscellaneous,3291,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2025-08-17T17:54:55.946Z,2025-08-17T17:54:55.946Z
 131,101010,10x10x10 Cube,miscellaneous,3216,time,m,1,FALSE,FALSE,FALSE,FALSE,,,,2025-08-24T00:41:05.994Z,2025-08-24T00:41:05.994Z
 132,333_windmill_cube,3x3x3 Windmill Cube,miscellaneous,3293,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2025-09-24T14:11:28.188Z,2025-09-24T14:11:28.188Z
-133,333_doubles,3x3x3 Doubles,miscellaneous,3033,time,a,2,FALSE,FALSE,FALSE,FALSE,"Solve a 3x3x3 in a team of two, each using only one hand. Relevant One-Handed rules apply.",,,2025-09-24T14:13:38.675Z,2025-09-24T14:13:38.675Z
+133,333_doubles,3x3x3 Doubles,miscellaneous,3035,time,a,2,FALSE,FALSE,FALSE,FALSE,"Solve a 3x3x3 in a team of two, each using only one hand. Relevant One-Handed rules apply.",,,2025-09-24T14:13:38.675Z,2026-04-01T07:09:20.387Z
 134,222_blanker,2x2x2 Blanker Cube,miscellaneous,3285,time,a,1,FALSE,FALSE,FALSE,FALSE,"2x2x2 shape modification, made to look like a 3x3x3 with the same color on every side.",,,2025-10-03T15:27:13.914Z,2025-10-03T15:27:13.914Z
 135,new_penta_clock,Pentagonal Clock (New Style),miscellaneous,3482,time,a,1,FALSE,FALSE,FALSE,FALSE,Also known as 5x5 Clock. Sold by Qiyi and doesn’t contain a center clock,,,2025-12-28T21:13:28.742Z,2025-12-28T21:13:28.742Z
 136,333bf_oh,3x3x3 Blindfolded One-Handed,miscellaneous,3017,time,3,1,TRUE,FALSE,TRUE,FALSE,"Solve a 3x3x3 Cube blindfolded and using only one hand. After the competitor starts the timer, they must only use one hand for the entire attempt, including the memorization phase.",,,2026-01-11T09:13:22.030Z,2026-01-13T18:59:18.045Z

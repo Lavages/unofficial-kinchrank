@@ -20,6 +20,8 @@
             --text-muted: #94a3b8;
             --border: #334155;
             --bg-hover: #334155;
+            /* Brighten icons for dark mode */
+            --icon-filter: brightness(0) invert(0.9);
         }
 
         :root[data-theme="light"] {
@@ -30,6 +32,8 @@
             --text-muted: #64748b;
             --border: #e2e8f0;
             --bg-hover: #f8fafc;
+            /* Keep icons dark for light mode */
+            --icon-filter: none;
         }
 
         body {
@@ -41,14 +45,18 @@
             transition: background 0.3s ease;
         }
 
+        /* Updated Icon Styling */
         .event-icon-btn img,
         .event-group-header img,
         .col-comp img,
-        .event-name-cell img {
-            filter: invert(72%) sepia(9%) saturate(838%) hue-rotate(182deg) brightness(91%) contrast(89%);
+        .event-name-cell img,
+        .event-nav-item img {
+            filter: var(--icon-filter);
             object-fit: contain;
             width: 1.4rem;
             height: 1.4rem;
+            vertical-align: middle;
+            transition: filter 0.3s ease;
         }
 
         .container {
@@ -198,7 +206,6 @@
             }
         }
 
-        /* Results Tab Specific Styling */
         .event-nav {
             display: flex;
             flex-wrap: wrap;
@@ -337,7 +344,6 @@
             display: none;
         }
 
-        /* Generic Styles Remaining */
         .theme-toggle {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -407,16 +413,6 @@
         .rank-3 {
             color: #cd7f32 !important;
         }
-
-        /* Keep the filter for WCA icons, but allow local ones to be clean */
-        .event-nav-item img,
-        .event-group-header img {
-            object-fit: contain;
-            width: 1.4rem;
-            height: 1.4rem;
-            /* Remove the filter here if you want your local icons to show original colors */
-            filter: none;
-        }
     </style>
 </head>
 
@@ -453,7 +449,8 @@
                         }}</span></div>
                 <div class="info-item"><span class="label">Competitions</span><span class="val">{{ stats.comps }}</span>
                 </div>
-                <div class="info-item"><span class="label">Solves</span><span class="val">{{ stats.solves }}</span>
+                <div class="info-item"><span class="label">Completed Solves</span><span class="val">{{ stats.solves
+                        }}</span>
                 </div>
             </div>
         </div>
@@ -510,7 +507,7 @@
                 {% for event_id, results in grouped_results.items() %}
                 <div class="event-nav-item" onclick="filterEvent('{{ event_id }}', this)"
                     title="{{ results[0].event_name }}">
-                    {{ get_event_icon(event_id, results[0].event_name) }}
+                    {{ get_icon(event_id) | safe }}
                 </div>
                 {% endfor %}
             </div>
@@ -539,7 +536,6 @@
                                 {% for res in results|sort(attribute='competition_id', reverse=true) %}
                                 <tr>
                                     <td>
-                                        {# Only show competition name if the round is a Final ('f') #}
                                         {% if res.round_id == 'f' %}
                                         <a href="/competition/{{ res.competition_id }}" class="comp-name">
                                             {{ res.competition_name or res.competition_id | replace('_', ' ') }}
@@ -551,15 +547,29 @@
                                     </td>
                                     <td style="font-weight: 600;">{{ res.round_name }}</td>
                                     <td>{{ res.ranking }}</td>
+
                                     <td class="best-val" style="{% if res.s_label %}color: #ff69b4;{% endif %}">
+                                        {% if res.single_formatted == 'DNF' %}
+                                        <span style="color: #ef4444; font-weight: 800;">DNF</span>
+                                        {% else %}
                                         {{ res.single_formatted }}
+                                        {% endif %}
                                         {% if res.s_label %}<span class="record-tag">{{ res.s_label }}</span>{% endif %}
                                     </td>
+
                                     <td class="best-val" style="{% if res.a_label %}color: #ff69b4;{% endif %}">
+                                        {% if res.average_formatted == 'DNF' %}
+                                        <span style="color: #ef4444; font-weight: 800;">DNF</span>
+                                        {% else %}
                                         {{ res.average_formatted }}
-                                        {% if res.a_label %}<span class="record-tag">{{ res.a_label }}</span>{% endif %}
+                                        {% endif %}
+
+                                        {% if res.a_label %}
+                                        <span class="record-tag">{{ res.a_label }}</span>
+                                        {% endif %}
                                     </td>
-                                    <td class="solve-list">{{ res.solves_joined }}</td>
+
+                                    <td class="solve-list">{{ res.solves }}</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -591,12 +601,8 @@
                         <tr>
                             <td class="event-name-cell">
                                 <div style="display: inline-flex; align-items: center; gap: 8px;">
-                                    {% if rec.event_id in wca %}
-                                    <span class="cubing-icon event-{{ rec.event_id }}"></span>
-                                    {% else %}
-                                    <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/{{ rec.event_id }}.svg"
-                                        style="width:1.2rem;">
-                                    {% endif %}
+                                    {# Use the powerful function from your app.py #}
+                                    {{ get_icon(rec.event_id) | safe }}
                                     {{ rec.event_name }}
                                 </div>
                             </td>
@@ -717,7 +723,9 @@
         {% endif %}
 
         <footer class="site-footer">
-            <p>Data from Unofficial WCA Rankings</p>
+            Results are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC
+                BY-SA
+                4.0</a> | Latest export: v1 (05/04/2026)
         </footer>
         </div>
 

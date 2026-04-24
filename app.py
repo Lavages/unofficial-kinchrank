@@ -205,28 +205,27 @@ def person_profile(person_id):
     
     person = p_row.iloc[0].to_dict()
     country, continent = person['full_country'], person['continent']
+    
+    # Ensure start_date is datetime for accurate sorting
     p_res = res_exploded[res_exploded['person_id'] == person_id].copy()
+    p_res['start_date'] = pd.to_datetime(p_res['start_date'])
 
-    # --- SAFETY FIX: Ensure IDs are strings and Rankings are numbers ---
-    p_res['competition_id'] = p_res['competition_id'].apply(lambda x: str(x) if pd.notna(x) else "")
-    p_res['ranking'] = pd.to_numeric(p_res['ranking'], errors='coerce').fillna(0)
-
-    # --- SORTING LOGIC FOR FINAL OVER FIRST ROUND ---
+    # --- SORTING LOGIC ---
+    # f=Final, s=Semi, etc. Higher priority for Finals.
     round_priority = {'f': 0, 's': 1, '3': 2, '2': 3, '1': 4}
     p_res['round_rank'] = p_res['round_type_id'].map(round_priority).fillna(9)
+    
+    # Global sort: Newest competitions first, then highest round type
     p_res = p_res.sort_values(by=['start_date', 'round_rank'], ascending=[False, True])
 
-    # --- NEW: CALCULATE ACTUAL COMPLETED SOLVES ---
+    # --- CALCULATE STATS ---
     total_completed_solves = 0
     for _, row in p_res.iterrows():
         try:
             raw_attempts = row['attempts']
-            # Parse the stringified list of dictionaries
             atts = ast.literal_eval(raw_attempts) if isinstance(raw_attempts, str) and raw_attempts.startswith('[') else []
-            # result > 0 excludes -1 (DNF) and -2 (DNS)
             total_completed_solves += sum(1 for a in atts if isinstance(a, dict) and a.get('result', 0) > 0)
-        except:
-            continue
+        except: continue
 
     medals = {
         'gold': int((p_res['ranking'] == 1).sum()),
@@ -241,44 +240,45 @@ def person_profile(person_id):
 
     pbs = p_res.groupby('event_id').agg({'best': 'min', 'average': lambda x: x[x > 0].min() if not x[x > 0].empty else 0}).to_dict('index')
     
+    # --- GROUPED RESULTS (CHRONOLOGICAL) ---
     grouped_results = {}
     comp_name_map = contests_df.set_index('competition_id')['name'].to_dict()
 
-    for eid in p_res['event_id'].unique():
+    # Get event order based on most recent activity
+    ordered_event_ids = p_res.groupby('event_id')['start_date'].max().sort_values(ascending=False).index
+
+    for eid in ordered_event_ids:
         ev_list = []
         event_results = p_res[p_res['event_id'] == eid]
         
-        chronological = event_results.sort_values(by='start_date', ascending=True)
-        running_best_single = float('inf')
-        running_best_avg = float('inf')
+        # Calculate PRs using chronological order (oldest to newest)
+        chrono_for_pr = event_results.sort_values(by='start_date', ascending=True)
+        running_best_s, running_best_a = float('inf'), float('inf')
         history_meta = {}
 
-        for idx, row in chronological.iterrows():
-            is_pr_single = (0 < row['best'] < running_best_single)
-            is_pr_avg = (0 < row['average'] < running_best_avg)
-            if is_pr_single: running_best_single = row['best']
-            if is_pr_avg: running_best_avg = row['average']
-            history_meta[idx] = {'pr_s': is_pr_single, 'pr_a': is_pr_avg}
+        for idx, row in chrono_for_pr.iterrows():
+            is_pr_s = (0 < row['best'] < running_best_s)
+            is_pr_a = (0 < row['average'] < running_best_a)
+            if is_pr_s: running_best_s = row['best']
+            if is_pr_a: running_best_a = row['average']
+            history_meta[idx] = {'pr_s': is_pr_s, 'pr_a': is_pr_a}
 
+        # Build list using existing sort (Newest First)
         for idx, row in event_results.iterrows():
             try:
-                try:
-                    raw_attempts = row['attempts']
-                    atts = ast.literal_eval(raw_attempts) if isinstance(raw_attempts, str) and raw_attempts.startswith('[') else []
-                    raw_results = [a.get('result', 0) for a in atts if isinstance(a, dict)]
-                except:
-                    raw_results = []
+                raw_attempts = row['attempts']
+                atts = ast.literal_eval(raw_attempts) if isinstance(raw_attempts, str) and raw_attempts.startswith('[') else []
+                raw_results = [a.get('result', 0) for a in atts if isinstance(a, dict)]
                 
                 f_solves = []
                 if len(raw_results) == 5:
-                    proc_values = [v if v > 0 else float('inf') for v in raw_results]
-                    best_idx, worst_idx = proc_values.index(min(proc_values)), proc_values.index(max(proc_values))
-                    for i, v in enumerate(raw_results):
-                        time_str = "DNF" if v == -1 else "DNS" if v == -2 else format_time(v, eid)
-                        f_solves.append(f"({time_str})" if i == best_idx or i == worst_idx else time_str)
+                    v = [x if x > 0 else float('inf') for x in raw_results]
+                    b_idx, w_idx = v.index(min(v)), v.index(max(v))
+                    for i, res_val in enumerate(raw_results):
+                        t = "DNF" if res_val == -1 else "DNS" if res_val == -2 else format_time(res_val, eid)
+                        f_solves.append(f"({t})" if i == b_idx or i == w_idx else t)
                 else:
                     f_solves = ["DNF" if v == -1 else "DNS" if v == -2 else format_time(v, eid) for v in raw_results]
-                
                 solves_joined = " ".join(f_solves)
             except:
                 solves_joined = "-"
@@ -287,24 +287,25 @@ def person_profile(person_id):
             a_label = row.get('regional_average_record') if pd.notna(row.get('regional_average_record')) else None
             meta = history_meta.get(idx, {'pr_s': False, 'pr_a': False})
 
-            s_class = "pink-text" if s_label else ("red-text" if meta['pr_s'] else "")
-            a_class = "pink-text" if a_label else ("red-text" if meta['pr_a'] else "")
-
             ev_list.append({
                 'competition_id': str(row['competition_id']),
                 'competition_name': comp_name_map.get(row['competition_id'], row['competition_id']),
                 'event_name': event_names.get(eid, eid),
-                'round_name': format_round(row.get('round_type_id', row.get('round_id', "-"))),
-                'round_id': row.get('round_type_id', row.get('round_id', "-")),
+                'round_name': format_round(row.get('round_type_id', "-")),
+                'round_id': row.get('round_type_id', "-"),  # <--- ADD THIS LINE
                 'ranking': int(row['ranking']) if row['ranking'] > 0 else "-",
                 'single_formatted': format_time(row['best'], eid),
                 'average_formatted': format_time(row['average'], eid, True) if row['average'] != 0 else "-",
                 's_label': s_label, 'a_label': a_label,
-                's_class': s_class, 'a_class': a_class,
-                'solves': solves_joined
+                's_class': "pink-text" if s_label else ("red-text" if meta['pr_s'] else ""),
+                'a_class': "pink-text" if a_label else ("red-text" if meta['pr_a'] else ""),
+                'solves': solves_joined,
+                'round_id': row.get('round_type_id', "-"), # Add this for the Final link logic
+                'date_str': row['start_date'].strftime('%Y-%m-%d') if pd.notna(row['start_date']) else "Unknown Date",
             })
         grouped_results[eid] = ev_list
 
+    # Records and Rank Logic
     all_pbs = res_exploded.groupby(['person_id', 'event_id']).agg({'best': 'min', 'average': lambda x: x[x > 0].min() if not x[x > 0].empty else 0}).reset_index()
     all_pbs = all_pbs.merge(pers_df[['id', 'full_country', 'continent']], left_on='person_id', right_on='id')
 
@@ -368,9 +369,8 @@ def competition_page(competition_id):
     all_rounds = {}
     results_by_person = {}
 
-    # --- 4. Logic for "By Person" Tab (Updated with Parentheses Logic) ---
+    # --- 4. Logic for "By Person" Tab ---
     person_exploded = comp_results.explode('pid_list')
-    
     for _, row in person_exploded.iterrows():
         pid = str(row['pid_list'])
         if pid not in results_by_person:
@@ -385,20 +385,15 @@ def competition_page(competition_id):
         attempts = ast.literal_eval(row['attempts'])
         raw = [a['result'] for a in attempts]
         
-        # Calculate indices for Ao5 parentheses
         b_idx = w_idx = -1
         if len(raw) == 5:
             valid = [v if v > 0 else float('inf') for v in raw]
             b_idx, w_idx = valid.index(min(valid)), valid.index(max(valid))
 
-        # Format solve strings with parentheses
         formatted_solves = []
         for i, v in enumerate(raw):
             time_str = "DNF" if v == -1 else "DNS" if v == -2 else format_time(v, eid)
-            if i == b_idx or i == w_idx:
-                formatted_solves.append(f"({time_str})")
-            else:
-                formatted_solves.append(time_str)
+            formatted_solves.append(f"({time_str})" if i == b_idx or i == w_idx else time_str)
         
         results_by_person[pid]['results'].append({
             'event_id': eid,
@@ -407,12 +402,12 @@ def competition_page(competition_id):
             'rank': int(row['ranking']),
             'best': format_time(row['best'], eid),
             'average': format_time(row['average'], eid, True) if row['average'] > 0 else "-",
-            'solves': formatted_solves # Updated to use list with parentheses
+            'solves': formatted_solves
         })
 
     results_by_person = dict(sorted(results_by_person.items(), key=lambda item: item[1]['name']))
 
-    # --- 5. Logic for "All Results" Tab (Updated to apply parentheses) ---
+    # --- 5. Logic for "All Results" Tab ---
     for eid in ordered_events:
         event_all_data = comp_results[comp_results['event_id'] == eid]
         if not event_all_data.empty:
@@ -424,29 +419,35 @@ def competition_page(competition_id):
                 round_results = []
                 for _, row in round_df.iterrows():
                     pids = row.get('pid_list', [])
-                    p_info = pers_df[pers_df['id'] == str(pids[0])] if pids else pd.DataFrame()
+                    
+                    team_names = []
+                    team_countries = []
+                    for pid in pids:
+                        p_info = pers_df[pers_df['id'] == str(pid)]
+                        if not p_info.empty:
+                            team_names.append(p_info.iloc[0]['name'])
+                            team_countries.append(p_info.iloc[0]['full_country'])
+                    
+                    res_display_name = " & ".join(team_names) if team_names else "Unknown"
+                    display_country = ", ".join(set(team_countries)) if team_countries else "Unknown"
+
                     attempts = ast.literal_eval(row['attempts'])
                     raw = [a['result'] for a in attempts]
-                    
                     b_idx = w_idx = -1
                     if len(raw) == 5:
                         valid = [v if v > 0 else float('inf') for v in raw]
                         b_idx, w_idx = valid.index(min(valid)), valid.index(max(valid))
 
-                    # Apply parentheses to the solves list
                     formatted_solves = []
                     for i, v in enumerate(raw):
                         time_str = "DNF" if v == -1 else "DNS" if v == -2 else format_time(v, eid)
-                        if i == b_idx or i == w_idx:
-                            formatted_solves.append(f"({time_str})")
-                        else:
-                            formatted_solves.append(time_str)
+                        formatted_solves.append(f"({time_str})" if i == b_idx or i == w_idx else time_str)
 
                     round_results.append({
                         'rank': int(row['ranking']),
                         'person_id': str(pids[0]) if pids else "#",
-                        'name': p_info.iloc[0]['name'] if not p_info.empty else "Unknown",
-                        'representing': p_info.iloc[0]['full_country'] if not p_info.empty else "Unknown",
+                        'name': res_display_name,
+                        'representing': display_country,
                         'best': format_time(row['best'], eid),
                         'average': format_time(row['average'], eid, True) if row['average'] > 0 else "-",
                         'solves': formatted_solves,
@@ -454,7 +455,7 @@ def competition_page(competition_id):
                     })
                 all_rounds[eid]['rounds'].append({'round_name': ROUND_NAMES.get(rid, f"Round {rid}"), 'results': round_results})
 
-    # --- 6. Logic for Winners & Podiums (Updated to apply parentheses) ---
+    # --- 6. Logic for Winners & Podiums ---
     finals = comp_results[comp_results['round_type_id'] == 'f']
     for eid in ordered_events:
         if eid not in finals['event_id'].values: continue
@@ -469,6 +470,9 @@ def competition_page(competition_id):
                 if not p_info.empty:
                     members.append({'id': str(pid), 'name': p_info.iloc[0]['name'], 'country': p_info.iloc[0]['full_country']})
             
+            res_display_name = " & ".join([m['name'] for m in members]) if members else "Unknown"
+            display_country = ", ".join(set(m['country'] for m in members)) if members else "Unknown"
+
             attempts = ast.literal_eval(row['attempts'])
             raw = [a['result'] for a in attempts]
             b_idx = w_idx = -1
@@ -479,15 +483,12 @@ def competition_page(competition_id):
             formatted_solves = []
             for i, v in enumerate(raw):
                 time_str = "DNF" if v == -1 else "DNS" if v == -2 else format_time(v, eid)
-                if i == b_idx or i == w_idx:
-                    formatted_solves.append(f"({time_str})")
-                else:
-                    formatted_solves.append(time_str)
+                formatted_solves.append(f"({time_str})" if i == b_idx or i == w_idx else time_str)
 
             formatted_res = {
                 'person_id': members[0]['id'] if members else "#",
-                'name': members[0]['name'] if members else "Unknown",
-                'representing': members[0]['country'] if members else "Unknown",
+                'name': res_display_name,
+                'representing': display_country,
                 'best': format_time(row['best'], eid),
                 'average': format_time(row['average'], eid, True) if row['average'] > 0 else "-",
                 'solves': formatted_solves,
@@ -498,21 +499,21 @@ def competition_page(competition_id):
             if row['ranking'] == 1:
                 winners_list.append({
                     'event_id': eid, 'event_name': event_names.get(eid, eid),
-                    'team_members': members, 'representing': ", ".join(set(m['country'] for m in members)),
+                    'team_members': members, 'representing': display_country,
                     'best': formatted_res['best'], 'average': formatted_res['average'] if row['average'] > 0 else None,
                     'solves': formatted_solves, 'best_idx': b_idx, 'worst_idx': w_idx
                 })
         podiums[eid] = {'event_id': eid, 'event_name': event_names.get(eid, eid), 'results': results_list}
 
     return render_template('competition.html', 
-                           comp_name=display_name, 
-                           comp_location=location, 
-                           comp_date=date_val, 
-                           winners=winners_list, 
-                           podiums=podiums,
-                           all_rounds=all_rounds,
-                           results_by_person=results_by_person,
-                           competition_id=competition_id)
+                            comp_name=display_name, 
+                            comp_location=location, 
+                            comp_date=date_val, 
+                            winners=winners_list, 
+                            podiums=podiums,
+                            all_rounds=all_rounds,
+                            results_by_person=results_by_person,
+                            competition_id=competition_id)
 app = app
 if __name__ == '__main__':
     # Enable debug mode as requested

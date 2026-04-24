@@ -425,18 +425,18 @@
 
         <div id="podiums-tab" class="tab-content">
             {% for event in podiums.values() %}
-            <div class="podium-section">
+            <div class="podium-section" style="margin-bottom: 40px;">
                 <h3
-                    style="font-family: 'Outfit'; margin: 25px 0 15px 10px; display: flex; align-items: center; gap: 12px; font-size: 1.4rem;">
+                    style="font-family: 'Outfit', sans-serif; margin: 25px 0 15px 10px; display: flex; align-items: center; gap: 12px; font-size: 1.4rem;">
                     {% set clean_eid = event.event_id|replace('-', '_') %}
 
                     {# Tiered SVG Logic for Podium Headers #}
                     {% if event.event_id in official_events %}
                     <img src="{{ gh_base }}/event/{{ event.event_id }}.svg"
-                        style="width: 32px; height: 32px; filter: var(--icon-filter);">
+                        style="width: 32px; height: 32px; filter: var(--icon-filter);" alt="{{ event.event_name }}">
                     {% elif clean_eid in github_unofficial %}
                     <img src="{{ gh_base }}/unofficial/{{ clean_eid }}.svg"
-                        style="width: 32px; height: 32px; filter: var(--icon-filter);">
+                        style="width: 32px; height: 32px; filter: var(--icon-filter);" alt="{{ event.event_name }}">
                     {% else %}
                     <img src="/static/icons/{{ clean_eid }}.svg"
                         style="width: 32px; height: 32px; filter: var(--icon-filter);"
@@ -445,49 +445,57 @@
 
                     {{ event.event_name }}
                 </h3>
-                <div class="results-card">
+
+                <div class="results-card" style="overflow-x: auto; border-radius: 8px; background: var(--card-bg);">
                     <div class="table-wrapper">
-                        <table>
+                        <table style="width: 100%; border-collapse: collapse;">
                             <thead>
-                                <tr>
-                                    <th style="width: 50px; text-align: center;">#</th>
-                                    <th>Name</th>
-                                    <th>Best</th>
-                                    <th>Average</th>
-                                    <th>Representing</th>
-                                    <th class="hide-mobile">Solves</th>
+                                <tr style="border-bottom: 1px solid var(--border-color);">
+                                    <th style="width: 50px; text-align: center; padding: 12px;">#</th>
+                                    <th style="text-align: left; padding: 12px;">Name</th>
+                                    <th style="text-align: left; padding: 12px;">Best</th>
+                                    <th style="text-align: left; padding: 12px;">Average</th>
+                                    <th style="text-align: left; padding: 12px;">Representing</th>
+                                    <th class="hide-mobile" style="text-align: left; padding: 12px;">Solves</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for res in event.results %}
                                 {% if res %}
-                                <tr class="result-row">
-                                    <td style="text-align: center; font-weight: 800;"
+                                <tr class="result-row" style="border-bottom: 1px solid var(--border-color-light);">
+                                    <td style="text-align: center; font-weight: 800; padding: 12px;"
                                         class="podium-rank-{{ loop.index }}">
                                         {{ loop.index }}
                                     </td>
-                                    <td>
-                                        <a href="/person/{{ res.person_id }}" class="winner-name">
+                                    <td style="padding: 12px;">
+                                        <a href="/person/{{ res.person_id }}" class="winner-name"
+                                            style="text-decoration: none; font-weight: 600; color: inherit;">
                                             {{ res.name }}
                                         </a>
                                     </td>
-                                    <td class="stat-bold">{{ res.best }}</td>
-                                    <td class="stat-bold">
-                                        {{ res.average if res.average and res.average != '0' and res.average != '' else
-                                        res.best }}
+                                    <td class="stat-bold" style="padding: 12px; font-weight: 700;">{{ res.best }}</td>
+                                    <td class="stat-bold" style="padding: 12px;">
+                                        {# Display average if it exists and isn't 0/empty; otherwise fallback to Best
+                                        (for Bo3/Bo2) #}
+                                        {% if res.average and res.average not in ['0', '0.00', 'DNF', 'DNS', ''] %}
+                                        {{ res.average }}
+                                        {% else %}
+                                        <span style="opacity: 0.6;">{{ res.best }}</span>
+                                        {% endif %}
                                     </td>
-                                    <td style="color: var(--text-muted); font-size: 0.9rem;">
-                                        {{ res.representing }}
+                                    <td style="color: var(--text-muted); font-size: 0.9rem; padding: 12px;">
+                                        {{ res.representing if res.representing else "---" }}
                                     </td>
-                                    <td class="solves-cell hide-mobile">
+                                    <td class="solves-cell hide-mobile"
+                                        style="padding: 12px; font-family: monospace; font-size: 0.85rem;">
                                         {% if res.solves|length == 5 %}
                                         {% for solve in res.solves %}
                                         {% if loop.index0 == res.best_idx or loop.index0 == res.worst_idx %}
-                                        <span style="opacity: 0.5;">({{ solve }})</span>
+                                        <span style="opacity: 0.4;">({{ solve }})</span>
                                         {% else %}
-                                        {{ solve }}
+                                        <span>{{ solve }}</span>
                                         {% endif %}
-                                        {% if not loop.last %} &nbsp; {% endif %}
+                                        {% if not loop.last %}&nbsp;{% endif %}
                                         {% endfor %}
                                         {% else %}
                                         {{ res.solves|join(' ') }}
@@ -505,20 +513,27 @@
         </div>
 
         <div id="all-results-tab" class="tab-content">
-            <div class="event-navbar" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;">
+            <div class="event-navbar"
+                style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; justify-content: center; padding: 10px; background: var(--card-bg); border-radius: 12px;">
                 {% for eid, event_data in all_rounds.items() %}
                 {% set clean_eid = eid|replace('-', '_') %}
+                <button class="event-btn" onclick="showEvent('{{ eid }}', this)" title="{{ event_data.event_name }}"
+                    style="background: transparent; border: 1px solid var(--border-color); padding: 8px; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; min-width: 44px; min-height: 44px;">
 
-                <button class="event-btn" onclick="showEvent('{{ eid }}', this)" title="{{ event_data.event_name }}">
                     {% if eid in official_events %}
-                    <img src="{{ gh_base }}/event/{{ eid }}.svg" class="event-icon-img">
+                    <img src="{{ gh_base }}/event/{{ eid }}.svg" class="event-icon-img"
+                        style="width: 24px; height: 24px; filter: var(--icon-filter);">
                     {% elif clean_eid in github_unofficial %}
-                    <img src="{{ gh_base }}/unofficial/{{ clean_eid }}.svg" class="event-icon-img">
+                    <img src="{{ gh_base }}/unofficial/{{ clean_eid }}.svg" class="event-icon-img"
+                        style="width: 24px; height: 24px; filter: var(--icon-filter);">
                     {% else %}
                     <img src="/static/icons/{{ clean_eid }}.svg" class="event-icon-img"
+                        style="width: 24px; height: 24px; filter: var(--icon-filter);"
                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                    <span class="event-text" style="display:none; font-size: 0.7rem;">{{ event_data.event_name[:3]|upper
-                        }}</span>
+                    <span class="event-text"
+                        style="display:none; font-size: 0.65rem; font-weight: 700; color: var(--text-main);">
+                        {{ event_data.event_name[:3]|upper }}
+                    </span>
                     {% endif %}
                 </button>
                 {% endfor %}
@@ -526,13 +541,11 @@
 
             {% for eid, event_data in all_rounds.items() %}
             {% set clean_eid = eid|replace('-', '_') %}
-
             <div class="event-group" id="event-{{ eid }}"
                 style="display:none; margin-bottom: 50px; opacity:0; transition: opacity 0.25s ease;">
 
                 <h2
-                    style="font-family: 'Outfit'; border-bottom: 2px solid var(--primary-accent); padding-bottom: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px;">
-
+                    style="font-family: 'Outfit', sans-serif; border-bottom: 2px solid var(--primary-accent); padding-bottom: 12px; margin-bottom: 25px; display: flex; align-items: center; gap: 15px; font-size: 1.6rem;">
                     {% if eid in official_events %}
                     <img src="{{ gh_base }}/event/{{ eid }}.svg"
                         style="width: 32px; height: 32px; filter: var(--icon-filter);">
@@ -544,52 +557,71 @@
                         style="width: 32px; height: 32px; filter: var(--icon-filter);"
                         onerror="this.style.display='none';">
                     {% endif %}
-
                     {{ event_data.event_name }}
                 </h2>
 
                 {% for round in event_data.rounds %}
-                <div class="round-section" style="margin-bottom: 30px;">
-                    <h3 style="font-size: 1.1rem; color: var(--text-muted); margin-left: 10px; margin-bottom: 10px;">
+                <div class="round-section" style="margin-bottom: 35px;">
+                    <h3
+                        style="font-size: 1.1rem; color: var(--text-muted); margin-left: 5px; margin-bottom: 12px; font-weight: 500;">
                         {{ round.round_name }}
                     </h3>
 
-                    <div class="results-card">
-                        <div class="table-wrapper">
-                            <table>
+                    <div class="results-card"
+                        style="background: var(--card-bg); border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);">
+                        <div class="table-wrapper" style="overflow-x: auto;">
+                            <table style="width: 100%; border-collapse: collapse; min-width: 600px;">
                                 <thead>
-                                    <tr>
-                                        <th style="width: 40px; text-align: center;">#</th>
-                                        <th>Name</th>
-                                        <th style="text-align: center;">Best</th>
-                                        <th style="text-align: center;">Average</th>
-                                        <th>Representing</th>
-                                        <th class="hide-mobile">Solves</th>
+                                    <tr
+                                        style="border-bottom: 1px solid var(--border-color); background: rgba(0,0,0,0.02);">
+                                        <th style="width: 50px; text-align: center; padding: 12px;">#</th>
+                                        <th style="text-align: left; padding: 12px;">Name</th>
+                                        <th style="text-align: center; padding: 12px;">Best</th>
+                                        <th style="text-align: center; padding: 12px;">Average</th>
+                                        <th style="text-align: left; padding: 12px;">Representing</th>
+                                        <th class="hide-mobile" style="text-align: left; padding: 12px;">Solves</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for res in round.results %}
-                                    <tr class="result-row">
-                                        <td style="text-align: center; color: var(--text-muted); font-weight: 700;">
+                                    <tr class="result-row" style="border-bottom: 1px solid var(--border-color-light);">
+                                        <td
+                                            style="text-align: center; color: var(--text-muted); font-weight: 700; padding: 12px;">
                                             {{ res.rank }}
                                         </td>
-                                        <td><a href="/person/{{ res.person_id }}" class="winner-name">{{ res.name }}</a>
+                                        <td style="padding: 12px;">
+                                            <a href="/person/{{ res.person_id }}" class="winner-name"
+                                                style="text-decoration: none; font-weight: 600; color: inherit;">
+                                                {{ res.name }}
+                                            </a>
                                         </td>
-                                        <td style="text-align: center;" class="stat-bold">{{ res.best }}</td>
-                                        <td style="text-align: center;" class="stat-bold">
-                                            {{ res.average if res.average and res.average != '0' else res.best }}
+                                        <td style="text-align: center; font-weight: 700; padding: 12px;"
+                                            class="stat-bold">
+                                            {{ res.best }}
                                         </td>
-                                        <td style="font-size: 0.85rem; color: var(--text-muted);">{{ res.representing }}
-                                        </td>
-                                        <td class="solves-cell hide-mobile">
-                                            {% for solve in res.solves %}
-                                            {% if loop.index0 == res.best_idx or loop.index0 == res.worst_idx %}
-                                            <span style="opacity: 0.6;">({{ solve }})</span>
+                                        <td style="text-align: center; padding: 12px;" class="stat-bold">
+                                            {% if res.average and res.average not in ['0', '0.00', 'DNF', 'DNS', ''] %}
+                                            {{ res.average }}
                                             {% else %}
-                                            {{ solve }}
+                                            <span style="opacity: 0.5; font-weight: 400;">—</span>
+                                            {% endif %}
+                                        </td>
+                                        <td style="font-size: 0.85rem; color: var(--text-muted); padding: 12px;">
+                                            {{ res.representing if res.representing else "---" }}
+                                        </td>
+                                        <td class="solves-cell hide-mobile"
+                                            style="padding: 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;">
+                                            {% if res.solves %}
+                                            {% for solve in res.solves %}
+                                            {% if res.solves|length == 5 and (loop.index0 == res.best_idx or loop.index0
+                                            == res.worst_idx) %}
+                                            <span style="opacity: 0.4;">({{ solve }})</span>
+                                            {% else %}
+                                            <span>{{ solve }}</span>
                                             {% endif %}
                                             {% if not loop.last %}&nbsp;{% endif %}
                                             {% endfor %}
+                                            {% endif %}
                                         </td>
                                     </tr>
                                     {% endfor %}

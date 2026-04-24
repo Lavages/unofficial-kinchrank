@@ -516,7 +516,6 @@
                 {% for event_id, results in grouped_results.items() %}
                 <div class="event-section {% if not loop.first %}hidden{% endif %}" id="section-{{ event_id }}">
                     <div class="event-group-header">
-
                         {{ results[0].event_name }}
                     </div>
                     <div class="table-wrapper">
@@ -532,23 +531,22 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {# Sort: Competition ID descending #}
-                                {% for res in results|sort(attribute='competition_id', reverse=true) %}
+                                {% for res in results %}
                                 <tr>
                                     <td>
+                                        {# Only show the competition name if the round is a Final #}
                                         {% if res.round_id == 'f' %}
                                         <a href="/competition/{{ res.competition_id }}" class="comp-name">
-                                            {{ res.competition_name or res.competition_id | replace('_', ' ') }}
+                                            {{ res.competition_name }}
                                         </a>
-                                        {% else %}
-                                        <span
-                                            style="color: var(--text-muted); font-size: 0.85rem; opacity: 0.3;">—</span>
                                         {% endif %}
                                     </td>
                                     <td style="font-weight: 600;">{{ res.round_name }}</td>
                                     <td>{{ res.ranking }}</td>
 
-                                    <td class="best-val" style="{% if res.s_label %}color: #ff69b4;{% endif %}">
+                                    {# Single Column: Font-weight 900 if record exists #}
+                                    <td class="best-val {{ res.s_class }}"
+                                        style="{% if res.s_label %}font-weight: 900;{% endif %}">
                                         {% if res.single_formatted == 'DNF' %}
                                         <span style="color: #ef4444; font-weight: 800;">DNF</span>
                                         {% else %}
@@ -557,16 +555,15 @@
                                         {% if res.s_label %}<span class="record-tag">{{ res.s_label }}</span>{% endif %}
                                     </td>
 
-                                    <td class="best-val" style="{% if res.a_label %}color: #ff69b4;{% endif %}">
+                                    {# Average Column: Font-weight 900 if record exists #}
+                                    <td class="best-val {{ res.a_class }}"
+                                        style="{% if res.a_label %}font-weight: 900;{% endif %}">
                                         {% if res.average_formatted == 'DNF' %}
                                         <span style="color: #ef4444; font-weight: 800;">DNF</span>
                                         {% else %}
                                         {{ res.average_formatted }}
                                         {% endif %}
-
-                                        {% if res.a_label %}
-                                        <span class="record-tag">{{ res.a_label }}</span>
-                                        {% endif %}
+                                        {% if res.a_label %}<span class="record-tag">{{ res.a_label }}</span>{% endif %}
                                     </td>
 
                                     <td class="solve-list">{{ res.solves }}</td>

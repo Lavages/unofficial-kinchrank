@@ -1,88 +1,88 @@
-id,event_id,name,category,rank,format,default_round_format,participants,submissions_allowed,removed_wca,has_memo,hidden,description,important_info,rule,created_at,updated_at
-1,333,3x3x3 Cube,wca,10,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.061Z,2023-09-28T14:33:36.818Z
-2,222,2x2x2 Cube,wca,20,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.868Z
-3,444,4x4x4 Cube,wca,30,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.878Z
-4,555,5x5x5 Cube,wca,40,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.887Z
-5,666,6x6x6 Cube,wca,50,time,m,1,FALSE,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.894Z
-6,777,7x7x7 Cube,wca,60,time,m,1,FALSE,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.904Z
-7,333bf,3x3x3 Blindfolded,wca,70,time,5,1,FALSE,FALSE,TRUE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.912Z
-8,333fm,3x3x3 Fewest Moves,wca,80,number,m,1,FALSE,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.919Z
-9,333oh,3x3x3 One-Handed,wca,90,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.929Z
-10,clock,Clock,wca,110,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.941Z
-11,minx,Megaminx,wca,120,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.063Z,2023-09-28T14:33:36.947Z
-12,pyram,Pyraminx,wca,130,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.063Z,2023-09-28T14:33:36.954Z
-13,skewb,Skewb,wca,140,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.063Z,2023-09-28T14:33:36.961Z
-14,sq1,Square-1,wca,150,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.063Z,2023-09-28T14:33:36.968Z
-15,fto,Face-Turning Octahedron,unofficial,1010,time,a,1,FALSE,FALSE,FALSE,FALSE,,,"- Scrambling notation: the puzzle is oriented with one vertex facing directly in the front, such that four of the faces are directly above, below, to the left, and to the right of the front-facing vertex. These make up the U, F, L, and R faces, respectively. For the four faces on the back, B is adjacent to U, BL is adjacent to L, BR is adjacent to R, and D is adjacent to F.
+id,event_id,name,category,rank,format,default_round_format,participants,submissions_allowed,has_memo,hidden,description,important_info,rule,created_at,updated_at
+1,333,3x3x3 Cube,wca,10,time,a,1,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.061Z,2023-09-28T14:33:36.818Z
+2,222,2x2x2 Cube,wca,20,time,a,1,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.868Z
+3,444,4x4x4 Cube,wca,30,time,a,1,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.878Z
+4,555,5x5x5 Cube,wca,40,time,a,1,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.887Z
+5,666,6x6x6 Cube,wca,50,time,m,1,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.894Z
+6,777,7x7x7 Cube,wca,60,time,m,1,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.904Z
+7,333bf,3x3x3 Blindfolded,wca,70,time,5,1,FALSE,TRUE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.912Z
+8,333fm,3x3x3 Fewest Moves,wca,80,number,m,1,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.919Z
+9,333oh,3x3x3 One-Handed,wca,90,time,a,1,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.929Z
+10,clock,Clock,wca,110,time,a,1,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.062Z,2023-09-28T14:33:36.941Z
+11,minx,Megaminx,wca,120,time,a,1,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.063Z,2023-09-28T14:33:36.947Z
+12,pyram,Pyraminx,wca,130,time,a,1,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.063Z,2023-09-28T14:33:36.954Z
+13,skewb,Skewb,wca,140,time,a,1,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.063Z,2023-09-28T14:33:36.961Z
+14,sq1,Square-1,wca,150,time,a,1,FALSE,FALSE,FALSE,,,,2023-08-04T08:03:08.063Z,2023-09-28T14:33:36.968Z
+15,fto,Face-Turning Octahedron,unofficial,1010,time,a,1,FALSE,FALSE,FALSE,,,"- Scrambling notation: the puzzle is oriented with one vertex facing directly in the front, such that four of the faces are directly above, below, to the left, and to the right of the front-facing vertex. These make up the U, F, L, and R faces, respectively. For the four faces on the back, B is adjacent to U, BL is adjacent to L, BR is adjacent to R, and D is adjacent to F.
   - Scrambling orientation (see [Regulation 4d of the WCA Regulations](https://www.worldcubeassociation.org/regulations/#4d)): scrambled starting with white (if not possible, then the lightest color) as the U face and green (if not possible, then the darkest possible color) as the F face.
 - The scramble must be applied correctly. If the puzzle state is wrong, the scrambler must correct it (e.g. by solving the puzzle and applying the scramble sequence again).
 - Misalignment penalty (see [Regulation 10f of the WCA Regulations](https://www.worldcubeassociation.org/regulations/#article-10-solved-state)): at most 60 degrees.",2023-08-04T08:03:08.063Z,2024-07-21T22:02:31.186Z
-16,444bf,4x4x4 Blindfolded,wca,160,time,3,1,TRUE,FALSE,TRUE,FALSE,,,,2023-08-04T08:03:08.063Z,2023-09-28T14:33:36.976Z
-17,555bf,5x5x5 Blindfolded,wca,170,time,3,1,TRUE,FALSE,TRUE,FALSE,,,,2023-08-04T08:03:08.063Z,2023-09-28T14:33:36.979Z
-18,333mbf,3x3x3 Multi-Blind,wca,180,multi,1,1,TRUE,FALSE,TRUE,FALSE,,,,2023-08-04T08:03:08.063Z,2023-09-28T14:33:36.984Z
-19,333_team_bld,3x3x3 Team-Blind,unofficial,1020,time,a,2,FALSE,FALSE,FALSE,FALSE,"Solve a 3x3x3 as a team with a solver who is blindfolded, and a caller who is not allowed to touch the cube or the solver's arms below the elbow. There is no inspection time.",Sight blockers must be used and there is no inspection time.,"- This is a team event (see above) and a fully blindfolded event (from the perspective of the solver) that involves a caller telling a blindfolded solver how to solve a 3x3x3 puzzle.
+16,444bf,4x4x4 Blindfolded,wca,160,time,3,1,TRUE,TRUE,FALSE,,,,2023-08-04T08:03:08.063Z,2023-09-28T14:33:36.976Z
+17,555bf,5x5x5 Blindfolded,wca,170,time,3,1,TRUE,TRUE,FALSE,,,,2023-08-04T08:03:08.063Z,2023-09-28T14:33:36.979Z
+18,333mbf,3x3x3 Multi-Blind,wca,180,multi,1,1,TRUE,TRUE,FALSE,,,,2023-08-04T08:03:08.063Z,2023-09-28T14:33:36.984Z
+19,333_team_bld,3x3x3 Team-Blind,unofficial,1020,time,a,2,FALSE,FALSE,FALSE,"Solve a 3x3x3 as a team with a solver who is blindfolded, and a caller who is not allowed to touch the cube or the solver's arms below the elbow. There is no inspection time.",Sight blockers must be used and there is no inspection time.,"- This is a team event (see above) and a fully blindfolded event (from the perspective of the solver) that involves a caller telling a blindfolded solver how to solve a 3x3x3 puzzle.
 - There is no inspection time.
 - The solver removes the cover from the puzzle after starting the timer.
 - The sight blocker should be held in a way that allows the caller to see the puzzle.
   - This may be coordinated with the judge. For example, the judge can stand across the table from the solver and hold the sight blocker from above. Alternatively, the judge can stand on one side of the solver (left or right) and try to hold the sight blocker in a less obstructive way, while the caller stands on the other side.
   - As in [Regulation B4c3](https://www.worldcubeassociation.org/regulations/#B4c3), a suitable object may be used as a sight blocker instead of being held by the judge.
 - The competitors may switch roles between attempts.",2023-08-04T08:03:08.063Z,2026-03-04T12:24:19.677Z
-20,333_team_factory,3x3x3 Team Factory,miscellaneous,3010,time,a,2,FALSE,FALSE,FALSE,FALSE,"As a team of two, solve a 3x3x3 one step at a time using CFOP or Roux. CFOP steps: cross, 1st, 2nd, 3rd, 4th pair, OLL, PLL. Roux steps: 2x2x1, 1st block, 2nd 2x2x1, 2nd block, CMLL, EOLR, 4C.",,,2023-08-04T08:03:08.063Z,2025-06-27T06:49:49.260Z
-21,333ft,3x3x3 With Feet,unofficial,1300,time,a,1,FALSE,TRUE,FALSE,FALSE,,,- The [WCA Regulations for 3x3x3 With Feet](https://www.worldcubeassociation.org/regulations/history/official/2019-05-01/#article-D-feet) from 2019 apply.,2023-08-04T08:03:08.063Z,2024-07-22T07:05:11.725Z
-22,magic,Magic,unofficial,1080,time,a,1,FALSE,TRUE,FALSE,FALSE,,,"- The solve consists of going from the unlinked ring pattern to the linked ring pattern, as configured in the original mass-produced puzzle.
+20,333_team_factory,3x3x3 Team Factory,miscellaneous,3010,time,a,2,FALSE,FALSE,FALSE,"As a team of two, solve a 3x3x3 one step at a time using CFOP or Roux. CFOP steps: cross, 1st, 2nd, 3rd, 4th pair, OLL, PLL. Roux steps: 2x2x1, 1st block, 2nd 2x2x1, 2nd block, CMLL, EOLR, 4C.",,,2023-08-04T08:03:08.063Z,2025-06-27T06:49:49.260Z
+21,333ft,3x3x3 With Feet,unofficial,1300,time,a,1,FALSE,FALSE,FALSE,,,- The [WCA Regulations for 3x3x3 With Feet](https://www.worldcubeassociation.org/regulations/history/official/2019-05-01/#article-D-feet) from 2019 apply.,2023-08-04T08:03:08.063Z,2024-07-22T07:05:11.725Z
+22,magic,Magic,unofficial,1080,time,a,1,FALSE,FALSE,FALSE,,,"- The solve consists of going from the unlinked ring pattern to the linked ring pattern, as configured in the original mass-produced puzzle.
 - The [WCA Regulations for Magic](https://regulations.worldcubeassociation.org/history/files/regulations2010.html#magicsolving) from 2010 apply.",2023-08-04T08:03:08.063Z,2024-07-21T22:19:55.541Z
-23,mmagic,Master Magic,unofficial,1090,time,a,1,FALSE,TRUE,FALSE,FALSE,,,"- The solve consists of going from the linked ring pattern to the unlinked ring pattern, as configured in the original mass-produced puzzle.
+23,mmagic,Master Magic,unofficial,1090,time,a,1,FALSE,FALSE,FALSE,,,"- The solve consists of going from the linked ring pattern to the unlinked ring pattern, as configured in the original mass-produced puzzle.
 - The [WCA Regulations for Magic](https://regulations.worldcubeassociation.org/history/files/regulations2010.html#magicsolving) from 2010 apply.",2023-08-04T08:03:08.063Z,2024-07-21T22:20:49.881Z
-24,333_oh_bld_team_relay,3x3x3 + OH + BLD Team Relay,miscellaneous,3940,time,1,3,TRUE,FALSE,FALSE,FALSE,,,,2023-08-23T15:04:10.450Z,2024-12-28T09:34:01.539Z
-25,333mbo,3x3x3 Multi-Blind Old Style,extreme-bld,2010,multi,1,1,TRUE,TRUE,TRUE,FALSE,"Same as 3x3x3 Multi-Blind, except there is no time limit",,,2023-08-23T15:04:10.454Z,2023-10-03T06:04:44.421Z
-26,333bf_2_person_relay,3x3x3 Blindfolded 2-man Relay,miscellaneous,3902,time,1,2,TRUE,FALSE,FALSE,FALSE,,,,2023-08-23T15:04:10.456Z,2024-12-28T09:33:34.606Z
-27,333bf_3_person_relay,3x3x3 Blindfolded 3-man Relay,miscellaneous,3903,time,1,3,TRUE,FALSE,FALSE,FALSE,,,,2023-08-23T15:04:10.458Z,2024-12-28T09:33:41.453Z
-28,333bf_4_person_relay,3x3x3 Blindfolded 4-man Relay,miscellaneous,3904,time,1,4,TRUE,FALSE,FALSE,FALSE,,,,2023-08-23T15:04:10.459Z,2024-12-28T09:33:47.666Z
-29,333bf_8_person_relay,3x3x3 Blindfolded 8-man Relay,miscellaneous,3908,time,1,8,TRUE,FALSE,FALSE,FALSE,,,,2023-08-23T15:04:10.461Z,2024-12-28T09:33:53.394Z
-30,333_team_bld_old,3x3x3 Team-Blind With Inspection,miscellaneous,3005,time,a,2,FALSE,FALSE,FALSE,FALSE,The old format of Team-Blind that has inspection time,,,2023-08-23T15:04:10.463Z,2025-06-05T12:50:23.892Z
-31,666bf,6x6x6 Blindfolded,extreme-bld,2100,time,1,1,TRUE,FALSE,TRUE,FALSE,,,,2023-09-10T15:19:34.878Z,2023-09-28T14:33:37.056Z
-32,777bf,7x7x7 Blindfolded,extreme-bld,2110,time,1,1,TRUE,FALSE,TRUE,FALSE,,,,2023-09-10T15:19:34.897Z,2023-09-28T14:33:37.058Z
-33,888bf,8x8x8 Blindfolded,extreme-bld,2120,time,1,1,TRUE,FALSE,TRUE,FALSE,,,,2023-09-10T15:19:34.901Z,2023-09-28T14:33:37.060Z
-34,999bf,9x9x9 Blindfolded,extreme-bld,2130,time,1,1,TRUE,FALSE,TRUE,FALSE,,,,2023-09-10T15:19:34.904Z,2023-09-28T14:33:37.062Z
-35,234567relay_bld,2x2x2-7x7x7 Relay Blindfolded,extreme-bld,2292,time,1,1,TRUE,FALSE,TRUE,FALSE,,,,2023-09-10T15:19:34.908Z,2024-11-26T07:42:46.988Z
-36,minx_bld,Megaminx Blindfolded,extreme-bld,2310,time,1,1,TRUE,FALSE,TRUE,FALSE,,,,2023-09-10T15:19:34.913Z,2023-10-06T09:44:03.215Z
-37,234567relay,2x2x2-7x7x7 Relay,miscellaneous,3830,time,3,1,FALSE,FALSE,FALSE,FALSE,,Relay events with four or more puzzles have a 30 second inspection phase. Please see the rules page for clarification.,,2023-09-15T21:05:23.675Z,2026-03-05T03:03:00.347Z
-38,333_mirror_blocks,Mirror Blocks,unofficial,1030,time,a,1,FALSE,FALSE,FALSE,FALSE,,,"- All sides of the puzzle must be clearly distinguishable from each other (i.e. have distinct thicknesses on each side).
+24,333_oh_bld_team_relay,3x3x3 + OH + BLD Team Relay,miscellaneous,3940,time,1,3,TRUE,FALSE,FALSE,,,,2023-08-23T15:04:10.450Z,2024-12-28T09:34:01.539Z
+25,333mbo,3x3x3 Multi-Blind Old Style,extreme-bld,2010,multi,1,1,TRUE,TRUE,FALSE,"Same as 3x3x3 Multi-Blind, except there is no time limit",,,2023-08-23T15:04:10.454Z,2023-10-03T06:04:44.421Z
+26,333bf_2_person_relay,3x3x3 Blindfolded 2-man Relay,miscellaneous,3902,time,1,2,TRUE,FALSE,FALSE,,,,2023-08-23T15:04:10.456Z,2024-12-28T09:33:34.606Z
+27,333bf_3_person_relay,3x3x3 Blindfolded 3-man Relay,miscellaneous,3903,time,1,3,TRUE,FALSE,FALSE,,,,2023-08-23T15:04:10.458Z,2024-12-28T09:33:41.453Z
+28,333bf_4_person_relay,3x3x3 Blindfolded 4-man Relay,miscellaneous,3904,time,1,4,TRUE,FALSE,FALSE,,,,2023-08-23T15:04:10.459Z,2024-12-28T09:33:47.666Z
+29,333bf_8_person_relay,3x3x3 Blindfolded 8-man Relay,miscellaneous,3908,time,1,8,TRUE,FALSE,FALSE,,,,2023-08-23T15:04:10.461Z,2024-12-28T09:33:53.394Z
+30,333_team_bld_old,3x3x3 Team-Blind With Inspection,miscellaneous,3005,time,a,2,FALSE,FALSE,FALSE,The old format of Team-Blind that has inspection time,,,2023-08-23T15:04:10.463Z,2025-06-05T12:50:23.892Z
+31,666bf,6x6x6 Blindfolded,extreme-bld,2100,time,1,1,TRUE,TRUE,FALSE,,,,2023-09-10T15:19:34.878Z,2023-09-28T14:33:37.056Z
+32,777bf,7x7x7 Blindfolded,extreme-bld,2110,time,1,1,TRUE,TRUE,FALSE,,,,2023-09-10T15:19:34.897Z,2023-09-28T14:33:37.058Z
+33,888bf,8x8x8 Blindfolded,extreme-bld,2120,time,1,1,TRUE,TRUE,FALSE,,,,2023-09-10T15:19:34.901Z,2023-09-28T14:33:37.060Z
+34,999bf,9x9x9 Blindfolded,extreme-bld,2130,time,1,1,TRUE,TRUE,FALSE,,,,2023-09-10T15:19:34.904Z,2023-09-28T14:33:37.062Z
+35,234567relay_bld,2x2x2-7x7x7 Relay Blindfolded,extreme-bld,2292,time,1,1,TRUE,TRUE,FALSE,,,,2023-09-10T15:19:34.908Z,2024-11-26T07:42:46.988Z
+36,minx_bld,Megaminx Blindfolded,extreme-bld,2310,time,1,1,TRUE,TRUE,FALSE,,,,2023-09-10T15:19:34.913Z,2023-10-06T09:44:03.215Z
+37,234567relay,2x2x2-7x7x7 Relay,miscellaneous,3830,time,3,1,FALSE,FALSE,FALSE,,Relay events with four or more puzzles have a 30 second inspection phase. Please see the rules page for clarification.,,2023-09-15T21:05:23.675Z,2026-03-05T03:03:00.347Z
+38,333_mirror_blocks,Mirror Blocks,unofficial,1030,time,a,1,FALSE,FALSE,FALSE,,,"- All sides of the puzzle must be clearly distinguishable from each other (i.e. have distinct thicknesses on each side).
   - All pieces of the puzzle must only be distinguishable from each other by the thickness on each axis. There must be no other way to distinguish the pieces from each other, be that visually, by feel, or otherwise. Exception: the puzzle may have one logo on one of the center pieces.
 - The orientation of the centers does not matter for determining the solved state.
 - Scrambling orientation (see [Regulation 4d of the WCA Regulations](https://www.worldcubeassociation.org/regulations/#4d)): scrambled starting with the thickest layer as the top face and the next thickest adjacent layer on the front face.",2023-09-27T20:11:09.680Z,2024-07-21T22:23:14.718Z
-39,333mts_old,3x3x3 Match The Scramble With Inspection,removed,4010,time,3,1,FALSE,FALSE,FALSE,FALSE,"Using a solved 3x3x3 (A) and a scrambled one (B), bring cube A to the same state as cube B without making turns on cube B. There is 15 seconds of inspection time.",,,2023-09-27T20:11:09.692Z,2024-04-14T18:34:24.033Z
-40,234relay,2x2x2-4x4x4 Relay,miscellaneous,3810,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-09-27T20:11:09.697Z,2024-12-28T09:34:15.743Z
-41,2345relay,2x2x2-5x5x5 Relay,miscellaneous,3820,time,3,1,FALSE,FALSE,FALSE,FALSE,,Relay events with four or more puzzles have a 30 second inspection phase. Please see the rules page for clarification.,,2023-09-27T20:11:09.701Z,2026-03-05T03:02:09.629Z
-42,333_inspectionless,3x3x3 No Inspection,miscellaneous,3015,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-09-27T20:11:09.812Z,2024-12-28T08:31:24.210Z
-43,333_scrambling,3x3x3 Scrambling,miscellaneous,3020,time,a,1,FALSE,FALSE,FALSE,FALSE,Correctly scramble a 3x3x3 using standard WCA move notation. The competitor may inspect the scramble sequence using standard inspection procedures.,,,2023-09-27T20:11:09.816Z,2024-12-28T08:31:57.928Z
-44,333oh_x2,3x3x3 Double One-Handed,miscellaneous,3025,time,m,1,FALSE,FALSE,FALSE,FALSE,"Solve two 3x3x3s one-handed, one in each hand. They do not need to be solved simultaneously.",,,2023-09-27T20:11:09.819Z,2024-12-28T08:32:26.671Z
-45,333oh_bottle,3x3x3 H2OH,miscellaneous,3093,time,1,1,FALSE,FALSE,FALSE,TRUE,Solve a 3x3x3 one-handed and drink a 230-340ml bottle of non-alcoholic liquid. This does not need to be done simultaneously. The bottle must remain closed until the competitor starts the timer. Penalty: DNF. The liquid must not be spilled. Penalty: DNF.,,,2023-09-27T20:11:09.823Z,2025-06-01T06:37:46.438Z
-46,222_squared,2x2x2 Squared,miscellaneous,3118,time,a,1,FALSE,FALSE,FALSE,TRUE,Solve a 4x4x4 that has been scrambled like a 2x2x2,,,2023-09-29T21:28:49.150Z,2024-12-28T09:12:28.140Z
-47,223_cuboid,2x2x3 Cuboid,miscellaneous,3612,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-09-30T15:36:37.122Z,2024-12-28T09:35:36.809Z
-48,mpyram,Master Pyraminx,unofficial,1050,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-09-30T15:41:28.783Z,2023-10-28T18:09:34.056Z
-49,redi,Redi Cube,unofficial,1070,time,a,1,FALSE,FALSE,FALSE,FALSE,,,"- Scrambling notation is the same as the Skewb puzzle (see [Regulation 12h of the WCA Regulations](https://www.worldcubeassociation.org/regulations/full/#12h)) with the following additions: F (the layer around the closest visible vertex), UR (the layer around the upper-right vertex), UL (the layer around the upper-left vertex), D (the layer around the lowest visible vertex).
+39,333mts_old,3x3x3 Match The Scramble With Inspection,removed,4010,time,3,1,FALSE,FALSE,FALSE,"Using a solved 3x3x3 (A) and a scrambled one (B), bring cube A to the same state as cube B without making turns on cube B. There is 15 seconds of inspection time.",,,2023-09-27T20:11:09.692Z,2024-04-14T18:34:24.033Z
+40,234relay,2x2x2-4x4x4 Relay,miscellaneous,3810,time,a,1,FALSE,FALSE,FALSE,,,,2023-09-27T20:11:09.697Z,2024-12-28T09:34:15.743Z
+41,2345relay,2x2x2-5x5x5 Relay,miscellaneous,3820,time,3,1,FALSE,FALSE,FALSE,,Relay events with four or more puzzles have a 30 second inspection phase. Please see the rules page for clarification.,,2023-09-27T20:11:09.701Z,2026-03-05T03:02:09.629Z
+42,333_inspectionless,3x3x3 No Inspection,miscellaneous,3015,time,a,1,FALSE,FALSE,FALSE,,,,2023-09-27T20:11:09.812Z,2024-12-28T08:31:24.210Z
+43,333_scrambling,3x3x3 Scrambling,miscellaneous,3020,time,a,1,FALSE,FALSE,FALSE,Correctly scramble a 3x3x3 using standard WCA move notation. The competitor may inspect the scramble sequence using standard inspection procedures.,,,2023-09-27T20:11:09.816Z,2024-12-28T08:31:57.928Z
+44,333oh_x2,3x3x3 Double One-Handed,miscellaneous,3025,time,m,1,FALSE,FALSE,FALSE,"Solve two 3x3x3s one-handed, one in each hand. They do not need to be solved simultaneously.",,,2023-09-27T20:11:09.819Z,2024-12-28T08:32:26.671Z
+45,333oh_bottle,3x3x3 H2OH,miscellaneous,3093,time,1,1,FALSE,FALSE,TRUE,Solve a 3x3x3 one-handed and drink a 230-340ml bottle of non-alcoholic liquid. This does not need to be done simultaneously. The bottle must remain closed until the competitor starts the timer. Penalty: DNF. The liquid must not be spilled. Penalty: DNF.,,,2023-09-27T20:11:09.823Z,2025-06-01T06:37:46.438Z
+46,222_squared,2x2x2 Squared,miscellaneous,3118,time,a,1,FALSE,FALSE,TRUE,Solve a 4x4x4 that has been scrambled like a 2x2x2,,,2023-09-29T21:28:49.150Z,2024-12-28T09:12:28.140Z
+47,223_cuboid,2x2x3 Cuboid,miscellaneous,3612,time,a,1,FALSE,FALSE,FALSE,,,,2023-09-30T15:36:37.122Z,2024-12-28T09:35:36.809Z
+48,mpyram,Master Pyraminx,unofficial,1050,time,a,1,FALSE,FALSE,FALSE,,,,2023-09-30T15:41:28.783Z,2023-10-28T18:09:34.056Z
+49,redi,Redi Cube,unofficial,1070,time,a,1,FALSE,FALSE,FALSE,,,"- Scrambling notation is the same as the Skewb puzzle (see [Regulation 12h of the WCA Regulations](https://www.worldcubeassociation.org/regulations/full/#12h)) with the following additions: F (the layer around the closest visible vertex), UR (the layer around the upper-right vertex), UL (the layer around the upper-left vertex), D (the layer around the lowest visible vertex).
   - Scrambling orientation is the same as the Skewb puzzle (see [Regulation 4d of the WCA Regulations](https://www.worldcubeassociation.org/regulations/full/#4d)).
 - Misalignment penalty (see [Regulation 10f of the WCA Regulations](https://www.worldcubeassociation.org/regulations/#article-10-solved-state)): at most 60 degrees.",2023-09-30T15:50:32.748Z,2024-08-01T19:27:32.121Z
-50,kilominx,Kilominx,unofficial,1060,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-09-30T15:51:26.300Z,2023-10-28T18:09:46.890Z
-51,333_mirror_blocks_bld,Mirror Blocks Blindfolded,unofficial,1040,time,m,1,FALSE,FALSE,FALSE,FALSE,Solve a Mirror Blocks by feel without memorization,,"- This is a fully blindfolded event (see above).
+50,kilominx,Kilominx,unofficial,1060,time,a,1,FALSE,FALSE,FALSE,,,,2023-09-30T15:51:26.300Z,2023-10-28T18:09:46.890Z
+51,333_mirror_blocks_bld,Mirror Blocks Blindfolded,unofficial,1040,time,m,1,FALSE,FALSE,FALSE,Solve a Mirror Blocks by feel without memorization,,"- This is a fully blindfolded event (see above).
 - The rules for the Mirror Blocks event apply.",2023-09-30T15:55:47.069Z,2026-02-06T08:58:25.585Z
-52,miniguild_2_person,2-man Mini Guildford,unofficial,1505,time,3,2,FALSE,FALSE,FALSE,FALSE,"As a team of two, solve these puzzles: 2x2x2-5x5x5, Pyraminx, Megaminx, Skewb, Square-1, Clock, and solve a 3x3x3 one-handed. It doesn't matter, who does which event.",,"- This is a team event and a relay event (see above).
+52,miniguild_2_person,2-man Mini Guildford,unofficial,1505,time,3,2,FALSE,FALSE,FALSE,"As a team of two, solve these puzzles: 2x2x2-5x5x5, Pyraminx, Megaminx, Skewb, Square-1, Clock, and solve a 3x3x3 one-handed. It doesn't matter, who does which event.",,"- This is a team event and a relay event (see above).
 - As a team of two, solve these puzzles: 2x2x2, 3x3x3, 4x4x4, 5x5x5, Pyraminx, Megaminx, Skewb, Square-1, Clock, and solve a 3x3x3 one-handed.
 - Any team member may do any of the puzzles/events.
 - A box should be used to transport and cover all of the puzzles before the start of each attempt.",2023-09-30T16:00:16.305Z,2024-09-17T12:00:12.629Z
-53,101010bf,10x10x10 Blindfolded,extreme-bld,2140,time,1,1,TRUE,FALSE,TRUE,FALSE,,,,2023-10-01T18:45:39.579Z,2023-10-01T18:45:52.207Z
-54,111111bf,11x11x11 Blindfolded,extreme-bld,2150,time,1,1,TRUE,FALSE,TRUE,FALSE,,,,2023-10-01T18:46:46.957Z,2023-10-01T18:46:46.957Z
-55,penta_clock,Super Pentagonal Clock,miscellaneous,3481,time,a,1,FALSE,FALSE,FALSE,FALSE,Also known as 5x5 Clock. Sold by Shengshou and contains a middle center clock.,,,2023-10-02T08:07:21.020Z,2025-12-28T21:12:11.025Z
-56,minx2345relay_bld,Kilo-Gigaminx Relay Blindfolded,extreme-bld,2400,time,1,1,TRUE,FALSE,TRUE,FALSE,"Solve a Kilominx, Megaminx, Master Kilominx and Gigaminx blindfolded",,,2023-10-06T09:37:51.650Z,2024-08-24T08:59:41.182Z
-57,minx555_bld,Gigaminx Blindfolded,extreme-bld,2312,time,1,1,TRUE,FALSE,TRUE,FALSE,,,,2023-10-06T09:38:45.518Z,2023-10-06T09:46:34.442Z
-58,minx444_bld,Master Kilominx Blindfolded,extreme-bld,2311,time,1,1,TRUE,FALSE,TRUE,FALSE,,,,2023-10-06T09:39:50.981Z,2023-10-06T09:46:17.548Z
-59,2345678relay_bld,2x2x2-8x8x8 Relay Blindfolded,extreme-bld,2293,time,1,1,TRUE,FALSE,TRUE,FALSE,,,,2023-10-06T09:55:02.699Z,2024-11-26T07:42:26.690Z
-60,sq1_mbo,Square-1 Multi-Blind,extreme-bld,2250,multi,1,1,TRUE,FALSE,TRUE,TRUE,There is no time limit,,,2023-10-06T10:08:29.603Z,2024-08-24T09:01:06.746Z
-61,miniguild_bld,Mini Guildford Blindfolded,extreme-bld,2300,time,1,1,TRUE,FALSE,TRUE,FALSE,"Solve these puzzles blindfolded: 2x2x2-5x5x5, Pyraminx, Megaminx, Skewb, Square-1, Clock, and solve a 3x3x3 one-handed, also while blindfolded",,,2023-10-06T10:12:43.728Z,2024-08-26T16:21:59.169Z
-62,pyram_crystal_bld,Pyraminx Crystal Blindfolded,extreme-bld,2600,time,1,1,TRUE,FALSE,TRUE,FALSE,,,,2023-10-06T10:14:02.135Z,2024-08-24T09:00:00.416Z
-63,fto_bld,Face-Turning Octahedron Blindfolded,miscellaneous,3311,time,1,1,TRUE,FALSE,TRUE,FALSE,,,,2023-10-06T10:16:01.698Z,2025-05-17T06:18:33.707Z
-64,333_oven_mitts,3x3x3 With Oven Mitts,miscellaneous,3030,time,m,1,FALSE,FALSE,FALSE,FALSE,,,"- Oven mitts must be of the standard type shown below, with one ""pouch"" for four fingers and a smaller ""pouch"" for the thumb.
+53,101010bf,10x10x10 Blindfolded,extreme-bld,2140,time,1,1,TRUE,TRUE,FALSE,,,,2023-10-01T18:45:39.579Z,2023-10-01T18:45:52.207Z
+54,111111bf,11x11x11 Blindfolded,extreme-bld,2150,time,1,1,TRUE,TRUE,FALSE,,,,2023-10-01T18:46:46.957Z,2023-10-01T18:46:46.957Z
+55,penta_clock,Super Pentagonal Clock,miscellaneous,3481,time,a,1,FALSE,FALSE,FALSE,Also known as 5x5 Clock. Sold by Shengshou and contains a middle center clock.,,,2023-10-02T08:07:21.020Z,2025-12-28T21:12:11.025Z
+56,minx2345relay_bld,Kilo-Gigaminx Relay Blindfolded,extreme-bld,2400,time,1,1,TRUE,TRUE,FALSE,"Solve a Kilominx, Megaminx, Master Kilominx and Gigaminx blindfolded",,,2023-10-06T09:37:51.650Z,2024-08-24T08:59:41.182Z
+57,minx555_bld,Gigaminx Blindfolded,extreme-bld,2312,time,1,1,TRUE,TRUE,FALSE,,,,2023-10-06T09:38:45.518Z,2023-10-06T09:46:34.442Z
+58,minx444_bld,Master Kilominx Blindfolded,extreme-bld,2311,time,1,1,TRUE,TRUE,FALSE,,,,2023-10-06T09:39:50.981Z,2023-10-06T09:46:17.548Z
+59,2345678relay_bld,2x2x2-8x8x8 Relay Blindfolded,extreme-bld,2293,time,1,1,TRUE,TRUE,FALSE,,,,2023-10-06T09:55:02.699Z,2024-11-26T07:42:26.690Z
+60,sq1_mbo,Square-1 Multi-Blind,extreme-bld,2250,multi,1,1,TRUE,TRUE,TRUE,There is no time limit,,,2023-10-06T10:08:29.603Z,2024-08-24T09:01:06.746Z
+61,miniguild_bld,Mini Guildford Blindfolded,extreme-bld,2300,time,1,1,TRUE,TRUE,FALSE,"Solve these puzzles blindfolded: 2x2x2-5x5x5, Pyraminx, Megaminx, Skewb, Square-1, Clock, and solve a 3x3x3 one-handed, also while blindfolded",,,2023-10-06T10:12:43.728Z,2024-08-26T16:21:59.169Z
+62,pyram_crystal_bld,Pyraminx Crystal Blindfolded,extreme-bld,2600,time,1,1,TRUE,TRUE,FALSE,,,,2023-10-06T10:14:02.135Z,2024-08-24T09:00:00.416Z
+63,fto_bld,Face-Turning Octahedron Blindfolded,miscellaneous,3311,time,1,1,TRUE,TRUE,FALSE,,,,2023-10-06T10:16:01.698Z,2025-05-17T06:18:33.707Z
+64,333_oven_mitts,3x3x3 With Oven Mitts,miscellaneous,3030,time,m,1,FALSE,FALSE,FALSE,,,"- Oven mitts must be of the standard type shown below, with one ""pouch"" for four fingers and a smaller ""pouch"" for the thumb.
 
 ![](https://supabase.cubingcontests.com/storage/v1/object/public/public_bucket/assets/oven_mitts.png)
 
@@ -90,17 +90,18 @@ id,event_id,name,category,rank,format,default_round_format,participants,submissi
   - The Competitor doesn’t have to wear the oven mitts during inspection.
 - Competitors may start and stop the timer using their forearms, but the oven mitts must not be in contact with the puzzle while starting or stopping the timer.
 - Puzzle defects must be fixed while wearing the oven mitts.",2023-10-07T20:07:44.926Z,2026-02-02T17:57:29.136Z
-65,sq1_bld,Square-1 Blindfolded,miscellaneous,3191,time,1,1,TRUE,FALSE,TRUE,FALSE,,,,2023-10-08T11:02:29.092Z,2024-12-28T09:46:07.697Z
-66,444ft,4x4x4 With Feet,miscellaneous,3114,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-10-15T15:46:46.868Z,2024-12-28T09:44:06.712Z
-67,gear_cube,Gear Cube,miscellaneous,3060,time,a,1,FALSE,FALSE,FALSE,FALSE,Not to be confused with the Super Gear Cube. Please see the rules page for clarification.,Not to be confused with the Super Gear Cube. Please see the rules page for clarification.,"Please note the differences between the Gear Cube and the Super Gear Cube. The original Gear Cube has small center pieces with teeth, but they do not have any stickers. In contrast, the Super Gear Cube has two versions: one similar to the original Gear Cube, except with those small center pieces having colors, and one without the small center pieces made by QiYi that is functionally equivalent and has the same number of states.
+65,sq1_bld,Square-1 Blindfolded,miscellaneous,3191,time,1,1,TRUE,TRUE,FALSE,,,,2023-10-08T11:02:29.092Z,2024-12-28T09:46:07.697Z
+66,444ft,4x4x4 With Feet,miscellaneous,3114,time,a,1,FALSE,FALSE,FALSE,,,,2023-10-15T15:46:46.868Z,2024-12-28T09:44:06.712Z
+67,gear_cube,Gear Cube,miscellaneous,3060,time,a,1,FALSE,FALSE,FALSE,Not to be confused with the Super Gear Cube. Please see the rules page for clarification.,Not to be confused with the Super Gear Cube. Please see the rules page for clarification.,"- Please note the differences between the Gear Cube and the Super Gear Cube. The original Gear Cube has small center pieces with teeth, but they do not have any stickers. In contrast, the Super Gear Cube has two versions: one similar to the original Gear Cube, except with those small center pieces having colors, and one without the small center pieces made by QiYi that is functionally equivalent and has the same number of states.
 
-![](https://supabase.cubingcontests.com/storage/v1/object/public/public_bucket/assets/gear_cubes.jpg)",2023-10-19T10:58:29.162Z,2026-03-05T00:49:15.164Z
-68,360_puzzle,360 Puzzle,miscellaneous,3450,time,a,1,FALSE,FALSE,FALSE,FALSE,One example of this puzzle is the Rubik's 360,,,2023-10-21T15:46:46.086Z,2024-12-28T10:18:39.287Z
-69,snake,Snake,miscellaneous,3440,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-10-21T20:06:25.557Z,2024-12-28T10:18:22.496Z
-70,333_x3_relay,Three 3x3x3 Cubes Relay,removed,4020,time,a,1,FALSE,FALSE,FALSE,FALSE,"Solve three 3x3x3 cubes, all scrambled differently. This is not a team event.",,,2023-10-22T08:38:50.014Z,2024-12-29T21:03:17.369Z
-71,222bf,2x2x2 Blindfolded,miscellaneous,3101,time,5,1,FALSE,FALSE,FALSE,FALSE,,,,2023-10-23T09:53:12.649Z,2024-12-28T09:43:31.358Z
-72,222oh,2x2x2 One-Handed,miscellaneous,3103,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-10-23T09:58:40.550Z,2024-12-28T09:43:41.072Z
-73,333_speed_bld,3x3x3 Speed-Blind,unofficial,1210,time,1,1,TRUE,FALSE,FALSE,FALSE,Memorize a 3x3x3 and solve it as fast as possible blindfolded. Only the solution part is timed.,,"- This is a blindfolded event (see above), except the final result only includes the execution phase. The execution phase proceeds like a fully blindfolded event, with the following exceptions:
+![](https://supabase.cubingcontests.com/storage/v1/object/public/public_bucket/assets/gear_cubes.jpg)
+- Misalignment penalty: DNF if more than a 90-degree outer face turn from being solved (i.e. both opposite faces more than 45 degrees from being solved relative to the middle slice). Otherwise, there is no +2 time penalty.",2023-10-19T10:58:29.162Z,2026-04-16T00:24:13.698Z
+68,360_puzzle,360 Puzzle,miscellaneous,3450,time,a,1,FALSE,FALSE,FALSE,One example of this puzzle is the Rubik's 360,,,2023-10-21T15:46:46.086Z,2024-12-28T10:18:39.287Z
+69,snake,Snake,miscellaneous,3440,time,a,1,FALSE,FALSE,FALSE,,,,2023-10-21T20:06:25.557Z,2024-12-28T10:18:22.496Z
+70,333_x3_relay,Three 3x3x3 Cubes Relay,removed,4020,time,a,1,FALSE,FALSE,FALSE,"Solve three 3x3x3 cubes, all scrambled differently. This is not a team event.",,,2023-10-22T08:38:50.014Z,2024-12-29T21:03:17.369Z
+71,222bf,2x2x2 Blindfolded,miscellaneous,3101,time,5,1,FALSE,FALSE,FALSE,,,,2023-10-23T09:53:12.649Z,2024-12-28T09:43:31.358Z
+72,222oh,2x2x2 One-Handed,miscellaneous,3103,time,a,1,FALSE,FALSE,FALSE,,,,2023-10-23T09:58:40.550Z,2024-12-28T09:43:41.072Z
+73,333_speed_bld,3x3x3 Speed-Blind,unofficial,1210,time,1,1,TRUE,FALSE,FALSE,Memorize a 3x3x3 and solve it as fast as possible blindfolded. Only the solution part is timed.,,"- This is a blindfolded event (see above), except the final result only includes the execution phase. The execution phase proceeds like a fully blindfolded event, with the following exceptions:
 - The entire attempt (memorization + execution) is timed by a judge using a stopwatch.
   - The judge starts the stopwatch while lifting the cover.
   - The judge stops the stopwatch once the competitor stops the timer.
@@ -108,19 +109,19 @@ id,event_id,name,category,rank,format,default_round_format,participants,submissi
     - The stopwatch time is not used in the recorded result.
     - Attempts for this event must not count towards a cumulative time limit. If a competitor is eligible for an attempt, they are entitled to the full 15 minutes, although their eligibility for an attempt may be determined by a cutoff.
 - The recorded time of the execution phase, as timed by the timer, is the final recorded result.",2023-10-23T14:02:46.930Z,2024-07-22T09:51:53.643Z
-74,magic_oh,Magic One-Handed,miscellaneous,3413,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2023-10-23T14:09:15.901Z,2024-12-28T10:15:34.194Z
-75,rainbow_cube,Rainbow Cube,miscellaneous,3390,time,a,1,FALSE,FALSE,FALSE,FALSE,Cuboctahedron-shaped puzzle,,,2023-10-27T05:17:26.919Z,2024-12-28T10:20:10.474Z
-76,333_siamese,3x3x3 Siamese Cube,miscellaneous,3058,time,m,1,FALSE,FALSE,FALSE,FALSE,Two 3x3x3 puzzles connected with one edge and two corners,,,2023-10-28T08:53:36.739Z,2026-04-01T07:09:01.088Z
-77,333_supersolve,3x3x3 Supersolve,miscellaneous,3045,time,1,1,FALSE,FALSE,FALSE,FALSE,Solve a 3x3x3 cube using as much preparation time as needed. The scrambles can be shared ahead of time. Only execution is timed. Only the first timed attempt is accepted.,,,2023-11-05T07:25:15.428Z,2025-07-05T06:42:41.311Z
-78,15puzzle,15 Puzzle,miscellaneous,3430,time,a,1,FALSE,FALSE,FALSE,FALSE,,,"- Scrambling notation: the puzzle is oriented with the empty cell in the bottom right corner. Every move is determined based on how the empty cell is filled: U represents moving one piece up by one cell, filling the empty cell; R represents moving right, D - down, L - left. 2 represents moving two pieces together, 3 represents moving three pieces together. For example: R2 moves two pieces to the right. A move shifting multiple pieces together is still counted as one move.
+74,magic_oh,Magic One-Handed,miscellaneous,3413,time,a,1,FALSE,FALSE,FALSE,,,,2023-10-23T14:09:15.901Z,2024-12-28T10:15:34.194Z
+75,rainbow_cube,Rainbow Cube,miscellaneous,3390,time,a,1,FALSE,FALSE,FALSE,Cuboctahedron-shaped puzzle,,,2023-10-27T05:17:26.919Z,2024-12-28T10:20:10.474Z
+76,333_siamese,3x3x3 Siamese Cube,miscellaneous,3058,time,m,1,FALSE,FALSE,FALSE,Two 3x3x3 puzzles connected with one edge and two corners,,,2023-10-28T08:53:36.739Z,2026-04-01T07:09:01.088Z
+77,333_supersolve,3x3x3 Supersolve,miscellaneous,3045,time,1,1,FALSE,FALSE,FALSE,Solve a 3x3x3 cube using as much preparation time as needed. The scrambles can be shared ahead of time. Only execution is timed. Only the first timed attempt is accepted.,,,2023-11-05T07:25:15.428Z,2025-07-05T06:42:41.311Z
+78,15puzzle,15 Puzzle,miscellaneous,3430,time,a,1,FALSE,FALSE,FALSE,,,"- Scrambling notation: the puzzle is oriented with the empty cell in the bottom right corner. Every move is determined based on how the empty cell is filled: U represents moving one piece up by one cell, filling the empty cell; R represents moving right, D - down, L - left. 2 represents moving two pieces together, 3 represents moving three pieces together. For example: R2 moves two pieces to the right. A move shifting multiple pieces together is still counted as one move.
 - Solved state: all pieces are arranged in numerical order from lowest to highest, going from left to right, top to bottom, with the empty cell in the bottom right corner. The orientation of the pieces does not affect the solved state. Up to one piece may be flipped in place such that the number is not visible. Penalty for more than one flipped piece: DNF.
 - There is no restriction on coloring pieces.
   - If one move is required to bring the puzzle to its solved state, the puzzle is considered solved with a time penalty (+2 seconds).
   - Acceptable misalignments: one or more pieces on the same line are at most 50% of the way to the neighboring cell.
 - Required scrambler: https://tinyurl.com/15scrambler",2023-11-22T14:51:02.318Z,2026-02-09T05:25:34.230Z
-79,corner_heli222,Corner Helicopter 2x2x2,miscellaneous,3385,time,m,1,FALSE,FALSE,FALSE,FALSE,,,,2024-01-14T22:26:50.458Z,2024-12-28T10:20:36.065Z
-80,333_one_side,3x3x3 One Side,miscellaneous,3040,time,a,1,FALSE,FALSE,FALSE,FALSE,Solve any side on the 3x3x3 puzzle as fast as possible.,,,2024-03-07T08:24:18.706Z,2024-12-28T10:23:58.872Z
-81,333_linear_fm,3x3x3 Linear Fewest Moves,unofficial,1200,number,m,1,FALSE,FALSE,FALSE,FALSE,Solve a 3x3x3 cube with as few moves as possible without backtracking. The first solution is the final result. Smart cubes are used for counting the number of moves.,,"- This event is similar in nature to 3x3x3 Fewest Moves, but does not require a solution to be written down. Instead, the competitor directly applies moves to the puzzle, and the competitor's result is the number of moves in their solution, calculated using Outer Block Turn Metric.
+79,corner_heli222,Corner Helicopter 2x2x2,miscellaneous,3385,time,m,1,FALSE,FALSE,FALSE,,,,2024-01-14T22:26:50.458Z,2024-12-28T10:20:36.065Z
+80,333_one_side,3x3x3 One Side,miscellaneous,3040,time,a,1,FALSE,FALSE,FALSE,Solve any side on the 3x3x3 puzzle as fast as possible.,,,2024-03-07T08:24:18.706Z,2024-12-28T10:23:58.872Z
+81,333_linear_fm,3x3x3 Linear Fewest Moves,unofficial,1200,number,m,1,FALSE,FALSE,FALSE,Solve a 3x3x3 cube with as few moves as possible without backtracking. The first solution is the final result. Smart cubes are used for counting the number of moves.,,"- This event is similar in nature to 3x3x3 Fewest Moves, but does not require a solution to be written down. Instead, the competitor directly applies moves to the puzzle, and the competitor's result is the number of moves in their solution, calculated using Outer Block Turn Metric.
 - The time limit for each attempt is 2 minutes.
 - Every competitor must have a judge.
 - Moves must be counted using a smart cube under the supervision of the judge.
@@ -139,28 +140,28 @@ id,event_id,name,category,rank,format,default_round_format,participants,submissi
   - R R R → R'
   - R R' → R0 (counts as 0 moves)
   - F R R' F → F R0 F (counts as 2 moves)",2024-03-24T18:22:05.313Z,2024-10-13T08:29:53.940Z
-82,888,8x8x8 Cube,miscellaneous,3210,time,m,1,FALSE,FALSE,FALSE,FALSE,,,,2024-04-02T07:32:40.241Z,2024-12-28T09:47:30.686Z
-83,999,9x9x9 Cube,miscellaneous,3215,time,m,1,FALSE,FALSE,FALSE,FALSE,,,,2024-04-02T07:32:59.717Z,2024-12-28T10:00:54.170Z
-84,ivy_cube,Ivy Cube,miscellaneous,3380,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2024-04-12T08:27:46.677Z,2024-09-27T08:40:35.054Z
-85,333mts,3x3x3 Match The Scramble,unofficial,1220,time,3,1,FALSE,FALSE,FALSE,FALSE,"Using a solved 3x3x3 (A) and a scrambled one (B), bring cube A to the same state as cube B without making turns on cube B. There is no inspection time.",There is no inspection time.,"- Using a solved 3x3x3 cube (A) and a scrambled 3x3x3 cube (B), a competitor brings cube A to the same state as cube B without making turns on cube B.
+82,888,8x8x8 Cube,miscellaneous,3210,time,m,1,FALSE,FALSE,FALSE,,,,2024-04-02T07:32:40.241Z,2024-12-28T09:47:30.686Z
+83,999,9x9x9 Cube,miscellaneous,3215,time,m,1,FALSE,FALSE,FALSE,,,,2024-04-02T07:32:59.717Z,2024-12-28T10:00:54.170Z
+84,ivy_cube,Ivy Cube,miscellaneous,3380,time,a,1,FALSE,FALSE,FALSE,,,,2024-04-12T08:27:46.677Z,2024-09-27T08:40:35.054Z
+85,333mts,3x3x3 Match The Scramble,unofficial,1220,time,3,1,FALSE,FALSE,FALSE,"Using a solved 3x3x3 (A) and a scrambled one (B), bring cube A to the same state as cube B without making turns on cube B. There is no inspection time.",There is no inspection time.,"- Using a solved 3x3x3 cube (A) and a scrambled 3x3x3 cube (B), a competitor brings cube A to the same state as cube B without making turns on cube B.
 - There is no inspection time.
 ",2024-04-14T18:36:49.053Z,2026-03-05T02:57:09.382Z
-86,gigaminx,Gigaminx,miscellaneous,3255,time,m,1,FALSE,FALSE,FALSE,FALSE,,,,2024-07-30T13:57:43.785Z,2024-12-28T10:26:56.527Z
-87,234567relay_2_person,2-man 2x2x2-7x7x7 Relay,miscellaneous,3835,time,3,2,FALSE,FALSE,FALSE,FALSE,This is a team event and a relay event (see the rules page for more information),,,2024-08-20T19:13:12.440Z,2024-12-28T09:34:42.098Z
-88,444mbf,4x4x4 Multi-Blind,extreme-bld,2200,multi,1,1,TRUE,FALSE,TRUE,FALSE,,,,2024-08-23T09:18:37.023Z,2024-08-23T09:18:37.023Z
-89,555mbf,5x5x5 Multi-Blind,extreme-bld,2210,multi,1,1,TRUE,FALSE,TRUE,FALSE,,,,2024-08-24T07:42:59.210Z,2024-08-24T07:42:59.210Z
-90,pyram_duo,Pyraminx Duo,miscellaneous,3395,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2024-09-02T10:43:46.734Z,2024-12-28T10:19:53.623Z
-91,fto_mbld,Face-Turning Octahedron Multi-Blind,miscellaneous,3315,multi,1,1,TRUE,FALSE,TRUE,FALSE,,,,2024-09-03T09:01:10.661Z,2025-05-17T06:18:56.226Z
-92,222_mirror_blocks,2x2x2 Mirror Blocks,miscellaneous,3200,time,a,1,FALSE,FALSE,FALSE,FALSE,,Puzzles must have distinct thicknesses on each side (i.e. no QiYi 2x2x2 Mirror Cubes may be used).,"- All sides of the puzzle must be clearly distinguishable from each other (i.e. have distinct thicknesses on each side).
+86,gigaminx,Gigaminx,miscellaneous,3255,time,m,1,FALSE,FALSE,FALSE,,,,2024-07-30T13:57:43.785Z,2024-12-28T10:26:56.527Z
+87,234567relay_2_person,2-man 2x2x2-7x7x7 Relay,miscellaneous,3835,time,3,2,FALSE,FALSE,FALSE,This is a team event and a relay event (see the rules page for more information),,,2024-08-20T19:13:12.440Z,2024-12-28T09:34:42.098Z
+88,444mbf,4x4x4 Multi-Blind,extreme-bld,2200,multi,1,1,TRUE,TRUE,FALSE,,,,2024-08-23T09:18:37.023Z,2024-08-23T09:18:37.023Z
+89,555mbf,5x5x5 Multi-Blind,extreme-bld,2210,multi,1,1,TRUE,TRUE,FALSE,,,,2024-08-24T07:42:59.210Z,2024-08-24T07:42:59.210Z
+90,pyram_duo,Pyraminx Duo,miscellaneous,3395,time,a,1,FALSE,FALSE,FALSE,,,,2024-09-02T10:43:46.734Z,2024-12-28T10:19:53.623Z
+91,fto_mbld,Face-Turning Octahedron Multi-Blind,miscellaneous,3315,multi,1,1,TRUE,TRUE,FALSE,,,,2024-09-03T09:01:10.661Z,2025-05-17T06:18:56.226Z
+92,222_mirror_blocks,2x2x2 Mirror Blocks,miscellaneous,3200,time,a,1,FALSE,FALSE,FALSE,,Puzzles must have distinct thicknesses on each side (i.e. no QiYi 2x2x2 Mirror Cubes may be used).,"- All sides of the puzzle must be clearly distinguishable from each other (i.e. have distinct thicknesses on each side).
   - All pieces of the puzzle must only be distinguishable from each other by the thickness on each axis. There must be no other way to distinguish the pieces from each other, be that visually, by feel, or otherwise. Exception: the puzzle may have one logo on one of the corner pieces.
 - Scrambling orientation (see [Regulation 4d of the WCA Regulations](https://www.worldcubeassociation.org/regulations/#4d)): scrambled starting with the thickest layer as the top face and the next thickest adjacent layer on the front face.",2024-09-07T11:42:28.374Z,2026-03-05T00:47:47.345Z
-93,miniguild,Mini Guildford,unofficial,1500,time,3,1,FALSE,FALSE,FALSE,FALSE,"Solve these puzzles: 2x2x2-5x5x5, Pyraminx, Megaminx, Skewb, Square-1, Clock, and solve a 3x3x3 one-handed",Relay events with four or more puzzles have a 30 second inspection phase. Please see the rules page for clarification.,"- This is a relay event (see above).
+93,miniguild,Mini Guildford,unofficial,1500,time,3,1,FALSE,FALSE,FALSE,"Solve these puzzles: 2x2x2-5x5x5, Pyraminx, Megaminx, Skewb, Square-1, Clock, and solve a 3x3x3 one-handed",Relay events with four or more puzzles have a 30 second inspection phase. Please see the rules page for clarification.,"- This is a relay event (see above).
 - Solve these puzzles: 2x2x2, 3x3x3, 4x4x4, 5x5x5, Pyraminx, Megaminx, Skewb, Square-1, Clock, and solve a 3x3x3 one-handed.
 - A box should be used to transport and cover all of the puzzles before the start of each attempt.",2024-09-17T12:02:42.268Z,2026-03-05T03:03:40.761Z
-94,pyramorphix,Pyramorphix,miscellaneous,3201,time,a,1,FALSE,FALSE,FALSE,FALSE,Two layer Morphix puzzle,,,2024-09-27T08:44:07.358Z,2025-07-14T08:41:18.890Z
-95,mkilominx,Master Kilominx,miscellaneous,3250,time,m,1,FALSE,FALSE,FALSE,FALSE,,,,2024-10-07T02:10:28.646Z,2024-12-28T10:26:46.423Z
-96,223_banana,2x2x3 Banana,miscellaneous,3613,time,a,1,FALSE,FALSE,FALSE,TRUE,Solve a 2x2x3 puzzle in the shape of a banana. The puzzle must be solved by shape; stickers must not be used. Example: FanXin Banana 2x2x3.,,,2024-10-12T20:53:37.651Z,2024-12-28T09:38:58.447Z
-97,333_cube_mile,3x3x3 Cube Mile,miscellaneous,3055,time,1,1,FALSE,FALSE,FALSE,FALSE,Solve four 3x3x3 puzzles and run one mile. See the rules page for more information.,,"- The event consists of solving four 3x3x3 cubes and running four laps (1609m total) in the following order: solve, lap, solve, lap, solve, lap, solve, lap. There is no inspection time.
+94,pyramorphix,Pyramorphix,miscellaneous,3201,time,a,1,FALSE,FALSE,FALSE,Two layer Morphix puzzle,,,2024-09-27T08:44:07.358Z,2025-07-14T08:41:18.890Z
+95,mkilominx,Master Kilominx,miscellaneous,3250,time,m,1,FALSE,FALSE,FALSE,,,,2024-10-07T02:10:28.646Z,2024-12-28T10:26:46.423Z
+96,223_banana,2x2x3 Banana,miscellaneous,3613,time,a,1,FALSE,FALSE,TRUE,Solve a 2x2x3 puzzle in the shape of a banana. The puzzle must be solved by shape; stickers must not be used. Example: FanXin Banana 2x2x3.,,,2024-10-12T20:53:37.651Z,2024-12-28T09:38:58.447Z
+97,333_cube_mile,3x3x3 Cube Mile,miscellaneous,3055,time,1,1,FALSE,FALSE,FALSE,Solve four 3x3x3 puzzles and run one mile. See the rules page for more information.,,"- The event consists of solving four 3x3x3 cubes and running four laps (1609m total) in the following order: solve, lap, solve, lap, solve, lap, solve, lap. There is no inspection time.
   - Solve: directly after the start signal, competitors uncover their puzzles and begin solving one of them. Competitors may advance through the 9m long transition zone (up to the finish line) during each solve.
     - Competitors must solve one of the scrambled puzzles before starting each lap. Penalty: DNF. +2 penalties for a puzzle being one move away from the solved state are applied the same way as in the 3x3x3 Multi-Blind event.
   - Laps: after solving each puzzle, competitors run a 400m lap. At the end of the lap, competitors continue to the next puzzle, or - after the final lap - the finish line.
@@ -168,74 +169,77 @@ id,event_id,name,category,rank,format,default_round_format,participants,submissi
 - Timing is done by the judge using a stopwatch (see Regulation B2f of the WCA Regulations).
 - Scrambling is the same as in the 3x3x3 Multi-Blind event (each scramble is unique and in a random orientation), except that the number of puzzles is always the same.
   - After scrambling, the puzzles are placed in the transition zone and completely covered until competitors remove the cover at the start of the attempt (same as in the 3x3x3 Multi-Blind event).",2024-10-13T08:38:13.698Z,2024-12-28T10:22:16.291Z
-98,clock_oh,Clock One-Handed,miscellaneous,3153,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2024-11-24T18:14:26.842Z,2024-12-28T09:44:48.860Z
-99,clock_doubles,Clock Doubles,miscellaneous,3157,time,a,2,FALSE,FALSE,FALSE,FALSE,"Solve a Clock puzzle in a team of two, each using only one hand. Relevant One-Handed rules apply.",,,2024-11-25T08:31:30.544Z,2024-12-28T09:45:23.049Z
-100,2345relay_bld,2x2x2-5x5x5 Relay Blindfolded,extreme-bld,2290,time,1,1,TRUE,FALSE,TRUE,FALSE,,,,2024-11-26T07:42:13.781Z,2024-11-26T07:42:57.276Z
-101,444oh,4x4x4 One-Handed,miscellaneous,3113,time,m,1,FALSE,FALSE,FALSE,FALSE,,,,2024-12-01T20:46:12.085Z,2024-12-28T09:44:30.583Z
-102,minx_oh,Megaminx One-Handed,miscellaneous,3163,time,m,1,FALSE,FALSE,FALSE,FALSE,,,,2024-12-01T20:47:53.431Z,2024-12-28T09:45:38.749Z
-103,dino,Dino Cube,miscellaneous,3370,time,a,1,FALSE,FALSE,FALSE,FALSE,Redi Cube scrambles must be used for this puzzle,,,2024-12-16T09:06:39.270Z,2024-12-28T10:19:07.321Z
-104,pyram_oh,Pyraminx One-Handed,miscellaneous,3173,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2024-12-28T09:00:15.396Z,2024-12-28T09:45:53.769Z
-105,133_cuboid,1x3x3 Cuboid,miscellaneous,3522,time,a,1,FALSE,FALSE,FALSE,TRUE,"Please note the differences between the standard 1x3x3 Cuboid (Floppy Cube) and the Super 1x3x3 Cuboid (Super Floppy Cube). The original Floppy Cube has four centers and four edges, but it only allows 180-degree moves. In contrast, the Super Floppy Cube has four centers and twelve edges (four additional ones within the center of each 3x3 face) and allows for 90-degree moves and shapeshifting.",Not to be confused with Super 1x3x3 cuboid. Please see the rules page for clarification. Spinner versions of the puzzle are NOT allowed.,- Spinner versions of the puzzle are NOT allowed.,2024-12-28T09:39:58.389Z,2026-03-07T05:50:24.031Z
-106,super_133,Super 1x3x3 Cuboid,miscellaneous,3523,time,a,1,FALSE,FALSE,FALSE,FALSE,"Please note the differences between the standard 1x3x3 Cuboid (Floppy cube) and the Super 1x3x3 Cuboid (Super Floppy cube). The original Floppy cube has four centers and four edges, but it only allows 180-degree moves. In contrast, the Super Floppy Cube has four centers and twelve edges (four additional ones within the center of each 3x3 face) and allows 90-degree moves.",Not to be confused with 1x3x3 cuboid. Please see the rules page for clarification. Spinner versions of the puzzle are NOT allowed.,"- Spinner versions of the puzzle are NOT allowed.
+98,clock_oh,Clock One-Handed,miscellaneous,3153,time,a,1,FALSE,FALSE,FALSE,,,,2024-11-24T18:14:26.842Z,2024-12-28T09:44:48.860Z
+99,clock_doubles,Clock Doubles,miscellaneous,3157,time,a,2,FALSE,FALSE,FALSE,"Solve a Clock puzzle in a team of two, each using only one hand. Relevant One-Handed rules apply.",,,2024-11-25T08:31:30.544Z,2024-12-28T09:45:23.049Z
+100,2345relay_bld,2x2x2-5x5x5 Relay Blindfolded,extreme-bld,2290,time,1,1,TRUE,TRUE,FALSE,,,,2024-11-26T07:42:13.781Z,2024-11-26T07:42:57.276Z
+101,444oh,4x4x4 One-Handed,miscellaneous,3113,time,m,1,FALSE,FALSE,FALSE,,,,2024-12-01T20:46:12.085Z,2024-12-28T09:44:30.583Z
+102,minx_oh,Megaminx One-Handed,miscellaneous,3163,time,m,1,FALSE,FALSE,FALSE,,,,2024-12-01T20:47:53.431Z,2024-12-28T09:45:38.749Z
+103,dino,Dino Cube,miscellaneous,3370,time,a,1,FALSE,FALSE,FALSE,Redi Cube scrambles must be used for this puzzle,,,2024-12-16T09:06:39.270Z,2024-12-28T10:19:07.321Z
+104,pyram_oh,Pyraminx One-Handed,miscellaneous,3173,time,a,1,FALSE,FALSE,FALSE,,,,2024-12-28T09:00:15.396Z,2024-12-28T09:45:53.769Z
+105,133_cuboid,1x3x3 Cuboid,miscellaneous,3522,time,a,1,FALSE,FALSE,TRUE,"Please note the differences between the standard 1x3x3 Cuboid (Floppy Cube) and the Super 1x3x3 Cuboid (Super Floppy Cube). The original Floppy Cube has four centers and four edges, but it only allows 180-degree moves. In contrast, the Super Floppy Cube has four centers and twelve edges (four additional ones within the center of each 3x3 face) and allows for 90-degree moves and shapeshifting.",Not to be confused with Super 1x3x3 cuboid. Please see the rules page for clarification. Spinner versions of the puzzle are NOT allowed.,- Spinner versions of the puzzle are NOT allowed.,2024-12-28T09:39:58.389Z,2026-03-07T05:50:24.031Z
+106,super_133,Super 1x3x3 Cuboid,miscellaneous,3523,time,a,1,FALSE,FALSE,FALSE,"Please note the differences between the standard 1x3x3 Cuboid (Floppy cube) and the Super 1x3x3 Cuboid (Super Floppy cube). The original Floppy cube has four centers and four edges, but it only allows 180-degree moves. In contrast, the Super Floppy Cube has four centers and twelve edges (four additional ones within the center of each 3x3 face) and allows 90-degree moves.",Not to be confused with 1x3x3 cuboid. Please see the rules page for clarification. Spinner versions of the puzzle are NOT allowed.,"- Spinner versions of the puzzle are NOT allowed.
 - The permutation of the eight small inner pieces does not matter for determining the solved state.",2024-12-28T09:40:43.423Z,2026-03-05T01:47:07.111Z
-107,skewb_oh,Skewb One-Handed,miscellaneous,3183,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2025-02-22T10:57:10.659Z,2025-02-22T10:57:10.659Z
-108,333bf_bottle,3x3x3 Green Tea Blindfolded,miscellaneous,3091,time,1,1,FALSE,FALSE,FALSE,TRUE,Solve a 3x3x3 blindfolded and drink a 230-340ml bottle of non-alcoholic liquid. The competitor must drink the liquid strictly after the memorization phase (after donning the blindfold) and before the execution phase. The bottle must remain closed until the competitor has donned their blindfold. Penalty: DNF. The liquid must not be spilled. Penalty: DNF.,,,2025-03-26T21:25:40.223Z,2025-06-01T06:38:17.612Z
-109,mfto,Master Face-Turning Octahedron,miscellaneous,3320,time,m,1,FALSE,FALSE,FALSE,FALSE,Four layer version of the Face-Turning Octahedron.,,,2025-04-22T03:20:51.164Z,2025-05-27T08:39:42.792Z
-110,baby_fto,Baby Face-Turning Octahedron,miscellaneous,3300,time,a,1,FALSE,FALSE,FALSE,FALSE,Two layer version of the Face-Turning Octahedron. The solution for an attempt cannot be shorter than 5 moves.,,,2025-05-11T16:36:19.355Z,2025-07-13T13:12:34.542Z
-111,super_gear_cube,Super Gear Cube,miscellaneous,3061,time,a,1,FALSE,FALSE,FALSE,FALSE,Not to be confused with the Gear Cube. Please see the rules page for clarification.,Not to be confused with the Gear Cube. Please see the rules page for clarification.,,2025-05-30T10:50:23.488Z,2026-03-05T00:49:30.301Z
-112,cto,Corner-Turning Octahedron,miscellaneous,3340,time,a,1,FALSE,FALSE,FALSE,FALSE,Not to be confused with Face-Turning Octahedron,,,2025-06-24T19:43:00.995Z,2025-06-24T19:43:00.995Z
-113,333_one_move_team_factory,3x3x3 One Move Team Factory,miscellaneous,3011,time,a,2,FALSE,FALSE,FALSE,FALSE,"As a team of two, solve a 3x3x3 one move at a time, alternating team members between each move. Only one team member may make a move at a time. No talking is allowed at any point during the attempt. A competitor may not undo their own move and turn a separate  layer on the same turn (e.g. R R' U isn't allowed, but R R2 is).",,,2025-06-27T06:49:34.041Z,2025-06-27T06:56:28.678Z
-114,2pentahedron,2-layer Pentahedron,miscellaneous,3280,time,a,1,FALSE,FALSE,FALSE,FALSE,Two-layer version of the face-turning pentahedron (triangular prism).,,,2025-07-12T01:14:43.489Z,2025-07-12T17:08:05.088Z
-115,3pentahedron,3-layer Pentahedron,miscellaneous,3281,time,a,1,FALSE,FALSE,FALSE,FALSE,Three-layer version of the face-turning pentahedron (triangular prism).,,,2025-07-12T01:15:32.599Z,2025-07-12T17:08:20.370Z
-116,mmorphix,Mastermorphix,miscellaneous,3202,time,a,1,FALSE,FALSE,FALSE,FALSE,Three layer Morphix puzzle,,,2025-07-13T20:00:32.433Z,2025-07-14T08:40:55.247Z
-117,helicopter,Helicopter Cube,miscellaneous,3386,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2025-07-14T20:14:02.844Z,2025-07-14T20:14:02.844Z
-118,curvycopter,Curvy Copter,miscellaneous,3387,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2025-07-14T20:14:31.024Z,2026-01-17T19:23:48.486Z
-119,sq1_oh,Square-1 One-Handed,miscellaneous,3193,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2025-07-16T19:55:27.701Z,2025-07-16T20:15:57.444Z
-120,333_team_bld_twist,3x3x3 Team-Blind With A Twist,miscellaneous,3094,time,1,2,FALSE,FALSE,FALSE,TRUE,3x3x3 Team-Blind using the Rubik's Pulse Cube.,,,2025-08-08T06:17:15.368Z,2025-08-08T06:19:16.072Z
-121,333_team_bld_twist_cnc,3x3x3 Team-Blind With A Twist (Cuber + Non-Cuber),miscellaneous,3095,time,1,2,FALSE,FALSE,FALSE,TRUE,3x3x3 Team-Blind using the Rubik's Pulse Cube. One of the participants must be a non-cuber.,,,2025-08-08T06:18:55.527Z,2025-08-08T06:18:55.527Z
-122,rainbow_ball_12,Rainbow Ball (12 Slots),removed,4030,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2025-08-08T06:33:53.370Z,2025-11-19T11:24:56.835Z
-123,8puzzle,8 Puzzle,miscellaneous,3431,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2025-08-15T21:53:48.848Z,2025-08-15T21:53:48.848Z
-124,233_cuboid,2x3x3 Cuboid,miscellaneous,3622,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2025-08-16T06:51:20.407Z,2025-08-16T06:51:20.407Z
-125,sq0,Square-0,removed,4040,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2025-08-16T08:50:14.073Z,2025-11-19T11:44:43.917Z
-126,333_twist_cube,3x3x3 Twist Cube,miscellaneous,3292,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2025-08-16T08:56:22.363Z,2025-08-17T17:54:26.521Z
-127,333_void,3x3x3 Void Cube,miscellaneous,3290,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2025-08-16T08:57:12.056Z,2025-08-16T08:57:12.056Z
-128,222fm,2x2x2 Fewest Moves,miscellaneous,3102,number,a,1,FALSE,FALSE,FALSE,FALSE,The time limit for each attempt is 8 minutes,,The time limit for each attempt is 8 minutes.,2025-08-17T06:43:07.368Z,2025-10-22T09:46:08.303Z
-129,444fm,4x4x4 Fewest Moves,miscellaneous,3112,number,1,1,FALSE,FALSE,FALSE,FALSE,The time limit for each attempt is 90 minutes,,The time limit for each attempt is 90 minutes.,2025-08-17T06:43:44.903Z,2025-10-22T09:45:41.704Z
-130,fisher,3x3x3 Fisher Cube,miscellaneous,3291,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2025-08-17T17:54:55.946Z,2025-08-17T17:54:55.946Z
-131,101010,10x10x10 Cube,miscellaneous,3216,time,m,1,FALSE,FALSE,FALSE,FALSE,,,,2025-08-24T00:41:05.994Z,2025-08-24T00:41:05.994Z
-132,333_windmill_cube,3x3x3 Windmill Cube,miscellaneous,3293,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2025-09-24T14:11:28.188Z,2025-09-24T14:11:28.188Z
-133,333_doubles,3x3x3 Doubles,miscellaneous,3035,time,a,2,FALSE,FALSE,FALSE,FALSE,"Solve a 3x3x3 in a team of two, each using only one hand. Relevant One-Handed rules apply.",,,2025-09-24T14:13:38.675Z,2026-04-01T07:09:20.387Z
-134,222_blanker,2x2x2 Blanker Cube,miscellaneous,3285,time,a,1,FALSE,FALSE,FALSE,FALSE,"2x2x2 shape modification, made to look like a 3x3x3 with the same color on every side.",,,2025-10-03T15:27:13.914Z,2025-10-03T15:27:13.914Z
-135,new_penta_clock,Pentagonal Clock (New Style),miscellaneous,3482,time,a,1,FALSE,FALSE,FALSE,FALSE,Also known as 5x5 Clock. Sold by Qiyi and doesn’t contain a center clock,,,2025-12-28T21:13:28.742Z,2025-12-28T21:13:28.742Z
-136,333bf_oh,3x3x3 Blindfolded One-Handed,miscellaneous,3017,time,3,1,TRUE,FALSE,TRUE,FALSE,"Solve a 3x3x3 Cube blindfolded and using only one hand. After the competitor starts the timer, they must only use one hand for the entire attempt, including the memorization phase.",,,2026-01-11T09:13:22.030Z,2026-01-13T18:59:18.045Z
-137,miniguild_3_person,3-man Mini Guildford,miscellaneous,3950,time,3,3,FALSE,FALSE,FALSE,FALSE,,,,2026-01-11T09:20:21.173Z,2026-01-11T09:20:21.173Z
-138,clock_scrambling,Clock Scrambling,removed,4050,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2026-01-11T09:27:55.110Z,2026-01-11T09:27:55.110Z
-139,333_x10_relay,Ten 3x3x3 Cubes Relay,removed,4060,time,m,1,FALSE,FALSE,FALSE,FALSE,,,,2026-01-11T09:31:17.790Z,2026-01-11T09:31:17.790Z
-140,clock_mbld,Clock Multi-Blind,miscellaneous,3155,multi,1,1,TRUE,FALSE,TRUE,FALSE,,,,2026-01-11T09:36:26.446Z,2026-01-11T09:36:26.446Z
-141,777_illusion,7x7x7 Illusion Cube,removed,4070,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2026-01-14T11:20:23.725Z,2026-01-14T11:20:23.725Z
-142,334_cuboid,3x3x4 Cuboid,miscellaneous,3723,time,a,1,FALSE,FALSE,FALSE,FALSE,,,,2026-01-14T11:40:43.632Z,2026-01-14T11:40:43.632Z
-143,clock_bld,Clock Blindfolded,miscellaneous,3151,time,5,1,FALSE,FALSE,FALSE,FALSE,,,,2026-01-14T11:41:42.937Z,2026-03-20T21:41:10.674Z
-144,333_bets,3x3x3 Bets,miscellaneous,3050,time,3,1,FALSE,FALSE,FALSE,FALSE,"Write down a time prediction on the scorecard and try to get a solve faster than or equal to the predicted time. If the solve is slower, the result is DNF.",,"- At the start of the attempt, the competitor writes down a time on the scorecard (without signing).
+107,skewb_oh,Skewb One-Handed,miscellaneous,3183,time,a,1,FALSE,FALSE,FALSE,,,,2025-02-22T10:57:10.659Z,2025-02-22T10:57:10.659Z
+108,333bf_bottle,3x3x3 Green Tea Blindfolded,miscellaneous,3091,time,1,1,FALSE,FALSE,TRUE,Solve a 3x3x3 blindfolded and drink a 230-340ml bottle of non-alcoholic liquid. The competitor must drink the liquid strictly after the memorization phase (after donning the blindfold) and before the execution phase. The bottle must remain closed until the competitor has donned their blindfold. Penalty: DNF. The liquid must not be spilled. Penalty: DNF.,,,2025-03-26T21:25:40.223Z,2025-06-01T06:38:17.612Z
+109,mfto,Master Face-Turning Octahedron,miscellaneous,3320,time,m,1,FALSE,FALSE,FALSE,Four layer version of the Face-Turning Octahedron.,,,2025-04-22T03:20:51.164Z,2025-05-27T08:39:42.792Z
+110,baby_fto,Baby Face-Turning Octahedron,miscellaneous,3300,time,a,1,FALSE,FALSE,FALSE,Two layer version of the Face-Turning Octahedron. The solution for an attempt cannot be shorter than 5 moves.,,,2025-05-11T16:36:19.355Z,2025-07-13T13:12:34.542Z
+111,super_gear_cube,Super Gear Cube,miscellaneous,3061,time,a,1,FALSE,FALSE,FALSE,Not to be confused with the Gear Cube. Please see the rules page for clarification.,Not to be confused with the Gear Cube. Please see the rules page for clarification.,"- Not to be confused with the standard Gear Cube.
+- Misalignment penalty: DNF if more than a 90-degree outer face turn from being solved (i.e. both opposite faces more than 45 degrees from being solved relative to the middle slice). Otherwise, there is no +2 time penalty.",2025-05-30T10:50:23.488Z,2026-04-16T00:24:25.597Z
+112,cto,Corner-Turning Octahedron,miscellaneous,3340,time,a,1,FALSE,FALSE,FALSE,Not to be confused with Face-Turning Octahedron,,,2025-06-24T19:43:00.995Z,2025-06-24T19:43:00.995Z
+113,333_one_move_team_factory,3x3x3 One Move Team Factory,miscellaneous,3011,time,a,2,FALSE,FALSE,FALSE,"As a team of two, solve a 3x3x3 one move at a time, alternating team members between each move. Only one team member may make a move at a time. No talking is allowed at any point during the attempt. A competitor may not undo their own move and turn a separate  layer on the same turn (e.g. R R' U isn't allowed, but R R2 is).",,,2025-06-27T06:49:34.041Z,2025-06-27T06:56:28.678Z
+114,2pentahedron,2-layer Pentahedron,miscellaneous,3280,time,a,1,FALSE,FALSE,FALSE,Two-layer version of the face-turning pentahedron (triangular prism).,,,2025-07-12T01:14:43.489Z,2025-07-12T17:08:05.088Z
+115,3pentahedron,3-layer Pentahedron,miscellaneous,3281,time,a,1,FALSE,FALSE,FALSE,Three-layer version of the face-turning pentahedron (triangular prism).,,,2025-07-12T01:15:32.599Z,2025-07-12T17:08:20.370Z
+116,mmorphix,Mastermorphix,miscellaneous,3202,time,a,1,FALSE,FALSE,FALSE,Three layer Morphix puzzle,,,2025-07-13T20:00:32.433Z,2025-07-14T08:40:55.247Z
+117,helicopter,Helicopter Cube,miscellaneous,3386,time,a,1,FALSE,FALSE,FALSE,,,,2025-07-14T20:14:02.844Z,2025-07-14T20:14:02.844Z
+118,curvycopter,Curvy Copter,miscellaneous,3387,time,a,1,FALSE,FALSE,FALSE,,,,2025-07-14T20:14:31.024Z,2026-01-17T19:23:48.486Z
+119,sq1_oh,Square-1 One-Handed,miscellaneous,3193,time,a,1,FALSE,FALSE,FALSE,,,,2025-07-16T19:55:27.701Z,2025-07-16T20:15:57.444Z
+120,333_team_bld_twist,3x3x3 Team-Blind With A Twist,miscellaneous,3094,time,1,2,FALSE,FALSE,TRUE,3x3x3 Team-Blind using the Rubik's Pulse Cube.,,,2025-08-08T06:17:15.368Z,2025-08-08T06:19:16.072Z
+121,333_team_bld_twist_cnc,3x3x3 Team-Blind With A Twist (Cuber + Non-Cuber),miscellaneous,3095,time,1,2,FALSE,FALSE,TRUE,3x3x3 Team-Blind using the Rubik's Pulse Cube. One of the participants must be a non-cuber.,,,2025-08-08T06:18:55.527Z,2025-08-08T06:18:55.527Z
+122,rainbow_ball_12,Rainbow Ball (12 Slots),removed,4030,time,a,1,FALSE,FALSE,FALSE,,,,2025-08-08T06:33:53.370Z,2025-11-19T11:24:56.835Z
+123,8puzzle,8 Puzzle,miscellaneous,3431,time,a,1,FALSE,FALSE,FALSE,,,,2025-08-15T21:53:48.848Z,2025-08-15T21:53:48.848Z
+124,233_cuboid,2x3x3 Cuboid,miscellaneous,3622,time,a,1,FALSE,FALSE,FALSE,,,"- Some 2x3x3 cuboids allow for a special type of mid-turn move (e.g. M' U2 M, etc). These are explicitly **not** allowed for the event.",2025-08-16T06:51:20.407Z,2026-04-18T16:06:51.489Z
+125,sq0,Square-0,removed,4040,time,a,1,FALSE,FALSE,FALSE,,,,2025-08-16T08:50:14.073Z,2025-11-19T11:44:43.917Z
+126,333_twist_cube,3x3x3 Twist Cube,miscellaneous,3292,time,a,1,FALSE,FALSE,FALSE,,,,2025-08-16T08:56:22.363Z,2025-08-17T17:54:26.521Z
+127,333_void,3x3x3 Void Cube,miscellaneous,3290,time,a,1,FALSE,FALSE,FALSE,,,"- A proper Void Cube with hollow centers must be used for this event.
+- If the center pieces are still visible in the mechanism, they must not be distinguishable.",2025-08-16T08:57:12.056Z,2026-04-18T06:00:51.622Z
+128,222fm,2x2x2 Fewest Moves,miscellaneous,3102,number,a,1,FALSE,FALSE,FALSE,The time limit for each attempt is 8 minutes,,The time limit for each attempt is 8 minutes.,2025-08-17T06:43:07.368Z,2025-10-22T09:46:08.303Z
+129,444fm,4x4x4 Fewest Moves,miscellaneous,3112,number,1,1,FALSE,FALSE,FALSE,The time limit for each attempt is 90 minutes,,The time limit for each attempt is 90 minutes.,2025-08-17T06:43:44.903Z,2025-10-22T09:45:41.704Z
+130,fisher,3x3x3 Fisher Cube,miscellaneous,3291,time,a,1,FALSE,FALSE,FALSE,,,,2025-08-17T17:54:55.946Z,2025-08-17T17:54:55.946Z
+131,101010,10x10x10 Cube,miscellaneous,3216,time,m,1,FALSE,FALSE,FALSE,,,,2025-08-24T00:41:05.994Z,2025-08-24T00:41:05.994Z
+132,333_windmill_cube,3x3x3 Windmill Cube,miscellaneous,3293,time,a,1,FALSE,FALSE,FALSE,,,,2025-09-24T14:11:28.188Z,2025-09-24T14:11:28.188Z
+133,333_doubles,3x3x3 Doubles,miscellaneous,3035,time,a,2,FALSE,FALSE,FALSE,"Solve a 3x3x3 in a team of two, each using only one hand. Relevant One-Handed rules apply.",,,2025-09-24T14:13:38.675Z,2026-04-01T07:09:20.387Z
+134,222_blanker,2x2x2 Blanker Cube,miscellaneous,3285,time,a,1,FALSE,FALSE,FALSE,"2x2x2 shape modification, made to look like a 3x3x3 with the same color on every side.",,,2025-10-03T15:27:13.914Z,2025-10-03T15:27:13.914Z
+135,new_penta_clock,Pentagonal Clock (New Style),miscellaneous,3482,time,a,1,FALSE,FALSE,FALSE,Also known as 5x5 Clock. Sold by Qiyi and doesn’t contain a center clock,,,2025-12-28T21:13:28.742Z,2025-12-28T21:13:28.742Z
+136,333bf_oh,3x3x3 Blindfolded One-Handed,miscellaneous,3017,time,3,1,TRUE,TRUE,FALSE,"Solve a 3x3x3 Cube blindfolded and using only one hand. After the competitor starts the timer, they must only use one hand for the entire attempt, including the memorization phase.",,,2026-01-11T09:13:22.030Z,2026-01-13T18:59:18.045Z
+137,miniguild_3_person,3-man Mini Guildford,miscellaneous,3950,time,3,3,FALSE,FALSE,FALSE,,,,2026-01-11T09:20:21.173Z,2026-01-11T09:20:21.173Z
+138,clock_scrambling,Clock Scrambling,removed,4050,time,a,1,FALSE,FALSE,FALSE,,,,2026-01-11T09:27:55.110Z,2026-01-11T09:27:55.110Z
+139,333_x10_relay,Ten 3x3x3 Cubes Relay,removed,4060,time,m,1,FALSE,FALSE,FALSE,,,,2026-01-11T09:31:17.790Z,2026-01-11T09:31:17.790Z
+140,clock_mbld,Clock Multi-Blind,miscellaneous,3155,multi,1,1,TRUE,TRUE,FALSE,,,,2026-01-11T09:36:26.446Z,2026-01-11T09:36:26.446Z
+141,777_illusion,7x7x7 Illusion Cube,removed,4070,time,a,1,FALSE,FALSE,FALSE,,,,2026-01-14T11:20:23.725Z,2026-01-14T11:20:23.725Z
+142,334_cuboid,3x3x4 Cuboid,miscellaneous,3723,time,a,1,FALSE,FALSE,FALSE,,,,2026-01-14T11:40:43.632Z,2026-01-14T11:40:43.632Z
+143,clock_bld,Clock Blindfolded,miscellaneous,3151,time,5,1,FALSE,FALSE,FALSE,,,,2026-01-14T11:41:42.937Z,2026-03-20T21:41:10.674Z
+144,333_bets,3x3x3 Bets,miscellaneous,3050,time,3,1,FALSE,FALSE,FALSE,"Write down a time prediction on the scorecard and try to get a solve faster than or equal to the predicted time. If the solve is slower, the result is DNF.",,"- At the start of the attempt, the competitor writes down a time on the scorecard (without signing).
 - The competitor does the attempt as normal, but trying to achieve a result faster than or equal to the predicted time.
 - The recorded time is the one written down on the scorecard (the ""bet""). Penalty for the final time on the timer being higher than the predicted time: DNF.",2026-01-17T20:14:08.165Z,2026-01-17T20:14:08.165Z
-145,magic_create_cube,Magic Create The Cube,removed,4100,time,a,1,FALSE,FALSE,FALSE,FALSE,See https://www.jaapsch.net/puzzles/magiccrea.htm,,,2026-01-31T12:03:40.639Z,2026-01-31T12:03:40.639Z
-146,magic_chess,Super Magic (Magic Chess),removed,4080,time,a,1,FALSE,FALSE,FALSE,FALSE,See https://www.cs.brandeis.edu/~storer/JimPuzzles/ZPAGES/zzzRubikPanels16.html,,,2026-01-31T12:05:53.378Z,2026-01-31T12:05:53.378Z
-147,magic_balls,Super Magic (Magic Balls),removed,4090,time,a,1,FALSE,FALSE,FALSE,FALSE,"See https://www.cs.brandeis.edu/~storer/JimPuzzles/ZPAGES/zzzRubikPanels16.html
+145,magic_create_cube,Magic Create The Cube,removed,4100,time,a,1,FALSE,FALSE,FALSE,See https://www.jaapsch.net/puzzles/magiccrea.htm,,,2026-01-31T12:03:40.639Z,2026-01-31T12:03:40.639Z
+146,magic_chess,Super Magic (Magic Chess),removed,4080,time,a,1,FALSE,FALSE,FALSE,See https://www.cs.brandeis.edu/~storer/JimPuzzles/ZPAGES/zzzRubikPanels16.html,,,2026-01-31T12:05:53.378Z,2026-01-31T12:05:53.378Z
+147,magic_balls,Super Magic (Magic Balls),removed,4090,time,a,1,FALSE,FALSE,FALSE,"See https://www.cs.brandeis.edu/~storer/JimPuzzles/ZPAGES/zzzRubikPanels16.html
 And https://www.jaapsch.net/puzzles/magicsuper.htm",,,2026-01-31T12:08:46.877Z,2026-01-31T12:08:46.877Z
-148,333_braille_bld,3x3x3 Braille Cube Blindfolded,miscellaneous,3057,time,m,1,FALSE,FALSE,FALSE,FALSE,Solve a textured cube blindfolded. There is no inspection time.,,"- Every side of the puzzle must have a unique set of tiles that can be distinguished by feel, as well as a unique color (same as a regular 3x3x3 Cube).
+148,333_braille_bld,3x3x3 Braille Cube Blindfolded,miscellaneous,3057,time,m,1,FALSE,FALSE,FALSE,Solve a textured cube blindfolded. There is no inspection time.,,"- Every side of the puzzle must have a unique set of tiles that can be distinguished by feel, as well as a unique color (same as a regular 3x3x3 Cube).
 - This is a fully blindfolded event (see above).",2026-02-10T12:12:53.405Z,2026-02-10T12:12:53.405Z
-149,333_paw_mitts,3x3x3 With Paw Mitts,miscellaneous,3031,time,m,1,FALSE,FALSE,FALSE,TRUE,,,,2026-02-26T06:26:56.392Z,2026-02-26T06:26:56.392Z
-150,444_mirror_blocks,4x4x4 Mirror Blocks,miscellaneous,3220,time,a,1,FALSE,FALSE,FALSE,FALSE,,Puzzles must NOT have any logos.,"- All sides of the puzzle must be clearly distinguishable from each other (i.e. have distinct thicknesses on each side).
+149,333_paw_mitts,3x3x3 With Paw Mitts,miscellaneous,3031,time,m,1,FALSE,FALSE,TRUE,,,"- Paw mitts must only have four fingers, where the middle and third fingers share a pocket.
+- The forearms or elbows may be used to start or stop the timer, if necessary.",2026-02-26T06:26:56.392Z,2026-04-18T01:16:03.688Z
+150,444_mirror_blocks,4x4x4 Mirror Blocks,miscellaneous,3220,time,a,1,FALSE,FALSE,FALSE,,Puzzles must NOT have any logos.,"- All sides of the puzzle must be clearly distinguishable from each other (i.e. have distinct thicknesses on each side).
   - All pieces of the puzzle must only be distinguishable from each other by the thickness on each axis. There must be no other way to distinguish the pieces from each other, be that visually, by feel, or otherwise. Puzzles must NOT have any logos.
 - The permutation of centers within the same face does not matter for determining the solved state.
 - Scrambling orientation (see [Regulation 4d of the WCA Regulations](https://www.worldcubeassociation.org/regulations/#4d)): scrambled starting with the thickest layer as the top face and the next thickest adjacent layer on the front face.",2026-02-28T01:34:31.872Z,2026-03-10T03:37:31.078Z
-151,555_mirror_blocks,5x5x5 Mirror Blocks,miscellaneous,3230,time,m,1,FALSE,FALSE,FALSE,FALSE,,,"- All sides of the puzzle must be clearly distinguishable from each other (i.e. have distinct thicknesses on each side).
+151,555_mirror_blocks,5x5x5 Mirror Blocks,miscellaneous,3230,time,m,1,FALSE,FALSE,FALSE,,,"- All sides of the puzzle must be clearly distinguishable from each other (i.e. have distinct thicknesses on each side).
   - All pieces of the puzzle must only be distinguishable from each other by the thickness on each axis. There must be no other way to distinguish the pieces from each other, be that visually, by feel, or otherwise. Exception: the puzzle may have one logo on one of the fixed center pieces.
 - The orientation of the centers does not matter for determining the solved state.
 - Scrambling orientation (see [Regulation 4d of the WCA Regulations](https://www.worldcubeassociation.org/regulations/#4d)): scrambled starting with the thickest layer as the top face and the next thickest adjacent (outer) layer on the front face.",2026-02-28T01:34:57.200Z,2026-03-10T03:37:44.515Z
-152,333_axis_cube,3x3x3 Axis Cube,miscellaneous,3294,time,a,1,FALSE,FALSE,FALSE,FALSE,,,"- The puzzle used must have a unique color for each face.
+152,333_axis_cube,3x3x3 Axis Cube,miscellaneous,3294,time,a,1,FALSE,FALSE,FALSE,,,"- The puzzle used must have a unique color for each face.
 - Scrambling orientation: scrambled with the symmetric corner in the UFL position and the green face (if not possible, the darkest face) facing downwards.",2026-02-28T01:35:24.355Z,2026-03-10T03:37:19.055Z
-153,miniguild_oh,Mini Guildford One-Handed,miscellaneous,3955,time,3,1,FALSE,FALSE,FALSE,TRUE,"Solve all of these puzzles one-handed: 2x2x2, two 3x3x3s, 4x4x4, 5x5x5, Pyraminx, Megaminx, Skewb, Square-1, Clock.",,"- This is a relay event (see above).
+153,miniguild_oh,Mini Guildford One-Handed,miscellaneous,3955,time,3,1,FALSE,FALSE,TRUE,"Solve all of these puzzles one-handed: 2x2x2, two 3x3x3s, 4x4x4, 5x5x5, Pyraminx, Megaminx, Skewb, Square-1, Clock.",,"- This is a relay event (see above).
 - Solve all of these puzzles one-handed: 2x2x2, 3x3x3, 4x4x4, 5x5x5, Pyraminx, Megaminx, Skewb, Square-1, Clock.
 - A box should be used to transport and cover all of the puzzles before the start of each attempt.",2026-02-28T01:50:40.467Z,2026-03-04T11:27:57.460Z
-154,333_assembly,3x3x3 Assembly,miscellaneous,3021,time,3,1,FALSE,FALSE,FALSE,TRUE,"Assemble the pieces of a 3x3x3 Cube around a core as quickly as possible, ending in a solved state",,,2026-03-15T03:19:58.156Z,2026-03-21T21:24:15.569Z
+154,333_assembly,3x3x3 Assembly,miscellaneous,3021,time,3,1,FALSE,FALSE,TRUE,"Assemble the pieces of a 3x3x3 Cube around a core as quickly as possible, ending in a solved state",,,2026-03-15T03:19:58.156Z,2026-03-21T21:24:15.569Z

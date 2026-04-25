@@ -97,9 +97,13 @@ def load_and_process_data():
         res_exploded['person_id'] = res_exploded['person_id'].astype(str)
         
         GLOBAL_DATA = {
-            'res': res_df, 'exp': res_exploded, 'pers': pers_df, 
-            'ev': event_names, 'cont': contests_df
-        }
+            'res': res_df, 
+            'exp': res_exploded, 
+            'pers': pers_df, 
+            'ev': event_names, 
+            'cont': contests_df,
+            'all_ev_ids': sorted(ev_df['event_id'].unique().tolist()) # Add this line
+}
         return GLOBAL_DATA['res'], GLOBAL_DATA['exp'], GLOBAL_DATA['pers'], GLOBAL_DATA['ev'], GLOBAL_DATA['cont']
     except Exception as e:
         print(f"Data Loading Error: {e}")
@@ -514,7 +518,66 @@ def competition_page(competition_id):
                             all_rounds=all_rounds,
                             results_by_person=results_by_person,
                             competition_id=competition_id)
-app = app
+@app.route('/competitions', methods=['GET', 'POST'])
+def competitions_list():
+    # 1. Load data
+    res_df, _, _, event_names, contests_df = load_and_process_data()
+    all_ev_ids = GLOBAL_DATA.get('all_ev_ids', [])
+    
+    # 2. Define Category Lists
+    CORE_EVENTS = ['fto', '333_team_bld', '333_mirror_blocks', '333_mirror_blocks_bld', 'mpyram', 'kilominx', 'redi', 'magic', 'mmagic', '333_linear_fm', '333ft','333_speed_bld', 'miniguild', 'miniguild_2_person', '333mts']
+    WCA_ONLY = ['333', '222', '444', '555', '666', '777', '333bf', '333oh', '333fm','444bf', '555bf', '333mbf', 'clock', 'minx', 'pyram', 'skewb', 'sq1']
+    WCA_ALL = CORE_EVENTS + WCA_ONLY
+    GITHUB_UNOFFICIAL = ['fto', 'kilominx', 'rediminx', 'magic', 'master_magic']
+
+    # 3. Handle Filtering (STRICT "AND" LOGIC)
+    selected_events = request.args.getlist('event_filter')
+
+    if selected_events:
+        # Filter res_df to only include the events the user selected
+        subset = res_df[res_df['event_id'].isin(selected_events)]
+        
+        # Count how many distinct selected events each competition had
+        # We group by competition_id and count the unique event_ids
+        event_counts = subset.groupby('competition_id')['event_id'].nunique()
+        
+        # Only keep competitions where the count matches the number of selected events
+        required_count = len(selected_events)
+        comps_to_show = event_counts[event_counts == required_count].index
+        
+        filtered_contests = contests_df[contests_df['competition_id'].isin(comps_to_show)].copy()
+    else:
+        # No filter: Show everything
+        filtered_contests = contests_df.copy()
+
+    # 4. Prepare Data for HTML
+    competitions_data = []
+    for _, row in filtered_contests.sort_values('start_date', ascending=False).iterrows():
+        d_obj = row['start_date']
+        if isinstance(d_obj, str):
+            try:
+                d_obj = pd.to_datetime(d_obj)
+            except:
+                d_obj = None
+
+        competitions_data.append({
+            'id': row['competition_id'],
+            'name': row['name'],
+            'date_obj': d_obj,
+            'location': f"{row['city']}, {row['region_code']}"
+        })
+
+    # 5. Render Template
+    return render_template(
+        'competitions.html',
+        competitions=competitions_data,
+        all_events=all_ev_ids,
+        event_names=event_names,
+        selected_events=selected_events,
+        CORE_EVENTS=CORE_EVENTS,
+        wca=WCA_ALL,
+        github_unofficial=GITHUB_UNOFFICIAL
+    )
 if __name__ == '__main__':
     # Enable debug mode as requested
     app.run(debug=True)

@@ -325,6 +325,33 @@
         :root {
             --icon-filter: invert(72%) sepia(9%) saturate(838%) hue-rotate(182deg) brightness(91%) contrast(89%);
         }
+
+        /* --- WCA Link Styling --- */
+        .wca-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid var(--primary-accent);
+            border-radius: 8px;
+            color: var(--primary-accent);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .wca-btn:hover {
+            background: var(--primary-accent);
+            color: var(--bg-body);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2);
+        }
+
+        .wca-btn i {
+            font-size: 0.8rem;
+        }
     </style>
 </head>
 
@@ -348,10 +375,12 @@
             <div class="comp-meta">
                 <span><i class="fa-solid fa-calendar"></i> {{ comp_date }}</span>
                 <span><i class="fa-solid fa-map-pin"></i> {{ comp_location }}</span>
-                {% if competition_id %}
+
+                {# Only show if competition_id exists (meaning it's an official WCA comp) #}
+                {% if competition_id and competition_id != "" %}
                 <a href="https://www.worldcubeassociation.org/competitions/{{ competition_id }}" target="_blank"
                     class="wca-btn">
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i> WCA PAGE
+                    <i class="fa-solid fa-external-link-alt"></i> WCA PAGE
                 </a>
                 {% endif %}
             </div>

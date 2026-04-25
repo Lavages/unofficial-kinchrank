@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Competitions - Kinchranks</title>
+
+    <link rel="stylesheet" href="https://cdn.cubing.net/v0/css/@cubing/icons/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root[data-theme="dark"] {
+            --bg-body: #020617;
+            --bg-card: #0f172a;
+            --primary: #38bdf8;
+            --secondary: #818cf8;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --sticky-bg: #1e293b;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            padding: 15px;
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .logo {
+            font-family: 'Outfit';
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .config-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .section-header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 0 10px;
+        }
+
+        .section-h {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        .event-flex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .chip {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+            min-width: 45px;
+            min-height: 45px;
+        }
+
+        .chip input {
+            display: none;
+        }
+
+        .chip span.cubing-icon,
+        .chip img {
+            width: 28px !important;
+            height: 28px !important;
+            font-size: 28px;
+            object-fit: contain;
+        }
+
+        .chip img {
+            filter: invert(72%) sepia(9%) saturate(838%) hue-rotate(182deg) brightness(91%) contrast(89%);
+        }
+
+        .chip:has(input:checked) {
+            border-color: var(--primary);
+            background: rgba(56, 189, 248, 0.15);
+        }
+
+        .chip:has(input:checked) span {
+            color: var(--primary);
+        }
+
+        .chip:has(input:checked) img {
+            filter: invert(65%) sepia(85%) saturate(1500%) hue-rotate(170deg) brightness(100%) contrast(100%);
+        }
+
+        .table-outer {
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-card);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: var(--sticky-bg);
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            padding: 16px;
+            text-align: left;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+
+        .comp-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 800;
+        }
+
+        .date-text {
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .reset-btn {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+
+        .reset-btn:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+    {% set wca =
+    ['333','222','444','555','666','777','333bf','333fm','333oh','clock','minx','pyram','skewb','sq1','444bf','555bf','333mbf','333ft','333mbo','magic','mmagic']
+    %}
+    {% set github_unofficial =
+    ['222bf','222oh','234567relay','234567relay_2_person','23456relay','2345relay','234relay','333_linear_fm','333_mirror_blocks','333_mirror_blocks_bld','333_oh_bld_relay','333_oh_bld_team_relay','333_oven_mitts','333_siamese','333_speed_bld','333_team_bld','333_team_factory','333bf_2_person_relay','333bf_3_person_relay','333bf_4_person_relay','333bf_8_person_relay','333mts','444ft','666bf','777bf','baby_fto','cmetrick_mini','corner_helicopter_222','crazy_333','curvycopter','dino','fisher','fto','gear','gigaminx','helicopter','ivy','kilominx','magic_oh','miniguild','miniguild_2_person','miniguild_bld','minx_bld','mpyram','mskewb','mtetram','pyraminx_crystal','pyramorphix','redi','sq1_bld','sq2','super_sq1','ufo']
+    %}
+
+    {# Macro for consistent chip rendering #}
+    {% macro render_chip(eid, event_names, selected_events, wca, github_unofficial) %}
+    <label class="chip" title="{{ event_names.get(eid, eid) }}">
+        <input type="checkbox" name="event_filter" value="{{ eid }}" {% if eid in selected_events %}checked{% endif %}
+            onchange="this.form.submit()">
+
+        {% if eid in wca %}
+        <span class="cubing-icon event-{{ eid }}"></span>
+        {% elif eid in github_unofficial %}
+        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/{{ eid }}.svg" alt="{{ eid }}">
+        {% elif eid == 'gear_cube' %}
+        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/gear.svg" alt="Gear Cube">
+        {% elif eid == 'ivy_cube' %}
+        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/ivy.svg" alt="Ivy Cube">
+        {% elif eid == 'corner_heli222' %}
+        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/corner_helicopter_222.svg"
+            alt="Corner Helicopter 2x2">
+        {% else %}
+        <img src="/static/icons/{{ eid }}.svg" alt="{{ eid }}"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+        <div class="txt" style="display:none; font-size: 10px;">{{ eid }}</div>
+        {% endif %}
+    </label>
+    {% endmacro %}
+
+    <div class="container">
+        <header>
+            <a href="/" class="logo">Unofficial Kinchranks</a>
+            <nav class="nav-menu">
+                <a href="/competitions" class="nav-link" style="color: var(--primary);">Competitions</a>
+                <a href="/rankings" class="nav-link">Rankings</a>
+                <a href="/records" class="nav-link">Records</a>
+            </nav>
+        </header>
+
+        <div class="config-panel">
+            <form action="/competitions" method="GET" id="filterForm">
+                <div class="section-header-container">
+                    <span class="section-h">Core Events</span>
+                    <a href="/competitions" class="reset-btn">RESET FILTERS</a>
+                </div>
+                <div class="event-flex">
+                    {% for eid in all_events if eid in CORE_EVENTS %}
+                    {{ render_chip(eid, event_names, selected_events, wca, github_unofficial) }}
+                    {% endfor %}
+                </div>
+
+                <div class="section-header-container">
+                    <span class="section-h">WCA Events</span>
+                </div>
+                <div class="event-flex">
+                    {% for eid in all_events if eid in wca and eid not in CORE_EVENTS %}
+                    {{ render_chip(eid, event_names, selected_events, wca, github_unofficial) }}
+                    {% endfor %}
+                </div>
+
+                <div class="section-header-container">
+                    <span class="section-h">Misc Events</span>
+                </div>
+                <div class="event-flex">
+                    {% for eid in all_events if eid not in CORE_EVENTS and eid not in wca %}
+                    {{ render_chip(eid, event_names, selected_events, wca, github_unofficial) }}
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+
+        <div class="table-outer">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Competition</th>
+                        <th>Location</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for comp in competitions %}
+                    <tr>
+                        <td class="date-text">{{ comp.date_obj.strftime('%B %d, %Y') }}</td>
+                        <td><a href="/competition/{{ comp.id }}" class="comp-link">{{ comp.name }}</a></td>
+                        <td>{{ comp.location }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3" style="text-align:center; padding:40px; color:var(--text-muted);">
+                            No competitions match all selected events.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

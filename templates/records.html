@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Records | Unofficial Kinchranks</title>
+
+    <link rel="stylesheet" href="https://cdn.cubing.net/v0/css/@cubing/icons/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root[data-theme="dark"] {
+            --bg-body: #020617;
+            --bg-card: #0f172a;
+            --primary: #38bdf8;
+            --secondary: #818cf8;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --ice-blue: #99f6ff;
+            /* New Ice Blue Color */
+        }
+
+        :root[data-theme="light"] {
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --primary: #0284c7;
+            --secondary: #4f46e5;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #cbd5e1;
+            --ice-blue: #0ea5e9;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            padding: 15px;
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 10px 0;
+        }
+
+        .logo {
+            font-family: 'Outfit';
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--ice-blue);
+        }
+
+        .config-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        select {
+            background: var(--bg-body);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .btn-update {
+            background: var(--ice-blue);
+            color: #000;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .event-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 15px 20px;
+            background: rgba(153, 246, 255, 0.05);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Outfit';
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--ice-blue);
+        }
+
+        /* ICE BLUE ICON FILTER */
+        .section-header img,
+        .section-header .cubing-icon {
+            width: 28px !important;
+            height: 28px !important;
+            filter: invert(88%) sepia(21%) saturate(735%) hue-rotate(155deg) brightness(103%) contrast(101%);
+            object-fit: contain;
+        }
+
+        .table-outer {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 750px;
+        }
+
+        th {
+            background: rgba(30, 41, 59, 0.5);
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            padding: 14px 20px;
+            text-align: left;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .col-type {
+            font-weight: 800;
+            color: var(--ice-blue);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            width: 100px;
+        }
+
+        .col-result {
+            font-family: 'Outfit';
+            font-weight: 800;
+            color: var(--text-main);
+            font-size: 1.15rem;
+        }
+
+        .link-profile {
+            color: var(--ice-blue);
+            text-decoration: none;
+            font-weight: 800;
+        }
+
+        .link-comp {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .link-comp:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    {% set wca =
+    ['333','222','444','555','666','777','333bf','333fm','333oh','clock','minx','pyram','skewb','sq1','444bf','555bf','333mbf','333ft','333mbo','magic','mmagic']
+    %}
+    {% set github_unofficial =
+    ['222bf','222oh','234567relay','234567relay_2_person','23456relay','2345relay','234relay','333_linear_fm','333_mirror_blocks','333_mirror_blocks_bld','333_oh_bld_relay','333_oh_bld_team_relay','333_oven_mitts','333_siamese','333_speed_bld','333_team_bld','333_team_factory','333bf_2_person_relay','333bf_3_person_relay','333bf_4_person_relay','333bf_8_person_relay','333mts','444ft','666bf','777bf','baby_fto','cmetrick_mini','corner_helicopter_222','crazy_333','curvycopter','dino','fisher','fto','gear','gigaminx','helicopter','ivy','kilominx','magic_oh','miniguild','miniguild_2_person','miniguild_bld','minx_bld','mpyram','mskewb','mtetram','pyraminx_crystal','pyramorphix','redi','sq1_bld','sq2','super_sq1','ufo']
+    %}
+
+    <div class="container">
+        <header>
+            <a href="/" class="logo">Unofficial Kinchranks</a>
+            <nav class="nav-menu">
+                <a href="/" class="nav-link">Rankings</a>
+                <a href="/records" class="nav-link active">Records</a>
+                <a href="/competitions" class="nav-link">Competitions</a>
+            </nav>
+            <button class="btn-update"
+                style="background:none; border: 1px solid var(--border); color:var(--text-main); min-width: 45px; padding: 0;"
+                onclick="document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')">
+                <i class="fa-solid fa-circle-half-stroke"></i>
+            </button>
+        </header>
+
+        <div class="config-panel">
+            <form action="/records" method="GET" class="filter-controls">
+                <select name="region">
+                    <option value="All">Global Rankings</option>
+                    {% for r in regions %}<option value="{{ r }}" {% if current_region==r %}selected{% endif %}>{{ r }}
+                    </option>{% endfor %}
+                </select>
+                <select name="events">
+                    <option value="">All Events</option>
+                    {% for eid in all_events %}<option value="{{ eid }}" {% if eid==selected_event %}selected{% endif
+                        %}>{{ event_names[eid] }}</option>{% endfor %}
+                </select>
+                <button type="submit" class="btn-update">UPDATE RECORDS</button>
+            </form>
+        </div>
+
+        {% for record in records %}
+        <div class="event-section">
+            <div class="section-header">
+                {% set eid = record.event_id %}
+                {% if eid in wca %}
+                <span class="cubing-icon event-{{ eid }}"></span>
+                {% elif eid in github_unofficial %}
+                <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/{{ eid }}.svg"
+                    alt="{{ eid }}">
+                {% elif eid == 'gear_cube' %}
+                <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/gear.svg"
+                    alt="Gear Cube">
+                {% elif eid == 'ivy_cube' %}
+                <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/ivy.svg"
+                    alt="Ivy Cube">
+                {% elif eid == 'corner_heli222' %}
+                <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/corner_helicopter_222.svg"
+                    alt="Corner Helicopter 2x2">
+                {% else %}
+                <img src="/static/icons/{{ eid }}.svg" alt="{{ eid }}" onerror="this.style.display='none';">
+                {% endif %}
+                <span>{{ record.event_name }}</span>
+            </div>
+            <div class="table-outer">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Competitor</th>
+                            <th>Result</th>
+                            <th>Region</th>
+                            <th>Competition</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if record.single %}
+                        <tr>
+                            <td class="col-type">Single</td>
+                            <td><a href="/person/{{ record.single.person_id }}" class="link-profile">{{
+                                    record.single.name }}</a></td>
+                            <td class="col-result">{{ record.single.time }}</td>
+                            <td style="color: var(--text-muted);">{{ record.single.region }}</td>
+                            <td><a href="/competition/{{ record.single.comp_id }}" class="link-comp">{{
+                                    record.single.competition }}</a></td>
+                        </tr>
+                        {% endif %}
+                        {% if record.average %}
+                        <tr>
+                            <td class="col-type">Average</td>
+                            <td><a href="/person/{{ record.average.person_id }}" class="link-profile">{{
+                                    record.average.name }}</a></td>
+                            <td class="col-result">{{ record.average.time }}</td>
+                            <td style="color: var(--text-muted);">{{ record.average.region }}</td>
+                            <td><a href="/competition/{{ record.average.comp_id }}" class="link-comp">{{
+                                    record.average.competition }}</a></td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+
+</html>

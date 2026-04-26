@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rankings | Unofficial Kinchranks</title>
+
+    <link rel="stylesheet" href="https://cdn.cubing.net/v0/css/@cubing/icons/css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Outfit:wght@600;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root[data-theme="dark"] {
+            --bg-body: #020617;
+            --bg-card: #0f172a;
+            --primary: #38bdf8;
+            --secondary: #818cf8;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --ice-blue: #99f6ff;
+        }
+
+        :root[data-theme="light"] {
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --primary: #0284c7;
+            --secondary: #4f46e5;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #cbd5e1;
+            --ice-blue: #0ea5e9;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            padding: 15px;
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 10px 0;
+        }
+
+        .logo {
+            font-family: 'Outfit';
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--ice-blue);
+        }
+
+        .config-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        select {
+            background: var(--bg-body);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-family: inherit;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .btn-update {
+            background: var(--ice-blue);
+            color: #000;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-update:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .ranking-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .ranking-header {
+            padding: 20px;
+            background: rgba(153, 246, 255, 0.05);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .event-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Outfit';
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+        .event-info img,
+        .event-info .cubing-icon {
+            width: 32px !important;
+            height: 32px !important;
+            filter: invert(88%) sepia(21%) saturate(735%) hue-rotate(155deg) brightness(103%) contrast(101%);
+        }
+
+        .table-outer {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        th {
+            background: rgba(30, 41, 59, 0.5);
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            padding: 14px 20px;
+            text-align: left;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.95rem;
+        }
+
+        tr:hover {
+            background: rgba(153, 246, 255, 0.03);
+        }
+
+        .rank-num {
+            font-weight: 800;
+            color: var(--text-muted);
+            width: 50px;
+        }
+
+        .col-result {
+            font-family: 'Outfit';
+            font-weight: 800;
+            color: var(--ice-blue);
+            width: 120px;
+        }
+
+        .link-profile {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .link-profile:hover {
+            color: var(--ice-blue);
+        }
+
+        .link-comp {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .link-comp:hover {
+            text-decoration: underline;
+        }
+
+        .type-toggle {
+            display: flex;
+            background: var(--bg-body);
+            padding: 4px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .type-btn {
+            padding: 6px 15px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-decoration: none;
+            color: var(--text-muted);
+            transition: 0.2s;
+        }
+
+        .type-btn.active {
+            background: var(--ice-blue);
+            color: #000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="logo">Unofficial Kinchranks</a>
+            <nav class="nav-menu">
+                <a href="/rankings" class="nav-link active">Rankings</a>
+                <a href="/records" class="nav-link">Records</a>
+                <a href="/competitions" class="nav-link">Competitions</a>
+            </nav>
+            <button class="btn-update"
+                style="background:none; border: 1px solid var(--border); color:var(--text-main); min-width: 45px; padding: 0;"
+                onclick="document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')">
+                <i class="fa-solid fa-circle-half-stroke"></i>
+            </button>
+        </header>
+
+        <div class="config-panel">
+            <form action="/rankings" method="GET" class="filter-controls">
+                <input type="hidden" name="type" value="{{ rank_type }}">
+
+                <select name="event">
+                    {% for eid in all_events %}
+                    <option value="{{ eid }}" {% if eid==selected_event %}selected{% endif %}>{{ event_names[eid] }}
+                    </option>
+                    {% endfor %}
+                </select>
+
+                <select name="region">
+                    <option value="All">Global</option>
+                    {% for r in regions %}<option value="{{ r }}" {% if current_region==r %}selected{% endif %}>{{ r }}
+                    </option>{% endfor %}
+                </select>
+
+                <div class="type-toggle">
+                    <a href="/rankings?event={{selected_event}}&region={{current_region}}&type=single"
+                        class="type-btn {% if rank_type == 'single' %}active{% endif %}">Single</a>
+                    <a href="/rankings?event={{selected_event}}&region={{current_region}}&type=average"
+                        class="type-btn {% if rank_type == 'average' %}active{% endif %}">Average</a>
+                </div>
+
+                <button type="submit" class="btn-update">FILTER</button>
+            </form>
+        </div>
+
+        <div class="ranking-card">
+            <div class="ranking-header">
+                <div class="event-info">
+                    {{ get_icon(selected_event) | safe }}
+                    <span>{{ event_names[selected_event] }} Rankings ({{ rank_type | capitalize }})</span>
+                </div>
+            </div>
+
+            <div class="table-outer">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Result</th>
+                            <th>Region</th>
+                            <th>Competition</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if rankings %}
+                        {% for entry in rankings %}
+                        <tr>
+                            <td class="rank-num">{{ loop.index }}</td>
+                            <td><a href="/person/{{ entry.person_id }}" class="link-profile">{{ entry.name }}</a></td>
+                            <td class="col-result">{{ entry.display_time }}</td>
+                            <td style="color: var(--text-muted);">{{ entry.region }}</td>
+                            <td><a href="/competition/{{ entry.comp_id }}" class="link-comp">{{ entry.competition }}</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 40px; color: var(--text-muted);">No
+                                results found for this selection.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

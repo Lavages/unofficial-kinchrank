@@ -110,8 +110,7 @@ def load_and_process_data():
         return pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), {}, pd.DataFrame()
 # Add this near your other helpers
 def get_event_icon_tag(event_id):
-    # --- WCA OFFICIAL EVENTS ---
-    # Using the 'cubing-icon' class which is usually a font-face
+    # WCA OFFICIAL EVENTS (using cubing-icons font)
     wca_events = {
         '333','222','444','555','666','777','333bf','333fm','333oh',
         'clock','minx','pyram','skewb','sq1','444bf','555bf',
@@ -121,22 +120,24 @@ def get_event_icon_tag(event_id):
     if event_id in wca_events:
         return f'<span class="cubing-icon event-{event_id}"></span>'
 
-    # --- SPECIAL CASES (naming mismatch) ---
+    # Mapping for GitHub Unofficial Icons
+    # GitHub repository: cubing/icons/main/src/svg/unofficial/
     special_map = {
         'gear_cube': 'gear',
         'ivy_cube': 'ivy',
-        'corner_heli222': 'corner_helicopter_222'
+        'corner_heli222': 'corner_helicopter_222',
+        '333_mirror_blocks': 'mirror_blocks',
+        '333_mirror_blocks_bld': 'mirror_blocks_bld',
+        '333_team_bld': 'teambld'
     }
     
-    icon_name = special_map.get(event_id, event_id)
+    icon_name = special_map.get(event_id, event_id).replace('_', '-')
 
-    # --- UPDATED LOGIC ---
-    # We combine local and github logic into one cleaner img tag 
-    # to avoid the "red <" syntax errors caused by complex multi-line strings.
     return f'''<img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/{icon_name}.svg" 
                 class="event-icon" 
+                style="width: 20px; height: 20px; vertical-align: middle;"
                 alt="{event_id}" 
-                onerror="this.onerror=null; this.src='/static/icons/{event_id}.svg'; this.style.color='transparent';">'''
+                onerror="this.onerror=null; this.src='/static/icons/{event_id}.svg';">'''
 
 # Register it so you can use it in HTML
 app.jinja_env.globals.update(get_icon=get_event_icon_tag)
@@ -578,6 +579,142 @@ def competitions_list():
         wca=WCA_ALL,
         github_unofficial=GITHUB_UNOFFICIAL
     )
+    
+@app.route('/records', methods=['GET'])
+def records_page():
+    # 1. Get Filters
+    target_region = request.args.get('region', 'All')
+    selected_event = request.args.get('events', '') # Single event dropdown for records
+    
+    res_df, res_exploded, pers_df, event_names, contests_df = load_and_process_data()
+    
+    # 2. Identify people in the target region
+    if target_region != "All":
+        # Check both full_country and continent columns
+        regional_people = pers_df[(pers_df['full_country'] == target_region) | 
+                                  (pers_df['continent'] == target_region)]['id'].unique()
+        # Filter raw results to only include these people
+        filtered_results = res_exploded[res_exploded['person_id'].isin(regional_people)].copy()
+    else:
+        filtered_results = res_exploded.copy()
+
+    # 3. Define which events to show
+    events_to_show = [selected_event] if selected_event else ALL_TARGET_EVENTS
+
+    records_data = []
+    comp_map = contests_df.set_index('competition_id')['name'].to_dict()
+
+    for eid in events_to_show:
+        event_df = filtered_results[filtered_results['event_id'] == eid]
+        if event_df.empty:
+            continue
+
+        # FIND BEST SINGLE
+        # Sort by best and take the top row
+        best_single_row = event_df[event_df['best'] > 0].sort_values('best').head(1)
+        
+        # FIND BEST AVERAGE
+        # Sort by average and take the top row
+        best_avg_row = event_df[event_df['average'] > 0].sort_values('average').head(1)
+
+        if best_single_row.empty and best_avg_row.empty:
+            continue
+
+        record_entry = {'event_id': eid, 'event_name': event_names.get(eid, eid)}
+
+        if not best_single_row.empty:
+            s = best_single_row.iloc[0]
+            p_info = pers_df[pers_df['id'] == s['person_id']].iloc[0]
+            record_entry['single'] = {
+                'name': p_info['name'],
+                'person_id': s['person_id'],
+                'time': format_time(s['best'], eid),
+                'region': p_info['full_country'],
+                'competition': comp_map.get(s['competition_id'], s['competition_id']),
+                'comp_id': s['competition_id']
+                
+            }
+
+        if not best_avg_row.empty:
+            a = best_avg_row.iloc[0]
+            p_info = pers_df[pers_df['id'] == a['person_id']].iloc[0]
+            record_entry['average'] = {
+                'name': p_info['name'],
+                'person_id': a['person_id'],
+                'time': format_time(a['average'], eid, is_avg=True),
+                'region': p_info['full_country'],
+                'competition': comp_map.get(a['competition_id'], a['competition_id']),
+                'comp_id': s['competition_id']
+            }
+
+        records_data.append(record_entry)
+
+    # Preparation for template dropdowns
+    unique_countries = sorted(pers_df['full_country'].unique().tolist())
+    
+    return render_template('records.html', 
+                           records=records_data, 
+                           regions=unique_countries, 
+                           continents=CONTINENTS,
+                           current_region=target_region,
+                           all_events=ALL_TARGET_EVENTS,
+                           event_names=event_names,
+                           selected_event=selected_event)
+
+@app.route('/rankings', methods=['GET']) # Ensure this matches the form action
+def event_rankings():
+    # 1. Get query parameters
+    selected_event = request.args.get('event', '333_siamese') # Default event
+    target_region = request.args.get('region', 'All')
+    rank_type = request.args.get('type', 'single') # 'single' or 'average'
+    
+    _, res_exploded, pers_df, event_names, contests_df = load_and_process_data()
+    
+    # 2. Filter results by event and valid scores
+    # Filter for average if requested, otherwise single (best)
+    score_col = 'average' if rank_type == 'average' else 'best'
+    df = res_exploded[(res_exploded['event_id'] == selected_event) & (res_exploded[score_col] > 0)].copy()
+
+    # 3. Apply Regional Filter
+    if target_region != "All":
+        rel_ids = pers_df[(pers_df['full_country'] == target_region) | 
+                         (pers_df['continent'] == target_region)]['id'].unique()
+        df = df[df['person_id'].isin(rel_ids)]
+
+    if df.empty:
+        return render_template('rankings.html', rankings=[], event_names=event_names, 
+                               selected_event=selected_event, regions=sorted(pers_df['full_country'].unique()),
+                               current_region=target_region, rank_type=rank_type, all_events=ALL_TARGET_EVENTS)
+
+    # 4. Find the PB (Minimum score) for each person
+    # This ensures a person doesn't appear twice in the list
+    idx = df.groupby('person_id')[score_col].idxmin()
+    rankings_df = df.loc[idx].sort_values(score_col)
+
+    # 5. Prepare final list for template
+    comp_map = contests_df.set_index('competition_id')['name'].to_dict()
+    final_rankings = []
+    
+    for i, row in enumerate(rankings_df.to_dict('records')):
+        p_info = pers_df[pers_df['id'] == row['person_id']].iloc[0]
+        final_rankings.append({
+            'person_id': row['person_id'],
+            'name': p_info['name'],
+            'display_time': format_time(row[score_col], selected_event, is_avg=(rank_type == 'average')),
+            'region': p_info['full_country'],
+            'competition': comp_map.get(row['competition_id'], row['competition_id']),
+            'comp_id': row['competition_id']
+        })
+
+    return render_template('rankings.html', 
+                           rankings=final_rankings, 
+                           event_names=event_names, 
+                           selected_event=selected_event, 
+                           regions=sorted(pers_df['full_country'].unique()),
+                           current_region=target_region, 
+                           rank_type=rank_type, 
+                           all_events=ALL_TARGET_EVENTS)
+
 if __name__ == '__main__':
     # Enable debug mode as requested
     app.run(debug=True)

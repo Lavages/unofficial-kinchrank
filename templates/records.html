@@ -292,28 +292,31 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% if record.single %}
+                        {% for type in ['single', 'average'] %}
+                        {% if record[type] %}
                         <tr>
-                            <td class="col-type">Single</td>
-                            <td><a href="/person/{{ record.single.person_id }}" class="link-profile">{{
-                                    record.single.name }}</a></td>
-                            <td class="col-result">{{ record.single.time }}</td>
-                            <td style="color: var(--text-muted);">{{ record.single.region }}</td>
-                            <td><a href="/competition/{{ record.single.comp_id }}" class="link-comp">{{
-                                    record.single.competition }}</a></td>
+                            <td class="col-type">{{ type|capitalize }}</td>
+                            <td>
+                                {% for member in record[type].members %}
+                                <a href="/person/{{ member.id }}" class="link-profile">{{ member.name }}</a>
+
+                                {# If it's not the last item, decide between comma and ampersand #}
+                                {% if not loop.last %}
+                                {% if loop.revindex0 == 1 %}
+                                &
+                                {% else %}
+                                ,
+                                {% endif %}
+                                {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td class="col-result">{{ record[type].time }}</td>
+                            <td style="color: var(--text-muted);">{{ record[type].region }}</td>
+                            <td><a href="/competition/{{ record[type].comp_id }}" class="link-comp">{{
+                                    record[type].competition }}</a></td>
                         </tr>
                         {% endif %}
-                        {% if record.average %}
-                        <tr>
-                            <td class="col-type">Average</td>
-                            <td><a href="/person/{{ record.average.person_id }}" class="link-profile">{{
-                                    record.average.name }}</a></td>
-                            <td class="col-result">{{ record.average.time }}</td>
-                            <td style="color: var(--text-muted);">{{ record.average.region }}</td>
-                            <td><a href="/competition/{{ record.average.comp_id }}" class="link-comp">{{
-                                    record.average.competition }}</a></td>
-                        </tr>
-                        {% endif %}
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>

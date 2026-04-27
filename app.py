@@ -18,7 +18,7 @@ cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 # --- CONFIGURATION ---
 CORE_AVG = ['fto', '333_team_bld', '333_mirror_blocks', '333_mirror_blocks_bld', 'mpyram', 'kilominx', 'redi', 'magic', 'mmagic', '333_linear_fm', '333ft']
 CORE_SIN = ['333_speed_bld', 'miniguild', 'miniguild_2_person', '333mts']
-MISC_AVG_EVENTS = ['222_blanker', '222_mirror_blocks', '444_mirror_blocks', '555_mirror_blocks', 'fisher', '333_windmill_cube', '333_axis_cube', '333_twist_cube', '333_void', '333_cube_mile', '333_siamese', '223_cuboid', '133_cuboid','233_cuboid', '334_cuboid', 'super_133', '888', '999', '101010', 'mkilominx', 'gigaminx','pyram_oh', 'baby_fto', 'mfto', 'cto', '2pentahedron', '3pentahedron', 'pyramorphix', 'pyram_duo','333_team_bld_old', 'dino', 'ivy_cube', 'rainbow_cube', 'corner_heli222', 'helicopter', 'curvycopter', 'gear_cube', 'super_gear_cube','skewb_oh', 'magic_oh', '222fm', '444fm', 'snake', '15puzzle', '8puzzle','222oh','444oh','clock_oh','333_oven_mitts','333_paw_mitts','222bf','new_penta_clock','penta_clock','minx_oh','clock_bld','clock_doubles']
+MISC_AVG_EVENTS = ['222_blanker', '222_mirror_blocks','333_one_side', '444_mirror_blocks', '555_mirror_blocks', 'fisher', '333_windmill_cube', '333_axis_cube', '333_twist_cube', '333_void', '333_cube_mile', '333_siamese', '223_cuboid', '133_cuboid','233_cuboid', '334_cuboid', 'super_133', '888', '999', '101010', 'mkilominx', 'gigaminx','pyram_oh', 'baby_fto', 'mfto', 'cto', '2pentahedron', '3pentahedron', 'pyramorphix', 'pyram_duo','333_team_bld_old', 'dino', 'ivy_cube', 'rainbow_cube', 'corner_heli222', 'helicopter', 'curvycopter', 'gear_cube', 'super_gear_cube','skewb_oh', 'magic_oh', '222fm', '444fm', 'snake', '15puzzle', '8puzzle','222oh','444oh','clock_oh','333_oven_mitts','333_paw_mitts','222bf','new_penta_clock','penta_clock','minx_oh','clock_bld','clock_doubles']
 MISC_SIN_EVENTS = ['333_bets', '333_supersolve', '333bf_bottle', '333_braille_bld','234567relay','2345relay_bld',]
 
 AVG_EVENTS = set(CORE_AVG + MISC_AVG_EVENTS)
@@ -584,23 +584,18 @@ def competitions_list():
 def records_page():
     # 1. Get Filters
     target_region = request.args.get('region', 'All')
-    selected_event = request.args.get('events', '') # Single event dropdown for records
+    selected_event = request.args.get('events', '') 
     
     res_df, res_exploded, pers_df, event_names, contests_df = load_and_process_data()
     
-    # 2. Identify people in the target region
     if target_region != "All":
-        # Check both full_country and continent columns
         regional_people = pers_df[(pers_df['full_country'] == target_region) | 
                                   (pers_df['continent'] == target_region)]['id'].unique()
-        # Filter raw results to only include these people
         filtered_results = res_exploded[res_exploded['person_id'].isin(regional_people)].copy()
     else:
         filtered_results = res_exploded.copy()
 
-    # 3. Define which events to show
     events_to_show = [selected_event] if selected_event else ALL_TARGET_EVENTS
-
     records_data = []
     comp_map = contests_df.set_index('competition_id')['name'].to_dict()
 
@@ -609,12 +604,7 @@ def records_page():
         if event_df.empty:
             continue
 
-        # FIND BEST SINGLE
-        # Sort by best and take the top row
         best_single_row = event_df[event_df['best'] > 0].sort_values('best').head(1)
-        
-        # FIND BEST AVERAGE
-        # Sort by average and take the top row
         best_avg_row = event_df[event_df['average'] > 0].sort_values('average').head(1)
 
         if best_single_row.empty and best_avg_row.empty:
@@ -622,43 +612,67 @@ def records_page():
 
         record_entry = {'event_id': eid, 'event_name': event_names.get(eid, eid)}
 
+        def get_record_members(result_row, is_avg=False):
+            # Filtering to find the original team row
+            mask = (res_df['competition_id'] == result_row['competition_id']) & \
+                   (res_df['event_id'] == result_row['event_id'])
+            
+            if is_avg:
+                mask &= (res_df['average'] == result_row['average'])
+            else:
+                mask &= (res_df['best'] == result_row['best'])
+
+            matching_rows = res_df[mask]
+            
+            # CRITICAL FIX: Handle case where no row is found
+            if matching_rows.empty:
+                return [{'id': str(result_row['person_id']), 'name': "Unknown"}]
+
+            original_row = matching_rows.iloc[0]
+            pids = original_row['person_ids']
+            
+            if isinstance(pids, str) and pids.startswith('['):
+                pids = ast.literal_eval(pids)
+            elif not isinstance(pids, list):
+                pids = [pids]
+                
+            members = []
+            for pid in pids:
+                p_info = pers_df[pers_df['id'] == str(pid)]
+                name = p_info.iloc[0]['name'] if not p_info.empty else "Unknown"
+                members.append({'id': str(pid), 'name': name})
+            return members
+
         if not best_single_row.empty:
             s = best_single_row.iloc[0]
-            p_info = pers_df[pers_df['id'] == s['person_id']].iloc[0]
+            m = get_record_members(s, is_avg=False)
+            p_info = pers_df[pers_df['id'] == str(s['person_id'])].iloc[0]
             record_entry['single'] = {
-                'name': p_info['name'],
-                'person_id': s['person_id'],
+                'members': m,
                 'time': format_time(s['best'], eid),
                 'region': p_info['full_country'],
                 'competition': comp_map.get(s['competition_id'], s['competition_id']),
                 'comp_id': s['competition_id']
-                
             }
 
         if not best_avg_row.empty:
             a = best_avg_row.iloc[0]
-            p_info = pers_df[pers_df['id'] == a['person_id']].iloc[0]
+            m = get_record_members(a, is_avg=True)
+            p_info = pers_df[pers_df['id'] == str(a['person_id'])].iloc[0]
             record_entry['average'] = {
-                'name': p_info['name'],
-                'person_id': a['person_id'],
+                'members': m,
                 'time': format_time(a['average'], eid, is_avg=True),
                 'region': p_info['full_country'],
                 'competition': comp_map.get(a['competition_id'], a['competition_id']),
-                'comp_id': s['competition_id']
+                'comp_id': a['competition_id']
             }
 
         records_data.append(record_entry)
 
-    # Preparation for template dropdowns
     unique_countries = sorted(pers_df['full_country'].unique().tolist())
-    
-    return render_template('records.html', 
-                           records=records_data, 
-                           regions=unique_countries, 
-                           continents=CONTINENTS,
-                           current_region=target_region,
-                           all_events=ALL_TARGET_EVENTS,
-                           event_names=event_names,
+    return render_template('records.html', records=records_data, regions=unique_countries, 
+                           continents=CONTINENTS, current_region=target_region, 
+                           all_events=ALL_TARGET_EVENTS, event_names=event_names, 
                            selected_event=selected_event)
 
 @app.route('/rankings', methods=['GET']) # Ensure this matches the form action

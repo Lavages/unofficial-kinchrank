@@ -26,7 +26,6 @@ SIN_EVENTS = set(CORE_SIN + MISC_SIN_EVENTS)
 ALL_TARGET_EVENTS = list(AVG_EVENTS | SIN_EVENTS)
 CONTINENTS = ['Africa', 'Asia', 'Europe', 'North America', 'Oceania', 'South America']
 
-# --- HELPERS ---
 def format_time(value, event_id, is_avg=False):
     try:
         val_float = float(value)
@@ -36,9 +35,59 @@ def format_time(value, event_id, is_avg=False):
     except (ValueError, TypeError):
         return "-"
     
+    # --- MULTI-BLIND DECODING LOGIC ---
+    if 'mbf' in event_id.lower() or 'mbo' in event_id.lower():
+        try:
+            val_int = int(val_float)
+            val_str = str(val_int)
+            
+            # Case A: New 15-digit encoding (e.g., your massive 250-cube attempts / custom events)
+            if len(val_str) >= 14:  
+                difference = 9999 - (val_int // 100000000000)
+                time_centiseconds = (val_int % 100000000000) // 10000
+                missed = val_int % 10000
+                
+                solved = difference + missed
+                attempted = solved + missed
+                
+                total_seconds = time_centiseconds // 100
+                rem_centiseconds = time_centiseconds % 100
+
+            # Case B: Standard WCA 9-digit encoding (e.g., official 333mbf)
+            else:  
+                difference = 99 - (val_int // 10000000)
+                time_seconds = (val_int % 10000000) // 100
+                missed = val_int % 100
+                
+                solved = difference + missed
+                attempted = solved + missed
+                
+                total_seconds = time_seconds
+                rem_centiseconds = 0  # Standard format doesn't track centiseconds
+            
+            # --- Common Time Formatting ---
+            hours = total_seconds // 3600
+            minutes = (total_seconds % 3600) // 60
+            seconds = total_seconds % 60
+            
+            if hours > 0:
+                time_str = f"{hours}:{minutes:02d}:{seconds:02d}"
+            else:
+                time_str = f"{minutes}:{seconds:02d}"
+                
+            # Truncate centiseconds if they are 00 or not tracked
+            if rem_centiseconds > 0:
+                time_str += f".{rem_centiseconds:02d}"
+            
+            return f"{solved}/{attempted} {time_str}"
+        except Exception:
+            return "DNF"
+
+    # --- FEWEST MOVES LOGIC ---
     if 'fm' in event_id.lower():
         return f"{val_float / 100.0:.2f}" if is_avg else str(int(val_float))
 
+    # --- STANDARD TIME LOGIC ---
     seconds = val_float / 100.0
     if seconds < 60:
         return f"{seconds:.2f}"
@@ -59,7 +108,7 @@ def get_region_info(code):
 GLOBAL_DATA = {}
 
 def load_and_process_data():
-    global GLOBAL_DATA
+    global GLOBAL_DATA, AVG_EVENTS, SIN_EVENTS, ALL_TARGET_EVENTS
     if GLOBAL_DATA:
         return GLOBAL_DATA['res'], GLOBAL_DATA['exp'], GLOBAL_DATA['pers'], GLOBAL_DATA['ev'], GLOBAL_DATA['cont']
 
@@ -84,6 +133,15 @@ def load_and_process_data():
         allowed_video = {'333mbo', '666bf', '777bf', '888bf', '999bf', '101010bf', '111111bf', '444mbf', '555mbf', '2345relay_bld', '234567relay_bld', '2345678relay_bld', 'miniguild_bld', 'minx_bld', 'minx444_bld', 'minx555_bld', 'minx2345relay_bld', 'pyram_crystal_bld', '333_speed_bld'}
         res_df = res_df[(res_df['record_category'] != 'video-based-results') | (res_df['event_id'].isin(allowed_video))]
 
+        # --- DYNAMIC MULTI-BLIND RESOLUTION ---
+        database_event_ids = ev_df['event_id'].dropna().unique().tolist()
+        mbld_events = [eid for eid in database_event_ids if 'mbf' in eid.lower() or 'mbo' in eid.lower()]
+        
+        # Re-build global configurations to include custom multi-blind IDs as single-only formats
+        AVG_EVENTS = set(CORE_AVG + MISC_AVG_EVENTS)
+        SIN_EVENTS = set(CORE_SIN + MISC_SIN_EVENTS + mbld_events)
+        ALL_TARGET_EVENTS = list(AVG_EVENTS | SIN_EVENTS)
+
         event_names = ev_df.set_index('event_id')['name'].to_dict()
         
         region_data = pers_df['region_code'].apply(get_region_info)
@@ -102,13 +160,13 @@ def load_and_process_data():
             'pers': pers_df, 
             'ev': event_names, 
             'cont': contests_df,
-            'all_ev_ids': sorted(ev_df['event_id'].unique().tolist()) # Add this line
-}
+            'all_ev_ids': sorted(ev_df['event_id'].unique().tolist())
+        }
         return GLOBAL_DATA['res'], GLOBAL_DATA['exp'], GLOBAL_DATA['pers'], GLOBAL_DATA['ev'], GLOBAL_DATA['cont']
+        
     except Exception as e:
         print(f"Data Loading Error: {e}")
         return pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), {}, pd.DataFrame()
-# Add this near your other helpers
 def get_event_icon_tag(event_id):
     # WCA OFFICIAL EVENTS (using cubing-icons font)
     wca_events = {

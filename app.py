@@ -18,9 +18,69 @@ cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 # --- CONFIGURATION ---
 CORE_AVG = ['fto', '333_team_bld', '333_mirror_blocks', '333_mirror_blocks_bld', 'mpyram', 'kilominx', 'redi', 'magic', 'mmagic', '333_linear_fm', '333ft']
 CORE_SIN = ['333_speed_bld', 'miniguild', 'miniguild_2_person', '333mts']
-MISC_AVG_EVENTS = ['222_blanker','223_banana', '222_mirror_blocks','333_one_side', '444_mirror_blocks', '555_mirror_blocks', 'fisher', '333_windmill_cube', '333_axis_cube', '333_twist_cube', '333_void', '333_cube_mile', '333_siamese', '223_cuboid', '133_cuboid','233_cuboid', '334_cuboid', 'super_133', '888', '999', '101010', 'mkilominx', 'gigaminx','pyram_oh', 'baby_fto', 'mfto', 'cto', '2pentahedron', '3pentahedron', 'pyramorphix', 'pyram_duo','333_team_bld_old', 'dino', 'ivy_cube', 'rainbow_cube', 'corner_heli222', 'helicopter', 'curvycopter', 'gear_cube', 'super_gear_cube','skewb_oh', 'magic_oh', '222fm', '444fm', 'snake', '15puzzle', '8puzzle','222oh','444oh','clock_oh','333_oven_mitts','333_paw_mitts','222bf','new_penta_clock','penta_clock','minx_oh','clock_bld','clock_doubles']
-MISC_SIN_EVENTS = ['333_bets', '333_supersolve', '333bf_bottle', '333_braille_bld','234567relay','2345relay_bld',]
+MISC_AVG_EVENTS = [
+    # --- Existing List ---
+    '222_blanker', '223_banana', '222_mirror_blocks', '333_one_side', 
+    '444_mirror_blocks', '555_mirror_blocks', 'fisher', '333_windmill_cube', 
+    '333_axis_cube', '333_twist_cube', '333_void', '333_cube_mile', 
+    '333_siamese', '223_cuboid', '133_cuboid', '233_cuboid', '334_cuboid', 
+    'super_133', '888', '999', '101010', 'mkilominx', 'gigaminx', 
+    'pyram_oh', 'baby_fto', 'mfto', 'cto', '2pentahedron', '3pentahedron', 
+    'pyramorphix', 'pyram_duo', '333_team_bld_old', 'dino', 'ivy_cube', 
+    'rainbow_cube', 'corner_heli222', 'helicopter', 'curvycopter', 
+    'gear_cube', 'super_gear_cube', 'skewb_oh', 'magic_oh', '222fm', 
+    '444fm', 'snake', '15puzzle', '8puzzle', '222oh', '444oh', 'clock_oh', 
+    '333_oven_mitts', '333_paw_mitts', '222bf', 'new_penta_clock', 
+    'penta_clock', 'minx_oh', 'clock_bld', 'clock_doubles',
+    
+    # --- Newly Added From Database ---
+    '333_team_factory',          # 3x3x3 Team Factory
+    '333_inspectionless',        # 3x3x3 No Inspection
+    '333_scrambling',            # 3x3x3 Scrambling
+    '333oh_x2',                  # 3x3x3 Double One-Handed
+    '222_squared',               # 2x2x2 Squared
+    '360_puzzle',                # 360 Puzzle
+    '333_x3_relay',              # Three 3x3x3 Cubes Relay (Legacy)
+    '333mts_old'                 # 3x3x3 Match The Scramble With Inspection (Legacy)
+]
 
+MISC_SIN_EVENTS = [
+    # --- Existing List ---
+    '333_bets', '333_supersolve', '333bf_bottle', '333_braille_bld', 
+    '234567relay', '2345relay_bld',
+    
+    # --- Newly Added From Database ---
+    '333_oh_bld_team_relay',     # 3x3x3 + OH + BLD Team Relay
+    '333mbo',                    # 3x3x3 Multi-Blind Old Style
+    '333bf_2_person_relay',      # 3x3x3 Blindfolded 2-man Relay
+    '333bf_3_person_relay',      # 3x3x3 Blindfolded 3-man Relay
+    '333bf_4_person_relay',      # 3x3x3 Blindfolded 4-man Relay
+    '333bf_8_person_relay',      # 3x3x3 Blindfolded 8-man Relay
+    '666bf',                     # 6x6x6 Blindfolded
+    '777bf',                     # 7x7x7 Blindfolded
+    '888bf',                     # 8x8x8 Blindfolded
+    '999bf',                     # 9x9x9 Blindfolded
+    '234567relay_bld',           # 2x2x2-7x7x7 Relay Blindfolded
+    'minx_bld',                  # Megaminx Blindfolded
+    '234relay',                  # 2x2x2-4x4x4 Relay
+    '2345relay',                 # 2x2x2-5x5x5 Relay
+    '333oh_bottle',              # 3x3x3 H2OH
+    '101010bf',                  # 10x10x10 Blindfolded
+    '111111bf',                  # 11x11x11 Blindfolded
+    'minx2345relay_bld',         # Kilo-Gigaminx Relay Blindfolded
+    'minx555_bld',               # Gigaminx Blindfolded
+    'minx444_bld',               # Master Kilominx Blindfolded
+    '2345678relay_bld',          # 2x2x2-8x8x8 Relay Blindfolded
+    'sq1_mbo',                   # Square-1 Multi-Blind
+    'miniguild_bld',             # Mini Guildford Blindfolded
+    'pyram_crystal_bld',         # Pyraminx Crystal Blindfolded
+    'fto_bld',                   # Face-Turning Octahedron Blindfolded
+    'sq1_bld',                   # Square-1 Blindfolded
+    '234567relay_2_person',      # 2-man 2x2x2-7x7x7 Relay
+    '444mbf',                    # 4x4x4 Multi-Blind
+    '555mbf',                    # 5x5x5 Multi-Blind
+    'fto_mbld'                   # Face-Turning Octahedron Multi-Blind
+]
 AVG_EVENTS = set(CORE_AVG + MISC_AVG_EVENTS)
 SIN_EVENTS = set(CORE_SIN + MISC_SIN_EVENTS)
 ALL_TARGET_EVENTS = list(AVG_EVENTS | SIN_EVENTS)

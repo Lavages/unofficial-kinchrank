@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 720">
+  <title>3x3 Assembly icon</title>
+
+  <!-- Row 1: top-right present -->
+  <rect x="421" y="290" width="130" height="130" rx="20" fill="#111"/>
+
+  <!-- Row 2: all 3 present -->
+  <rect x="133" y="432" width="130" height="130" rx="20" fill="#111"/>
+  <rect x="275" y="432" width="130" height="130" rx="20" fill="#111"/>
+  <rect x="417" y="432" width="130" height="130" rx="20" fill="#111"/>
+
+  <!-- Row 3: all 3 present -->
+  <rect x="133" y="574" width="130" height="130" rx="20" fill="#111"/>
+  <rect x="275" y="574" width="130" height="130" rx="20" fill="#111"/>
+  <rect x="417" y="574" width="130" height="130" rx="20" fill="#111"/>
+
+  <!-- Dashed outlines for missing slots -->
+  <rect x="133" y="290" width="130" height="130" rx="20" fill="none" stroke="#bbb" stroke-width="3" stroke-dasharray="10,7"/>
+  <rect x="275" y="290" width="130" height="130" rx="20" fill="none" stroke="#bbb" stroke-width="3" stroke-dasharray="10,7"/>
+
+  <!-- CORNER PIECE -->
+  <g>
+    <rect x="148" y="160" width="100" height="110" rx="14" fill="#111"/>
+    <path d="M 254,238 A 38,38 0 0 0 216,276 L 254,276 Z" fill="white"/>
+    <path d="M 254,238 A 38,38 0 0 0 216,276" fill="none" stroke="#111" stroke-width="4" stroke-linecap="round"/>
+    <line x1="254" y1="238" x2="254" y2="276" stroke="#111" stroke-width="4" stroke-linecap="round"/>
+    <line x1="216" y1="276" x2="254" y2="276" stroke="#111" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <!-- EDGE PIECE -->
+  <g>
+    <rect x="290" y="160" width="100" height="110" rx="14" fill="#111"/>
+    <rect x="320" y="237" width="40" height="43" rx="5" fill="white"/>
+    <rect x="320" y="237" width="40" height="43" rx="5" fill="none" stroke="#111" stroke-width="4"/>
+    <rect x="320" y="237" width="40" height="7" fill="#111"/>
+    <line x1="320" y1="237" x2="360" y2="237" stroke="#111" stroke-width="4"/>
+  </g>
+
+</svg>

@@ -534,13 +534,13 @@
                                 {% for res in results %}
                                 <tr>
                                     <td>
-                                        {# Only show the competition name if the round is a Final #}
-                                        {% if res.round_id == 'f' %}
-                                        <a href="/competition/{{ res.competition_id }}" class="comp-name">
-                                            {{ res.competition_name }}
-                                        </a>
-                                        {% endif %}
-                                    </td>
+    {# Show link if it's a video submission OR if it's a regular competition's Final round #}
+    {% if res.is_video or res.round_id == 'f' %}
+        <a href="{{ res.link_target }}" class="comp-name" {% if res.is_external %} target="_blank" rel="noopener noreferrer" {% endif %}>
+            {{ res.link_label }}
+        </a>
+    {% endif %}
+</td>
                                     <td style="font-weight: 600;">{{ res.round_name }}</td>
                                     <td>{{ res.ranking }}</td>
 

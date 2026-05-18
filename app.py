@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for
 from flask_caching import Cache
 import pandas as pd
 import numpy as np
@@ -96,7 +96,7 @@ def format_time(value, event_id, is_avg=False):
         return "-"
     
     # --- MULTI-BLIND DECODING LOGIC ---
-    if 'mbf' in event_id.lower() or 'mbo' in event_id.lower():
+    if 'mbf' in event_id.lower() or '_mbld' in event_id.lower() or 'mbo' in event_id.lower():
         try:
             val_int = int(val_float)
             val_str = str(val_int)
@@ -410,12 +410,33 @@ def person_profile(person_id):
             a_label = row.get('regional_average_record') if pd.notna(row.get('regional_average_record')) else None
             meta = history_meta.get(idx, {'pr_s': False, 'pr_a': False})
 
+            # Check raw round type to isolate video-only submissions
+            raw_round = row.get('round_type_id')
+            is_video_submission = pd.isna(raw_round) or str(raw_round).strip().lower() in ['nan', '', '-']
+
+            # Use the available video upload date or competition date
+            date_str = row['start_date'].strftime('%Y-%m-%d') if pd.notna(row['start_date']) else "Unknown Date"
+            video_link = row.get('video_link') if 'video_link' in row and pd.notna(row['video_link']) else None
+
+            # --- DYNAMIC LINKING LOGIC ---
+            if is_video_submission:
+                link_target = video_link if video_link else "#"
+                link_label = f"{date_str} (Video Recording)"
+                is_external = True
+                display_round = "-"
+            else:
+                link_target = url_for('competition_page', competition_id=row['competition_id'])
+                link_label = comp_name_map.get(row['competition_id'], row['competition_id'])
+                is_external = False
+                display_round = format_round(raw_round)
+
             ev_list.append({
                 'competition_id': str(row['competition_id']),
                 'competition_name': comp_name_map.get(row['competition_id'], row['competition_id']),
                 'event_name': event_names.get(eid, eid),
-                'round_name': format_round(row.get('round_type_id', "-")),
-                'round_id': row.get('round_type_id', "-"),  # <--- ADD THIS LINE
+                'round_name': display_round,
+                'round_id': "-" if is_video_submission else str(raw_round),
+                'is_video': is_video_submission,
                 'ranking': int(row['ranking']) if row['ranking'] > 0 else "-",
                 'single_formatted': format_time(row['best'], eid),
                 'average_formatted': format_time(row['average'], eid, True) if row['average'] != 0 else "-",
@@ -423,8 +444,10 @@ def person_profile(person_id):
                 's_class': "pink-text" if s_label else ("red-text" if meta['pr_s'] else ""),
                 'a_class': "pink-text" if a_label else ("red-text" if meta['pr_a'] else ""),
                 'solves': solves_joined,
-                'round_id': row.get('round_type_id', "-"), # Add this for the Final link logic
-                'date_str': row['start_date'].strftime('%Y-%m-%d') if pd.notna(row['start_date']) else "Unknown Date",
+                'date_str': date_str,
+                'link_target': link_target,      
+                'link_label': link_label,        
+                'is_external': is_external       
             })
         grouped_results[eid] = ev_list
 
@@ -458,7 +481,7 @@ def person_profile(person_id):
                                 'records': {'wr': int(wr_count), 'cr': int(cr_count), 'nr': int(nr_count)}
                             }, 
                             grouped_results=grouped_results, format_time=format_time)
-
+                            
 @app.route('/competition/<competition_id>')
 def competition_page(competition_id):
     res_df, _, pers_df, event_names, contests_df = load_and_process_data()

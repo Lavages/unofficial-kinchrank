@@ -413,19 +413,51 @@
         .rank-3 {
             color: #cd7f32 !important;
         }
+        
+        @media (max-width: 768px) {
+            .profile-card {
+                padding: 24px;
+            }
+
+            .name-banner {
+                font-size: 2rem;
+            }
+
+            .results-table {
+                font-size: 0.82rem;
+            }
+
+            .results-table td,
+            .results-table th {
+                padding: 12px 10px;
+            }
+
+            .tabs-nav {
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .tab-link {
+                font-size: 0.95rem;
+                padding: 10px 14px;
+            }
+        }
     </style>
 </head>
 
 <body>
-    {% set wca =
-    ['333','222','444','555','666','777','333bf','333fm','333oh','clock','minx','pyram','skewb','sq1','444bf','555bf','333mbf','333ft','333mbo','magic','mmagic']
-    %}
+    {% set wca = ['333','222','444','555','666','777','333bf','333fm','333oh','clock','minx','pyram','skewb','sq1','444bf','555bf','333mbf','333ft','333mbo','magic','mmagic'] %}
 
     {% set has_wc_podiums = namespace(found=false) %}
     {% for event_id, results in grouped_results.items() %}
-    {% for res in results %}
-    {% if res.competition_id and res.competition_id[:2] == 'WC' and res.ranking|int <= 3 and res.round_id=='f' %} {% set
-        has_wc_podiums.found=true %} {% endif %} {% endfor %} {% endfor %} <div class="container">
+        {% for res in results %}
+            {% if res.competition_id and res.competition_id[:2] == 'WC' and res.ranking|int <= 3 and res.round_id == 'f' %}
+                {% set has_wc_podiums.found = true %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+
+    <div class="container">
         <header>
             <a href="/" style="text-decoration:none; color:var(--text-muted); font-weight:700;">
                 <i class="fa-solid fa-arrow-left"></i> BACK
@@ -438,20 +470,15 @@
         <div class="profile-card">
             <h1 class="name-banner">{{ person.name }}</h1>
             <div class="info-row">
-                <div class="info-item"><span class="label">Region</span><span class="val">{{ person.full_country
-                        }}</span></div>
+                <div class="info-item"><span class="label">Region</span><span class="val">{{ person.full_country }}</span></div>
                 <div class="info-item"><span class="label">WCA ID</span><span class="val">
                         {% if person.wca_id %}
                         <a href="https://www.worldcubeassociation.org/persons/{{ person.wca_id }}" target="_blank"
                             style="color:inherit; text-decoration:none;">{{ person.wca_id }}</a>
                         {% else %}-{% endif %}</span></div>
-                <div class="info-item"><span class="label">Gender</span><span class="val">{{ person.gender or 'Male'
-                        }}</span></div>
-                <div class="info-item"><span class="label">Competitions</span><span class="val">{{ stats.comps }}</span>
-                </div>
-                <div class="info-item"><span class="label">Completed Solves</span><span class="val">{{ stats.solves
-                        }}</span>
-                </div>
+                <div class="info-item"><span class="label">Gender</span><span class="val">{{ person.gender or 'Male' }}</span></div>
+                <div class="info-item"><span class="label">Competitions</span><span class="val">{{ stats.comps }}</span></div>
+                <div class="info-item"><span class="label">Completed Solves</span><span class="val">{{ stats.solves }}</span></div>
             </div>
         </div>
 
@@ -459,23 +486,17 @@
             <div class="collection-card">
                 <div class="collection-title">Medal Collection</div>
                 <div class="stats-display">
-                    <div class="stat-box"><span class="label">Gold</span><span class="count gold">{{ stats.medals.gold
-                            }}</span></div>
-                    <div class="stat-box"><span class="label">Silver</span><span class="count silver">{{
-                            stats.medals.silver }}</span></div>
-                    <div class="stat-box"><span class="label">Bronze</span><span class="count bronze">{{
-                            stats.medals.bronze }}</span></div>
+                    <div class="stat-box"><span class="label">Gold</span><span class="count gold">{{ stats.medals.gold }}</span></div>
+                    <div class="stat-box"><span class="label">Silver</span><span class="count silver">{{ stats.medals.silver }}</span></div>
+                    <div class="stat-box"><span class="label">Bronze</span><span class="count bronze">{{ stats.medals.bronze }}</span></div>
                 </div>
             </div>
             <div class="collection-card">
                 <div class="collection-title">Record Collection</div>
                 <div class="stats-display">
-                    <div class="stat-box"><span class="label">WR</span><span class="count">{{ stats.records.wr }}</span>
-                    </div>
-                    <div class="stat-box"><span class="label">CR</span><span class="count">{{ stats.records.cr }}</span>
-                    </div>
-                    <div class="stat-box"><span class="label">NR</span><span class="count">{{ stats.records.nr }}</span>
-                    </div>
+                    <div class="stat-box"><span class="label">WR</span><span class="count">{{ stats.records.wr }}</span></div>
+                    <div class="stat-box"><span class="label">CR</span><span class="count">{{ stats.records.cr }}</span></div>
+                    <div class="stat-box"><span class="label">NR</span><span class="count">{{ stats.records.nr }}</span></div>
                 </div>
             </div>
         </div>
@@ -489,19 +510,6 @@
             {% endif %}
         </nav>
 
-        {% macro get_event_icon(event_id, event_name) %}
-        {# Check if it's a standard WCA event #}
-        {% if event_id in
-        ['333','222','444','555','666','777','333bf','333fm','333oh','clock','minx','pyram','skewb','sq1','444bf','555bf','333mbf','333ft','333mbo','magic','mmagic']
-        %}
-        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/event/{{ event_id }}.svg"
-            onerror="this.src='/static/icons/{{ event_id }}.svg';">
-        {% else %}
-        {# Try unofficial GitHub, then local, then text fallback #}
-        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/{{ event_id }}.svg"
-            onerror="this.onerror=null; this.src='/static/icons/{{ event_id }}.svg'; this.addEventListener('error', function(){ this.outerHTML='<span class=\'fallback-text\'>{{ event_name[:3] }}</span>'; }, {once: true});">
-        {% endif %}
-        {% endmacro %}
         <div id="results-tab" class="tab-content active">
             <div class="event-nav">
                 {% for event_id, results in grouped_results.items() %}
@@ -531,22 +539,22 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {# FIX: Removed '| sort' filter entirely so backend sorting rules are preserved #}
                                 {% for res in results %}
                                 <tr>
                                     <td>
-    {# Show link if it's a video submission OR if it's a regular competition's Final round #}
-    {% if res.is_video or res.round_id == 'f' %}
-        <a href="{{ res.link_target }}" class="comp-name" {% if res.is_external %} target="_blank" rel="noopener noreferrer" {% endif %}>
-            {{ res.link_label }}
-        </a>
-    {% endif %}
-</td>
+                                        {% if res.competition_name != "" %}
+                                            <a href="{{ res.link_target }}" class="comp-name" {% if res.is_external %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                                                {{ res.link_label }}
+                                            </a>
+                                        {% else %}
+                                            <span class="comp-name"></span>
+                                        {% endif %}
+                                    </td>
                                     <td style="font-weight: 600;">{{ res.round_name }}</td>
                                     <td>{{ res.ranking }}</td>
 
-                                    {# Single Column: Font-weight 900 if record exists #}
-                                    <td class="best-val {{ res.s_class }}"
-                                        style="{% if res.s_label %}font-weight: 900;{% endif %}">
+                                    <td class="best-val {{ res.s_class }}" style="{% if res.s_label %}font-weight: 900;{% endif %}">
                                         {% if res.single_formatted == 'DNF' %}
                                         <span style="color: #ef4444; font-weight: 800;">DNF</span>
                                         {% else %}
@@ -555,9 +563,7 @@
                                         {% if res.s_label %}<span class="record-tag">{{ res.s_label }}</span>{% endif %}
                                     </td>
 
-                                    {# Average Column: Font-weight 900 if record exists #}
-                                    <td class="best-val {{ res.a_class }}"
-                                        style="{% if res.a_label %}font-weight: 900;{% endif %}">
+                                    <td class="best-val {{ res.a_class }}" style="{% if res.a_label %}font-weight: 900;{% endif %}">
                                         {% if res.average_formatted == 'DNF' %}
                                         <span style="color: #ef4444; font-weight: 800;">DNF</span>
                                         {% else %}
@@ -576,9 +582,9 @@
                 {% endfor %}
             </div>
         </div>
+
         <div id="pr-tab" class="tab-content">
-            <div class="table-wrapper"
-                style="border-radius: 14px; margin-top: 20px; border-top: 1px solid var(--border);">
+            <div class="table-wrapper" style="border-radius: 14px; margin-top: 20px; border-top: 1px solid var(--border);">
                 <table class="results-table">
                     <thead>
                         <tr>
@@ -598,7 +604,6 @@
                         <tr>
                             <td class="event-name-cell">
                                 <div style="display: inline-flex; align-items: center; gap: 8px;">
-                                    {# Use the powerful function from your app.py #}
                                     {{ get_icon(rec.event_id) | safe }}
                                     {{ rec.event_name }}
                                 </div>
@@ -607,8 +612,7 @@
                             <td class="rank-val">{{ rec.cr_s }}</td>
                             <td class="rank-val">{{ rec.wr_s }}</td>
                             <td class="pr-val best-val">{{ format_time(rec.single, rec.event_id) }}</td>
-                            <td class="pr-val best-val group-divider">{{ format_time(rec.average, rec.event_id, True) }}
-                            </td>
+                            <td class="pr-val best-val group-divider">{{ format_time(rec.average, rec.event_id, True) }}</td>
                             <td class="rank-val">{{ rec.wr_a }}</td>
                             <td class="rank-val">{{ rec.cr_a }}</td>
                             <td class="rank-val">{{ rec.nr_a }}</td>
@@ -620,23 +624,17 @@
         </div>
 
         <div id="records-tab" class="tab-content">
-            {% set record_types = [{'id': 'WR', 'title': 'History of World Records'}, {'id': 'CR', 'title': 'History of
-            Continental Records'}, {'id': 'NR', 'title': 'History of National Records'}] %}
+            {% set record_types = [{'id': 'WR', 'title': 'History of World Records'}, {'id': 'CR', 'title': 'History of Continental Records'}, {'id': 'NR', 'title': 'History of National Records'}] %}
             {% for type in record_types %}
             {% set ns = namespace(has_type=false) %}
-            {% for eid, results in grouped_results.items() %}{% for res in results %}{% if res.s_label == type.id or
-            res.a_label == type.id %}{% set ns.has_type = true %}{% endif %}{% endfor %}{% endfor %}
+            {% for eid, results in grouped_results.items() %}{% for res in results %}{% if res.s_label == type.id or res.a_label == type.id %}{% set ns.has_type = true %}{% endif %}{% endfor %}{% endfor %}
             {% if ns.has_type %}
-            <h2
-                style="text-align: center; font-family: 'Outfit'; margin-top: 50px; font-weight: 800; color: var(--text-main);">
-                {{ type.title }}</h2>
+            <h2 style="text-align: center; font-family: 'Outfit'; margin-top: 50px; font-weight: 800; color: var(--text-main);">{{ type.title }}</h2>
             {% for event_id, results in grouped_results.items() %}
             {% set ens = namespace(event_has_record=false) %}
-            {% for res in results %}{% if res.s_label == type.id or res.a_label == type.id %}{% set ens.event_has_record
-            = true %}{% endif %}{% endfor %}
+            {% for res in results %}{% if res.s_label == type.id or res.a_label == type.id %}{% set ens.event_has_record = true %}{% endif %}{% endfor %}
             {% if ens.event_has_record %}
-            <div class="event-group-header"
-                style="background: var(--bg-hover); color: var(--primary-accent); border: 1px solid var(--border); border-bottom: none;">
+            <div class="event-group-header" style="background: var(--bg-hover); color: var(--primary-accent); border: 1px solid var(--border); border-bottom: none;">
                 {{ get_icon(event_id) | safe }} {{ results[0].event_name }}
             </div>
             <div class="table-wrapper" style="border-radius: 0 0 14px 14px;">
@@ -654,14 +652,11 @@
                         {% for res in results %}
                         {% if res.s_label == type.id or res.a_label == type.id %}
                         <tr>
-                            <td class="best-val" style="color: #ff69b4;">{{ res.single_formatted if res.s_label ==
-                                type.id else '' }}</td>
-                            <td class="best-val" style="color: #ff69b4;">{{ res.average_formatted if res.a_label ==
-                                type.id else '' }}</td>
-                            <td><a href="/competition/{{ res.competition_id }}" class="comp-name">{{
-                                    res.competition_name or res.competition_id | replace('_', ' ') }}</a></td>
+                            <td class="best-val" style="color: #ff69b4;">{{ res.single_formatted if res.s_label == type.id else '' }}</td>
+                            <td class="best-val" style="color: #ff69b4;">{{ res.average_formatted if res.a_label == type.id else '' }}</td>
+                            <td><a href="/competition/{{ res.competition_id }}" class="comp-name">{{ res.competition_name or res.competition_id | replace('_', ' ') }}</a></td>
                             <td>{{ res.round_name }}</td>
-                            <td class="solve-list">{{ res.solves_joined }}</td>
+                            <td class="solve-list">{{ res.solves }}</td>
                         </tr>
                         {% endif %}
                         {% endfor %}
@@ -720,52 +715,49 @@
         {% endif %}
 
         <footer class="site-footer">
-            Results are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC
-                BY-SA
-                4.0</a> | Latest export: v1 (05/04/2026)
+            Results are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a> | Latest export: v1 (05/04/2026)
         </footer>
-        </div>
+    </div>
 
-        <script>
-            function openTab(evt, tabName) {
-                var i, tabcontent, tablinks;
-                tabcontent = document.getElementsByClassName("tab-content");
-                for (i = 0; i < tabcontent.length; i++) {
-                    tabcontent[i].style.display = "none";
-                    tabcontent[i].classList.remove("active");
-                }
-                tablinks = document.getElementsByClassName("tab-link");
-                for (i = 0; i < tablinks.length; i++) {
-                    tablinks[i].className = tablinks[i].className.replace(" active", "");
-                }
-                document.getElementById(tabName).style.display = "block";
-                document.getElementById(tabName).classList.add("active");
-                evt.currentTarget.className += " active";
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+                tabcontent[i].classList.remove("active");
             }
-
-            function toggleTheme() {
-                const html = document.documentElement;
-                const currentTheme = html.getAttribute('data-theme');
-                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                html.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
+            tablinks = document.getElementsByClassName("tab-link");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
             }
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.className += " active";
+        }
 
-            function filterEvent(eventId, element) {
-                document.querySelectorAll('.event-nav-item').forEach(nav => nav.classList.remove('active'));
-                element.classList.add('active');
-                document.querySelectorAll('.event-section').forEach(section => section.classList.add('hidden'));
-                const target = document.getElementById('section-' + eventId);
-                if (target) target.classList.remove('hidden');
-            }
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
 
-            document.addEventListener('DOMContentLoaded', () => {
-                const firstTab = document.querySelector('.event-nav-item');
-                if (firstTab) firstTab.classList.add('active');
-                const savedTheme = localStorage.getItem('theme') || 'dark';
-                document.documentElement.setAttribute('data-theme', savedTheme);
-            });
-        </script>
+        function filterEvent(eventId, element) {
+            document.querySelectorAll('.event-nav-item').forEach(nav => nav.classList.remove('active'));
+            element.classList.add('active');
+            document.querySelectorAll('.event-section').forEach(section => section.classList.add('hidden'));
+            const target = document.getElementById('section-' + eventId);
+            if (target) target.classList.remove('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const firstTab = document.querySelector('.event-nav-item');
+            if (firstTab) firstTab.classList.add('active');
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        });
+    </script>
 </body>
 
 </html>

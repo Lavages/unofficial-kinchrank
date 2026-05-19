@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 680" width="680" height="680">
+  <title>2x2 Squared</title>
+  <rect x="112" y="150" width="102" height="102" fill="#000000" rx="0"/>
+  <rect x="220" y="150" width="102" height="102" fill="#000000" rx="0"/>
+  <rect x="112" y="258" width="102" height="102" fill="#000000" rx="0"/>
+  <rect x="220" y="258" width="102" height="102" fill="#000000" rx="0"/>
+  <rect x="358" y="150" width="102" height="102" fill="#000000" rx="0"/>
+  <rect x="466" y="150" width="102" height="102" fill="#000000" rx="0"/>
+  <rect x="358" y="258" width="102" height="102" fill="#000000" rx="0"/>
+  <rect x="466" y="258" width="102" height="102" fill="#000000" rx="0"/>
+  <rect x="112" y="396" width="102" height="102" fill="#000000" rx="0"/>
+  <rect x="220" y="396" width="102" height="102" fill="#000000" rx="0"/>
+  <rect x="112" y="504" width="102" height="102" fill="#000000" rx="0"/>
+  <rect x="220" y="504" width="102" height="102" fill="#000000" rx="0"/>
+  <rect x="358" y="396" width="102" height="102" fill="#000000" rx="0"/>
+  <rect x="466" y="396" width="102" height="102" fill="#000000" rx="0"/>
+  <rect x="358" y="504" width="102" height="102" fill="#000000" rx="0"/>
+  <rect x="466" y="504" width="102" height="102" fill="#000000" rx="0"/>
+</svg>

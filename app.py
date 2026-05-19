@@ -372,10 +372,17 @@ def person_profile(person_id):
 
     for eid in ordered_event_ids:
         ev_list = []
-        event_results = p_res[p_res['event_id'] == eid]
+        event_results = p_res[p_res['event_id'] == eid].copy()
+
+        # Competitions where the competitor reached finals for this event
+        final_competitions = set(
+            event_results[event_results['round_type_id'] == 'f']['competition_id']
+            .astype(str)
+            .tolist()
+        )
         
-        # Calculate PRs using chronological order (oldest to newest)
-        chrono_for_pr = event_results.sort_values(by='start_date', ascending=True)
+        # Calculate PRs using chronological order (oldest to newest across ALL rounds)
+        chrono_for_pr = event_results.sort_values(by=['start_date', 'round_rank'], ascending=[True, False])
         running_best_s, running_best_a = float('inf'), float('inf')
         history_meta = {}
 
@@ -386,8 +393,21 @@ def person_profile(person_id):
             if is_pr_a: running_best_a = row['average']
             history_meta[idx] = {'pr_s': is_pr_s, 'pr_a': is_pr_a}
 
-        # Build list using existing sort (Newest First)
+        # --- TRACK VISITED COMPETITIONS FOR THE VISUAL COMP NAME FILTER ---
+        seen_competitions = set()
+
+        # Build list using correct layout sorting loop (Newest First, highest rounds first)
         for idx, row in event_results.iterrows():
+            comp_id = str(row['competition_id'])
+            
+            # If we haven't seen this comp_id yet in this event loop, it's the furthest round reached.
+            if comp_id not in seen_competitions:
+                display_name = comp_name_map.get(row['competition_id'], row['competition_id'])
+                seen_competitions.add(comp_id)
+            else:
+                # If we've already seen it, hide the name text to keep the table clean
+                display_name = "" 
+
             try:
                 raw_attempts = row['attempts']
                 atts = ast.literal_eval(raw_attempts) if isinstance(raw_attempts, str) and raw_attempts.startswith('[') else []
@@ -426,17 +446,18 @@ def person_profile(person_id):
                 display_round = "-"
             else:
                 link_target = url_for('competition_page', competition_id=row['competition_id'])
-                link_label = comp_name_map.get(row['competition_id'], row['competition_id'])
+                link_label = display_name if display_name != "" else ""
                 is_external = False
                 display_round = format_round(raw_round)
 
             ev_list.append({
-                'competition_id': str(row['competition_id']),
-                'competition_name': comp_name_map.get(row['competition_id'], row['competition_id']),
+                'competition_id': comp_id,
+                'competition_name': display_name, # Controlled clean view string
                 'event_name': event_names.get(eid, eid),
                 'round_name': display_round,
                 'round_id': "-" if is_video_submission else str(raw_round),
                 'is_video': is_video_submission,
+                'reached_final': comp_id in final_competitions,
                 'ranking': int(row['ranking']) if row['ranking'] > 0 else "-",
                 'single_formatted': format_time(row['best'], eid),
                 'average_formatted': format_time(row['average'], eid, True) if row['average'] != 0 else "-",
@@ -481,7 +502,7 @@ def person_profile(person_id):
                                 'records': {'wr': int(wr_count), 'cr': int(cr_count), 'nr': int(nr_count)}
                             }, 
                             grouped_results=grouped_results, format_time=format_time)
-                            
+
 @app.route('/competition/<competition_id>')
 def competition_page(competition_id):
     res_df, _, pers_df, event_names, contests_df = load_and_process_data()

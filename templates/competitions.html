@@ -8,111 +8,176 @@
 
     <link rel="stylesheet" href="https://cdn.cubing.net/v0/css/@cubing/icons/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Outfit:wght@600;800&display=swap"
-        rel="stylesheet">
+    <!-- Rock & Punk themed typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;800;900&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 
     <style>
+        /* Bocchi The Rock! Dedicated Color Systems */
         :root[data-theme="dark"] {
-            --bg-body: #020617;
-            --bg-card: #0f172a;
-            --primary: #38bdf8;
-            --secondary: #818cf8;
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            --border: #334155;
-            --sticky-bg: #1e293b;
+            --bg-body: #110e15;             /* Deep studio backstage shadow */
+            --bg-card: #1b1622;             /* Sharp amp-cabinet charcoal */
+            --border: #2d253a;
+            --text-main: #f3f0f7;           /* Crisp neon-ready text */
+            --text-muted: #a399b2;
+            
+            /* The Kessoku Band Palette */
+            --bocchi-pink: #ff6ea7;         /* Hitori's Track Jacket Pink */
+            --nijika-yellow: #ffdf33;       /* Nijika's Dorito Bright Yellow */
+            --ryo-blue: #2da1ff;            /* Ryo's Deep Cool Bass Blue */
+            --kita-red: #ff4757;            /* Kita's Energetic Guitar Red */
+            
+            --primary: var(--bocchi-pink);
+            --secondary: var(--ryo-blue);
+            --accent: var(--nijika-yellow);
+        }
+
+        :root[data-theme="light"] {
+            --bg-body: #fdf6f9;             /* Soft pinkish cream paper */
+            --bg-card: #ffffff;
+            --border: #110e15;              /* Heavy manga outlines */
+            --text-main: #110e15;
+            --text-muted: #5c526b;
+            
+            --bocchi-pink: #e04b86;
+            --nijika-yellow: #dca700;
+            --ryo-blue: #0077d6;
+            --kita-red: #e31b2f;
+            
+            --primary: var(--bocchi-pink);
+            --secondary: var(--ryo-blue);
+            --accent: var(--kita-red);
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             background: var(--bg-body);
             color: var(--text-main);
             margin: 0;
-            padding: 15px;
-            line-height: 1.5;
+            padding: 30px 15px 0 15px;
+            line-height: 1.4;
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            width: 100%;
         }
 
+        /* --- STAGE BANNER / NAV RAIL --- */
         header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 25px;
+            margin-bottom: 35px;
             align-items: center;
             flex-wrap: wrap;
             gap: 15px;
+            border-bottom: 4px dashed var(--text-main);
+            padding-bottom: 20px;
         }
 
         .logo {
-            font-family: 'Outfit';
-            font-size: 1.8rem;
-            font-weight: 800;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--text-main);
             text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            text-shadow: 3px 3px 0px var(--bocchi-pink), -1px -1px 0px var(--border);
+            transition: all 0.1s ease;
+        }
+
+        .logo:hover {
+            transform: skewX(-4deg);
         }
 
         .nav-menu {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             align-items: center;
         }
 
         .nav-link {
-            color: var(--text-main);
+            color: var(--text-muted);
             text-decoration: none;
-            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 900;
             font-size: 0.95rem;
+            text-transform: uppercase;
+            padding: 6px 12px;
+            border: 2px solid transparent;
+            transition: all 0.1s ease;
         }
 
+        .nav-link:hover {
+            color: var(--text-main);
+            background: rgba(255, 110, 167, 0.1);
+        }
+
+        .nav-link.active-tab {
+            color: #000 !important;
+            background: var(--bocchi-pink) !important;
+            border-color: var(--text-main) !important;
+            box-shadow: 2px 2px 0px var(--text-main);
+        }
+
+        /* --- STAGE MIXER / CONFIG PANEL --- */
         .config-panel {
             background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 30px;
+            border: 3px solid var(--text-main);
+            border-radius: 0px;
+            padding: 25px;
+            margin-bottom: 40px;
+            box-shadow: 6px 6px 0px var(--border);
         }
 
         .section-header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin: 20px 0 10px;
+            margin: 25px 0 15px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 5px;
+        }
+
+        .section-header-container:first-of-type {
+            margin-top: 0;
         }
 
         .section-h {
-            font-size: 0.75rem;
-            font-weight: 800;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 900;
             text-transform: uppercase;
-            color: var(--primary);
-            letter-spacing: 1px;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+            background: var(--border);
+            padding: 2px 8px;
         }
 
         .event-flex {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
             gap: 8px;
             margin-bottom: 15px;
         }
 
+        /* --- INSTRUMENT CONTROL CHIPS --- */
         .chip {
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 8px;
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            background: rgba(0, 0, 0, 0.2);
-            transition: all 0.2s ease;
-            min-width: 45px;
-            min-height: 45px;
+            padding: 4px;
+            border: 2px solid var(--text-main);
+            border-radius: 4px;
+            background: var(--bg-body);
+            transition: transform 0.12s ease;
+            min-width: 0;
+            min-height: 52px;
+            box-shadow: 2px 2px 0px var(--text-main);
         }
 
         .chip input {
@@ -121,92 +186,147 @@
 
         .chip span.cubing-icon,
         .chip img {
-            width: 28px !important;
-            height: 28px !important;
-            font-size: 28px;
+            width: 32px !important;
+            height: 32px !important;
+            font-size: 32px;
             object-fit: contain;
         }
 
-        .chip img {
-            filter: invert(72%) sepia(9%) saturate(838%) hue-rotate(182deg) brightness(91%) contrast(89%);
+        /* Neutralizing SVG icon colors across themes */
+        :root[data-theme="dark"] .chip img { filter: invert(100%) !important; }
+        :root[data-theme="light"] .chip img { filter: invert(0%) !important; }
+        :root[data-theme="dark"] .chip span.cubing-icon { color: var(--text-main); }
+
+        .chip:hover {
+            transform: translateY(-2px);
+            border-color: var(--bocchi-pink);
         }
 
+        /* Cycling active colors like a rock concert across selected items */
         .chip:has(input:checked) {
-            border-color: var(--primary);
-            background: rgba(56, 189, 248, 0.15);
+            transform: scale(0.95) translateY(2px);
+            box-shadow: 0px 0px 0px transparent !important;
+            border-color: var(--text-main) !important;
         }
 
-        .chip:has(input:checked) span {
-            color: var(--primary);
-        }
+        .chip:nth-child(4n+1):has(input:checked) { background: var(--bocchi-pink) !important; }
+        .chip:nth-child(4n+2):has(input:checked) { background: var(--nijika-yellow) !important; }
+        .chip:nth-child(4n+3):has(input:checked) { background: var(--ryo-blue) !important; }
+        .chip:nth-child(4n+4):has(input:checked) { background: var(--kita-red) !important; }
 
-        .chip:has(input:checked) img {
-            filter: invert(65%) sepia(85%) saturate(1500%) hue-rotate(170deg) brightness(100%) contrast(100%);
-        }
+        /* Force icon assets to deep charcoal when their background lights up */
+        .chip:has(input:checked) img { filter: invert(0%) brightness(10%) !important; }
+        .chip:has(input:checked) span.cubing-icon { color: #110e15 !important; }
 
+        /* --- AMPLIFIER CABINET RESULTS TABLE --- */
         .table-outer {
-            border: 1px solid var(--border);
-            border-radius: 16px;
+            border: 3px solid var(--text-main);
+            border-radius: 0px;
             overflow: hidden;
             background: var(--bg-card);
+            box-shadow: 6px 6px 0px var(--border);
+            margin-bottom: 40px;
         }
 
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
         }
 
         th {
-            background: var(--sticky-bg);
-            color: var(--text-muted);
+            background: var(--text-main);
+            color: var(--bg-body);
+            font-family: 'Outfit', sans-serif;
             font-size: 0.75rem;
             text-transform: uppercase;
-            padding: 16px;
+            letter-spacing: 0.05em;
+            font-weight: 900;
+            padding: 14px 20px;
             text-align: left;
-            border-bottom: 2px solid var(--border);
+            border-bottom: 2px solid var(--text-main);
         }
 
         td {
-            padding: 14px 16px;
+            padding: 14px 20px;
             border-bottom: 1px solid var(--border);
             font-size: 0.95rem;
+            font-weight: 700;
+            vertical-align: middle;
         }
 
+        tr:hover td {
+            background: rgba(255, 110, 167, 0.06);
+        }
+
+        /* --- SKEWED PUNK HIGHLIGHT LINKS --- */
         .comp-link {
-            color: var(--primary);
+            color: var(--text-main);
             text-decoration: none;
-            font-weight: 800;
+            font-weight: 900;
+            border-bottom: 2px dashed var(--bocchi-pink);
+            display: inline-block;
+        }
+
+        .comp-link:hover {
+            background: var(--bocchi-pink);
+            color: #000;
         }
 
         .date-text {
-            color: var(--text-muted);
-            font-weight: 600;
+            color: var(--text-main);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
         }
 
+        /* --- RESET UTILITY SWITCH --- */
         .reset-btn {
-            font-size: 0.7rem;
-            color: var(--text-muted);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 900;
+            color: #000 !important;
+            background: var(--nijika-yellow);
             text-decoration: none;
-            border: 1px solid var(--border);
-            padding: 4px 10px;
-            border-radius: 6px;
-            transition: 0.2s;
+            border: 2px solid var(--text-main);
+            padding: 4px 12px;
+            border-radius: 0px;
+            box-shadow: 2px 2px 0px var(--text-main);
+            transition: all 0.1s ease;
         }
 
         .reset-btn:hover {
-            color: var(--primary);
-            border-color: var(--primary);
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0px var(--text-main);
+        }
+
+        /* UTILS */
+        .theme-toggle-btn {
+            background: none;
+            border: 2px solid var(--text-main);
+            color: var(--text-main);
+            font-weight: 700;
+            padding: 4px 10px;
+            cursor: pointer;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            body { padding: 15px 10px 0 10px; }
+            .logo { font-size: 1.6rem; }
+            .event-flex { grid-template-columns: repeat(6, 1fr); }
+            td, th { padding: 10px 12px; }
+        }
+
+        @media (max-width: 420px) {
+            .event-flex { grid-template-columns: repeat(4, 1fr); }
         }
     </style>
 </head>
 
 <body>
-    {% set wca =
-    ['333','222','444','555','666','777','333bf','333fm','333oh','clock','minx','pyram','skewb','sq1','444bf','555bf','333mbf','333ft','333mbo','magic','mmagic']
-    %}
-    {% set github_unofficial =
-    ['222bf','222oh','234567relay','234567relay_2_person','23456relay','2345relay','234relay','333_linear_fm','333_mirror_blocks','333_mirror_blocks_bld','333_oh_bld_relay','333_oh_bld_team_relay','333_oven_mitts','333_siamese','333_speed_bld','333_team_bld','333_team_factory','333bf_2_person_relay','333bf_3_person_relay','333bf_4_person_relay','333bf_8_person_relay','333mts','444ft','666bf','777bf','baby_fto','cmetrick_mini','corner_helicopter_222','crazy_333','curvycopter','dino','fisher','fto','gear','gigaminx','helicopter','ivy','kilominx','magic_oh','miniguild','miniguild_2_person','miniguild_bld','minx_bld','mpyram','mskewb','mtetram','pyraminx_crystal','pyramorphix','redi','sq1_bld','sq2','super_sq1','ufo']
-    %}
+    {% set wca = ['333','222','444','555','666','777','333bf','333fm','333oh','clock','minx','pyram','skewb','sq1','444bf','555bf','333mbf','333ft','333mbo','magic','mmagic'] %}
+    {% set github_unofficial = ['222bf','222oh','234567relay','234567relay_2_person','23456relay','2345relay','234relay','333_linear_fm','333_mirror_blocks','333_mirror_blocks_bld','333_oh_bld_relay','333_oh_bld_team_relay','333_oven_mitts','333_siamese','333_speed_bld','333_team_bld','333_team_factory','333bf_2_person_relay','333bf_3_person_relay','333bf_4_person_relay','333bf_8_person_relay','333mts','444ft','666bf','777bf','baby_fto','cmetrick_mini','corner_helicopter_222','crazy_333','curvycopter','dino','fisher','fto','gear','gigaminx','helicopter','ivy','kilominx','magic_oh','miniguild','miniguild_2_person','miniguild_bld','minx_bld','mpyram','mskewb','mtetram','pyraminx_crystal','pyramorphix','redi','sq1_bld','sq2','super_sq1','ufo'] %}
 
     {# Macro for consistent chip rendering #}
     {% macro render_chip(eid, event_names, selected_events, wca, github_unofficial) %}
@@ -223,12 +343,11 @@
         {% elif eid == 'ivy_cube' %}
         <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/ivy.svg" alt="Ivy Cube">
         {% elif eid == 'corner_heli222' %}
-        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/corner_helicopter_222.svg"
-            alt="Corner Helicopter 2x2">
+        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/corner_helicopter_222.svg" alt="Corner Helicopter 2x2">
         {% else %}
         <img src="/static/icons/{{ eid }}.svg" alt="{{ eid }}"
             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-        <div class="txt" style="display:none; font-size: 10px;">{{ eid }}</div>
+        <div class="txt" style="display:none; font-size: 10px; font-weight:900;">{{ eid[:3]|upper }}</div>
         {% endif %}
     </label>
     {% endmacro %}
@@ -237,9 +356,13 @@
         <header>
             <a href="/" class="logo">Unofficial Kinchranks</a>
             <nav class="nav-menu">
-                <a href="/competitions" class="nav-link" style="color: var(--primary);">Competitions</a>
+                <a href="/competitions" class="nav-link active-tab">Competitions</a>
                 <a href="/rankings" class="nav-link">Rankings</a>
                 <a href="/records" class="nav-link">Records</a>
+                <button class="theme-toggle-btn"
+                    onclick="document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')">
+                    <i class="fa-solid fa-circle-half-stroke"></i>
+                </button>
             </nav>
         </header>
 
@@ -279,9 +402,9 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Competition</th>
-                        <th>Location</th>
+                        <th style="width: 25%;">Date</th>
+                        <th style="width: 45%;">Competition</th>
+                        <th style="width: 30%;">Location</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -293,7 +416,7 @@
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="3" style="text-align:center; padding:40px; color:var(--text-muted);">
+                        <td colspan="3" style="text-align:center; padding:40px; color:var(--text-muted); font-family:'Outfit'; font-weight:900;">
                             No competitions match all selected events.
                         </td>
                     </tr>

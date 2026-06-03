@@ -8,94 +8,129 @@
 
     <link rel="stylesheet" href="https://cdn.cubing.net/v0/css/@cubing/icons/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Outfit:wght@600;800&display=swap"
-        rel="stylesheet">
+    <!-- Rock & Punk themed typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;800;900&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
 
     <style>
+        /* Bocchi The Rock! Dedicated Color Systems */
         :root[data-theme="dark"] {
-            --bg-body: #020617;
-            --bg-card: #0f172a;
-            --primary: #38bdf8;
-            --secondary: #818cf8;
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            --border: #334155;
-            --ice-blue: #99f6ff;
+            --bg-body: #110e15;             /* Deep studio backstage shadow */
+            --bg-card: #1b1622;             /* Sharp amp-cabinet charcoal */
+            --border: #2d253a;
+            --text-main: #f3f0f7;           /* Crisp neon-ready text */
+            --text-muted: #a399b2;
+            
+            /* The Kessoku Band Palette */
+            --bocchi-pink: #ff6ea7;         /* Hitori's Track Jacket Pink */
+            --nijika-yellow: #ffdf33;       /* Nijika's Dorito Bright Yellow */
+            --ryo-blue: #2da1ff;            /* Ryo's Deep Cool Bass Blue */
+            --kita-red: #ff4757;            /* Kita's Energetic Guitar Red */
+            
+            --primary: var(--bocchi-pink);
+            --secondary: var(--ryo-blue);
+            --accent: var(--nijika-yellow);
         }
 
         :root[data-theme="light"] {
-            --bg-body: #f8fafc;
+            --bg-body: #fdf6f9;             /* Soft pinkish cream paper */
             --bg-card: #ffffff;
-            --primary: #0284c7;
-            --secondary: #4f46e5;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border: #cbd5e1;
-            --ice-blue: #0ea5e9;
+            --border: #110e15;              /* Heavy manga outlines */
+            --text-main: #110e15;
+            --text-muted: #5c526b;
+            
+            --bocchi-pink: #e04b86;
+            --nijika-yellow: #dca700;
+            --ryo-blue: #0077d6;
+            --kita-red: #e31b2f;
+            
+            --primary: var(--bocchi-pink);
+            --secondary: var(--ryo-blue);
+            --accent: var(--kita-red);
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             background: var(--bg-body);
             color: var(--text-main);
             margin: 0;
-            padding: 15px;
-            line-height: 1.5;
+            padding: 30px 15px 0 15px;
+            line-height: 1.4;
             min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            width: 100%;
         }
 
+        /* --- STAGE BANNER / NAV RAIL --- */
         header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 25px;
+            margin-bottom: 35px;
             align-items: center;
             flex-wrap: wrap;
             gap: 15px;
-            padding: 10px 0;
+            border-bottom: 4px dashed var(--text-main);
+            padding-bottom: 20px;
         }
 
         .logo {
-            font-family: 'Outfit';
-            font-size: 1.8rem;
-            font-weight: 800;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--text-main);
             text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            text-shadow: 3px 3px 0px var(--bocchi-pink), -1px -1px 0px var(--border);
+            transition: all 0.1s ease;
+        }
+
+        .logo:hover {
+            transform: skewX(-4deg);
         }
 
         .nav-menu {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             align-items: center;
         }
 
         .nav-link {
-            color: var(--text-main);
+            color: var(--text-muted);
             text-decoration: none;
-            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 900;
             font-size: 0.95rem;
-            transition: color 0.2s;
+            text-transform: uppercase;
+            padding: 6px 12px;
+            border: 2px solid transparent;
+            transition: all 0.1s ease;
         }
 
-        .nav-link:hover,
+        .nav-link:hover {
+            color: var(--text-main);
+            background: rgba(255, 110, 167, 0.1);
+        }
+
         .nav-link.active {
-            color: var(--ice-blue);
+            color: #000 !important;
+            background: var(--bocchi-pink) !important;
+            border-color: var(--text-main) !important;
+            box-shadow: 2px 2px 0px var(--text-main);
         }
 
+        /* --- ANALOG STUDIO CONTROL PANEL --- */
         .config-panel {
             background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
+            border: 3px solid var(--text-main);
+            border-radius: 0px;
             padding: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            margin-bottom: 40px;
+            box-shadow: 6px 6px 0px var(--border);
         }
 
         .filter-controls {
@@ -108,149 +143,219 @@
         select {
             background: var(--bg-body);
             color: var(--text-main);
-            border: 1px solid var(--border);
+            border: 2px solid var(--text-main);
             padding: 10px 15px;
-            border-radius: 10px;
+            border-radius: 0px;
             font-weight: 700;
             font-family: inherit;
             outline: none;
             cursor: pointer;
+            box-shadow: 2px 2px 0px var(--text-main);
+        }
+
+        select:focus {
+            border-color: var(--bocchi-pink);
         }
 
         .btn-update {
-            background: var(--ice-blue);
+            background: var(--nijika-yellow);
             color: #000;
-            border: none;
+            border: 2px solid var(--text-main);
             padding: 10px 25px;
-            border-radius: 10px;
-            font-weight: 800;
+            border-radius: 0px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 900;
+            text-transform: uppercase;
             cursor: pointer;
-            transition: 0.2s;
+            box-shadow: 2px 2px 0px var(--text-main);
+            transition: all 0.1s ease;
         }
 
         .btn-update:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0px var(--text-main);
         }
 
+        /* --- TAPE TYPE SELECT toggles --- */
+        .type-toggle {
+            display: flex;
+            background: var(--bg-body);
+            padding: 4px;
+            border-radius: 0px;
+            border: 2px solid var(--text-main);
+            box-shadow: 2px 2px 0px var(--text-main);
+        }
+
+        .type-btn {
+            padding: 6px 18px;
+            border-radius: 0px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--text-muted);
+            transition: all 0.1s ease;
+        }
+
+        .type-btn:hover {
+            color: var(--text-main);
+        }
+
+        .type-btn.active {
+            background: var(--ryo-blue);
+            color: #000;
+            border: 1px solid var(--text-main);
+        }
+
+        /* --- AMPLIFIER CABINET CARD --- */
         .ranking-card {
             background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
+            border: 3px solid var(--text-main);
+            border-radius: 0px;
             overflow: hidden;
+            box-shadow: 6px 6px 0px var(--border);
+            margin-bottom: 40px;
         }
 
+        /* --- SKEWED STICKER HEADER --- */
         .ranking-header {
             padding: 20px;
-            background: rgba(153, 246, 255, 0.05);
-            border-bottom: 1px solid var(--border);
+            border-bottom: 2px solid var(--text-main);
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
 
         .event-info {
-            display: flex;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.3rem !important;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: #000 !important;
+            background: var(--text-main) !important;
+            padding: 6px 14px !important;
+            display: inline-flex !important;
             align-items: center;
             gap: 12px;
-            font-family: 'Outfit';
-            font-size: 1.4rem;
-            font-weight: 800;
+            transform: skewX(-6deg);
         }
 
+        /* Neutralizing SVG icon colors across themes inside headers */
         .event-info img,
         .event-info .cubing-icon {
-            width: 32px !important;
-            height: 32px !important;
-            filter: invert(88%) sepia(21%) saturate(735%) hue-rotate(155deg) brightness(103%) contrast(101%);
+            width: 28px !important;
+            height: 28px !important;
+            object-fit: contain;
         }
+        :root[data-theme="dark"] .event-info img, :root[data-theme="dark"] .event-info .cubing-icon { filter: invert(0%) !important; color: #000 !important; }
+        :root[data-theme="light"] .event-info img, :root[data-theme="light"] .event-info .cubing-icon { filter: invert(100%) !important; color: #fff !important; }
 
         .table-outer {
             width: 100%;
             overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
             min-width: 800px;
         }
 
         th {
-            background: rgba(30, 41, 59, 0.5);
-            color: var(--text-muted);
+            background: var(--text-main);
+            color: var(--bg-body);
+            font-family: 'Outfit', sans-serif;
             font-size: 0.75rem;
             text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 900;
             padding: 14px 20px;
             text-align: left;
-            border-bottom: 2px solid var(--border);
+            border-bottom: 2px solid var(--text-main);
         }
 
         td {
             padding: 14px 20px;
             border-bottom: 1px solid var(--border);
             font-size: 0.95rem;
+            font-weight: 700;
+            vertical-align: middle;
         }
 
-        tr:hover {
-            background: rgba(153, 246, 255, 0.03);
+        tr:hover td {
+            background: rgba(255, 110, 167, 0.06);
         }
 
+        /* --- SCOREBOARD LAYOUT ELEMENTS --- */
         .rank-num {
-            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 900;
             color: var(--text-muted);
             width: 50px;
         }
 
+        /* Rotate core band colors down the leading track lists */
+        tr:nth-child(3n+1) .rank-num { color: var(--bocchi-pink); }
+        tr:nth-child(3n+2) .rank-num { color: var(--ryo-blue); }
+        tr:nth-child(3n+3) .rank-num { color: var(--nijika-yellow); }
+
         .col-result {
-            font-family: 'Outfit';
-            font-weight: 800;
-            color: var(--ice-blue);
+            font-family: 'Outfit', sans-serif;
+            font-weight: 900;
+            font-size: 1.1rem;
+            color: var(--bocchi-pink);
             width: 120px;
+        }
+        :root[data-theme="light"] .col-result {
+            color: var(--text-main);
         }
 
         .link-profile {
             color: var(--text-main);
             text-decoration: none;
-            font-weight: 700;
+            font-weight: 900;
+            border-bottom: 2px dashed var(--bocchi-pink);
         }
 
         .link-profile:hover {
-            color: var(--ice-blue);
+            background: var(--bocchi-pink);
+            color: #000;
         }
 
         .link-comp {
-            color: var(--secondary);
+            color: var(--text-main);
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.85rem;
+            opacity: 0.8;
         }
 
         .link-comp:hover {
+            color: var(--ryo-blue);
             text-decoration: underline;
         }
 
-        .type-toggle {
-            display: flex;
-            background: var(--bg-body);
-            padding: 4px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
+        .theme-toggle-btn {
+            background: none;
+            border: 2px solid var(--text-main);
+            color: var(--text-main);
+            min-width: 45px;
+            padding: 10px;
+            cursor: pointer;
+            box-shadow: 2px 2px 0px var(--text-main);
         }
 
-        .type-btn {
-            padding: 6px 15px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 800;
-            text-decoration: none;
-            color: var(--text-muted);
-            transition: 0.2s;
-        }
-
-        .type-btn.active {
-            background: var(--ice-blue);
-            color: #000;
+        /* Mobile Layout Frameworks */
+        @media (max-width: 768px) {
+            body { padding: 15px 10px 0 10px; }
+            .logo { font-size: 1.6rem; }
+            td, th { padding: 10px 12px; }
+            .config-panel { padding: 15px; }
+            .filter-controls { flex-direction: column; align-items: stretch; }
+            select, .type-toggle, .btn-update { width: 100%; text-align: center; justify-content: center; }
         }
     </style>
 </head>
@@ -264,8 +369,7 @@
                 <a href="/records" class="nav-link">Records</a>
                 <a href="/competitions" class="nav-link">Competitions</a>
             </nav>
-            <button class="btn-update"
-                style="background:none; border: 1px solid var(--border); color:var(--text-main); min-width: 45px; padding: 0;"
+            <button class="theme-toggle-btn"
                 onclick="document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')">
                 <i class="fa-solid fa-circle-half-stroke"></i>
             </button>
@@ -277,15 +381,15 @@
 
                 <select name="event">
                     {% for eid in all_events %}
-                    <option value="{{ eid }}" {% if eid==selected_event %}selected{% endif %}>{{ event_names[eid] }}
-                    </option>
+                    <option value="{{ eid }}" {% if eid==selected_event %}selected{% endif %}>{{ event_names[eid] }}</option>
                     {% endfor %}
                 </select>
 
                 <select name="region">
                     <option value="All">Global</option>
-                    {% for r in regions %}<option value="{{ r }}" {% if current_region==r %}selected{% endif %}>{{ r }}
-                    </option>{% endfor %}
+                    {% for r in regions %}
+                    <option value="{{ r }}" {% if current_region==r %}selected{% endif %}>{{ r }}</option>
+                    {% endfor %}
                 </select>
 
                 <div class="type-toggle">
@@ -326,14 +430,14 @@
                             <td><a href="/person/{{ entry.person_id }}" class="link-profile">{{ entry.name }}</a></td>
                             <td class="col-result">{{ entry.display_time }}</td>
                             <td style="color: var(--text-muted);">{{ entry.region }}</td>
-                            <td><a href="/competition/{{ entry.comp_id }}" class="link-comp">{{ entry.competition }}</a>
-                            </td>
+                            <td><a href="/competition/{{ entry.comp_id }}" class="link-comp">{{ entry.competition }}</a></td>
                         </tr>
                         {% endfor %}
                         {% else %}
                         <tr>
-                            <td colspan="5" style="text-align: center; padding: 40px; color: var(--text-muted);">No
-                                results found for this selection.</td>
+                            <td colspan="5" style="text-align: center; padding: 40px; color: var(--text-muted); font-family: 'Outfit'; font-weight: 900;">
+                                No results found for this selection.
+                            </td>
                         </tr>
                         {% endif %}
                     </tbody>

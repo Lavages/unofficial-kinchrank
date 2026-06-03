@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
@@ -8,53 +8,66 @@
 
     <link rel="stylesheet" href="https://cdn.cubing.net/v0/css/@cubing/icons/css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Outfit:wght@600;800&display=swap"
-        rel="stylesheet">
+    <!-- Rock & Punk themed typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 
     <style>
+        /* Bocchi The Rock! Dedicated Color Systems */
         :root[data-theme="dark"] {
-            --bg-body: #020617;
-            --bg-card: #0f172a;
-            --primary: #38bdf8;
-            --secondary: #818cf8;
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            --border: #334155;
-            --sticky-bg: #0f172a;
+            --bg-body: #110e15;             /* Deep studio backstage shadow */
+            --bg-card: #1b1622;             /* Sharp amp-cabinet charcoal */
+            --border: #2d253a;
+            --text-main: #f3f0f7;           /* Crisp neon-ready text */
+            --text-muted: #a399b2;
+            
+            /* The Kessoku Band Palette */
+            --bocchi-pink: #ff6ea7;         /* Hitori's Track Jacket Pink */
+            --nijika-yellow: #ffdf33;       /* Nijika's Dorito Bright Yellow */
+            --ryo-blue: #2da1ff;            /* Ryo's Deep Cool Bass Blue */
+            --kita-red: #ff4757;            /* Kita's Energetic Guitar Red */
+            
+            --primary: var(--bocchi-pink);
+            --accent: var(--nijika-yellow);
+            --sticky-bg: #1b1622;
         }
 
         :root[data-theme="light"] {
-            --bg-body: #f8fafc;
+            --bg-body: #fdf6f9;             /* Soft pinkish cream paper */
             --bg-card: #ffffff;
-            --primary: #0284c7;
-            --secondary: #4f46e5;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border: #cbd5e1;
+            --border: #110e15;              /* Heavy manga outlines */
+            --text-main: #110e15;
+            --text-muted: #5c526b;
+            
+            --bocchi-pink: #e04b86;
+            --nijika-yellow: #dca700;
+            --ryo-blue: #0077d6;
+            --kita-red: #e31b2f;
+            
+            --primary: var(--bocchi-pink);
+            --accent: var(--ryo-blue);
             --sticky-bg: #ffffff;
         }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
             background: var(--bg-body);
             color: var(--text-main);
             margin: 0;
-            padding: 15px;
-            line-height: 1.5;
-            overflow-x: auto;
+            padding: 12px;
+            line-height: 1.4;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
         .container {
-            max-width: 100%;
+            width: 100%;
+            max-width: 1400px;
             margin: 0 auto;
             flex: 1;
-            /* Pushes footer to bottom */
         }
 
+        /* --- MANGA / ZIPPER STYLE HEADER --- */
         header {
             display: flex;
             justify-content: space-between;
@@ -62,15 +75,33 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 15px;
+            border-bottom: 4px dashed var(--text-main);
+            padding-bottom: 15px;
         }
 
         .logo {
             font-family: 'Outfit';
-            font-size: 1.8rem;
-            font-weight: 800;
-            background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 2.2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            color: var(--text-main);
+            text-shadow: 3px 3px 0px var(--bocchi-pink), -1px -1px 0px var(--border);
+            position: relative;
+        }
+
+        .logo::before {
+            content: "STARRY";
+            font-size: 0.7rem;
+            position: absolute;
+            top: -12px;
+            left: 2px;
+            background: var(--nijika-yellow);
+            color: #000;
+            padding: 1px 6px;
+            font-weight: 900;
+            transform: rotate(-3deg);
+            border: 1px solid #000;
         }
 
         .search-wrap {
@@ -83,132 +114,141 @@
 
         .search-input {
             background: var(--bg-card);
-            border: 1px solid var(--border);
+            border: 2px solid var(--text-main);
             color: var(--text-main);
             padding: 10px 15px;
-            border-radius: 10px;
+            border-radius: 0px; /* Sharp punk corners */
             outline: none;
             font-family: inherit;
+            font-weight: 700;
             width: 100%;
             max-width: 250px;
             font-size: 0.9rem;
+            box-shadow: 3px 3px 0px var(--border);
         }
 
+        .search-input:focus {
+            border-color: var(--bocchi-pink);
+            box-shadow: 3px 3px 0px var(--bocchi-pink);
+        }
+
+        /* --- AMPlifier CABINET CONFIG PANEL --- */
         .config-panel {
             background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
+            border: 3px solid var(--text-main);
+            border-radius: 0px;
             padding: 20px;
             margin-bottom: 30px;
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            box-shadow: 6px 6px 0px var(--border);
+            position: relative;
         }
 
         .section-header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin: 20px 0 10px 0;
+            margin: 25px 0 12px 0;
+        }
+
+        .section-header-container:first-of-type {
+            margin-top: 5px;
         }
 
         .section-h {
-            font-size: 0.75rem;
-            font-weight: 800;
+            font-family: 'Outfit';
+            font-size: 1rem;
+            font-weight: 900;
             text-transform: uppercase;
-            color: var(--primary);
-            letter-spacing: 1px;
-            display: flex;
+            color: #000;
+            background: var(--text-main);
+            padding: 4px 10px;
+            letter-spacing: 0.5px;
+            display: inline-flex;
             align-items: center;
-            gap: 10px;
-            flex-grow: 1;
-        }
-
-        .section-h::after {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-            margin-left: 10px;
+            transform: skewX(-6deg);
         }
 
         .event-flex {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+            gap: 8px;
         }
 
+        /* --- STICKER / CHIP SYSTEM --- */
         .chip {
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 10px;
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            background: rgba(0, 0, 0, 0.2);
-            transition: all 0.2s ease;
-            min-width: 58px;
-            min-height: 58px;
+            padding: 4px;
+            border: 2px solid var(--text-main);
+            border-radius: 4px;
+            background: var(--bg-body);
+            transition: transform 0.15s ease;
+            min-height: 52px;
+            position: relative;
+            box-shadow: 2px 2px 0px var(--text-main);
         }
 
         .chip span.cubing-icon,
         .chip img {
-            width: 38px !important;
-            height: 38px !important;
-            min-width: 38px;
-            min-height: 38px;
-            font-size: 38px;
+            width: 30px !important;
+            height: 30px !important;
+            min-width: 30px;
+            min-height: 30px;
+            font-size: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s ease;
             object-fit: contain;
         }
 
-        .chip img {
-            filter: invert(72%) sepia(9%) saturate(838%) hue-rotate(182deg) brightness(91%) contrast(89%);
-        }
+        /* Auto Theme adjustments for standard svgs */
+        :root[data-theme="dark"] .chip img { filter: invert(100%); }
+        :root[data-theme="light"] .chip img { filter: invert(0%); }
+
+        /* Color rotations mimic concert sticker grids */
+        .chip:nth-child(4n+1):has(input:checked) { background: var(--bocchi-pink); color: #000; }
+        .chip:nth-child(4n+2):has(input:checked) { background: var(--nijika-yellow); color: #000; }
+        .chip:nth-child(4n+3):has(input:checked) { background: var(--ryo-blue); color: #000; }
+        .chip:nth-child(4n+4):has(input:checked) { background: var(--kita-red); color: #000; }
 
         .chip:has(input:checked) {
-            border-color: var(--primary);
-            background: rgba(56, 189, 248, 0.1);
+            transform: scale(0.95) translateY(2px);
+            box-shadow: 0px 0px 0px transparent;
         }
-
-        .chip:has(input:checked) span {
-            color: var(--primary);
-        }
-
+        
         .chip:has(input:checked) img {
-            filter: invert(65%) sepia(85%) saturate(1500%) hue-rotate(170deg) brightness(100%) contrast(100%);
+            filter: invert(0%) !important;
         }
 
         .chip .txt {
-            font-size: 0.8rem;
-            font-weight: 800;
-            color: var(--text-muted);
+            font-size: 0.65rem;
+            font-weight: 900;
+            text-transform: uppercase;
             text-align: center;
-            padding: 0 4px;
-        }
-
-        .chip:has(input:checked) .txt {
-            color: var(--text-main);
+            word-break: break-all;
+            line-height: 1;
         }
 
         .chip:hover {
             transform: translateY(-2px);
-            border-color: var(--secondary);
+            border-color: var(--bocchi-pink);
         }
 
+        /* --- MANGA SHEET TABLE SYSTEM --- */
         .table-outer {
-            border: 1px solid var(--border);
-            border-radius: 16px;
+            border: 3px solid var(--text-main);
+            border-radius: 0px;
             overflow: hidden;
             background: var(--bg-card);
             width: 100%;
+            box-shadow: 8px 8px 0px var(--border);
         }
 
         .scroll-box {
             overflow: auto;
-            max-height: 70vh;
+            max-height: 75vh;
             width: 100%;
             display: block;
             -webkit-overflow-scrolling: touch;
@@ -218,65 +258,75 @@
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
-            min-width: 800px;
+            min-width: 850px;
         }
 
         th {
-            background: #1e293b;
-            color: var(--text-muted);
-            font-size: 0.75rem;
+            background: var(--text-main);
+            color: var(--bg-body);
+            font-family: 'Outfit';
+            font-weight: 900;
+            font-size: 0.8rem;
             text-transform: uppercase;
-            padding: 14px;
+            padding: 12px;
             position: sticky;
             top: 0;
             z-index: 100;
-            border-bottom: 2px solid var(--border);
+            border-bottom: 3px solid var(--text-main);
         }
 
-        /* Desktop Sticky Logic */
+        /* Desktop Sticky Locked Columns */
         @media (min-width: 769px) {
             .col-rank {
                 position: sticky;
                 left: 0;
                 z-index: 21;
                 background: var(--sticky-bg);
-                width: 50px;
-                min-width: 50px;
+                width: 55px;
+                min-width: 55px;
                 text-align: center;
-                border-right: 1px solid var(--border);
-                font-weight: 800;
+                border-right: 2px solid var(--text-main);
+                font-weight: 900;
             }
 
             .col-name {
                 position: sticky;
-                left: 50px;
+                left: 57px;
                 z-index: 21;
                 background: var(--sticky-bg);
-                min-width: 200px;
-                border-right: 3px solid var(--border);
+                min-width: 220px;
+                border-right: 4px double var(--text-main);
             }
 
-            thead th.col-rank,
-            thead th.col-name {
-                z-index: 101;
-            }
+            thead th.col-rank { background: var(--text-main); color: var(--bg-body); z-index: 102; }
+            thead th.col-name { background: var(--text-main); color: var(--bg-body); z-index: 102; }
         }
 
-        /* Mobile Un-sticky Logic */
+        /* Mobile Layout & Unstich Optimization */
         @media (max-width: 768px) {
-
-            .col-rank,
-            .col-name {
+            body { padding: 8px; }
+            header { flex-direction: column; align-items: stretch; text-align: center; }
+            .logo { font-size: 1.8rem; }
+            .search-wrap { min-width: 100%; }
+            .search-input { max-width: none; }
+            
+            .col-rank, .col-name {
                 position: static !important;
                 background: transparent;
             }
 
             table {
-                min-width: 600px;
+                min-width: 550px;
             }
+            
+            .event-flex {
+                grid-template-columns: repeat(6, 1fr);
+            }
+        }
 
-            .search-wrap {
-                min-width: 100%;
+        @media (max-width: 420px) {
+            .event-flex {
+                grid-template-columns: repeat(4, 1fr);
             }
         }
 
@@ -284,45 +334,53 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 28px;
+            height: 24px;
         }
 
-        th .cubing-icon,
-        th img {
-            width: 24px !important;
-            height: 24px !important;
-            min-width: 24px;
-            min-height: 24px;
-            font-size: 24px;
+        th .cubing-icon, th img {
+            width: 22px !important;
+            height: 22px !important;
+            font-size: 22px;
             object-fit: contain;
+            filter: invert(100%);
         }
-
-        th img {
-            filter: invert(72%) sepia(9%) saturate(838%) hue-rotate(182deg) brightness(91%) contrast(89%);
-        }
+        :root[data-theme="light"] th img, 
+        :root[data-theme="light"] th .cubing-icon { filter: invert(0%); }
 
         td {
-            padding: 12px 14px;
+            padding: 10px 12px;
             border-bottom: 1px solid var(--border);
             white-space: nowrap;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            font-weight: 700;
         }
 
+        tr.comp-row:hover td {
+            background: rgba(255, 110, 167, 0.08) !important;
+        }
+
+        /* --- KINCH OVERDRIVE BOX --- */
         .score-box {
             font-family: 'Outfit';
-            font-weight: 800;
-            color: var(--primary);
+            font-weight: 900;
+            color: #000;
             text-align: center;
-            background: rgba(56, 189, 248, 0.05);
+            background: var(--nijika-yellow) !important;
+            border-left: 1px solid var(--text-main);
+            border-right: 1px solid var(--text-main);
+        }
+
+        :root[data-theme="light"] .score-box {
+            color: #000;
         }
 
         .data-cell {
             text-align: center;
             font-size: 0.85rem;
             color: var(--text-muted);
-            font-weight: 600;
         }
 
+        /* --- BUTTONS & CONTROLS --- */
         .controls {
             display: flex;
             justify-content: space-between;
@@ -333,46 +391,44 @@
         }
 
         .btn {
-            background: var(--primary);
+            background: var(--bocchi-pink);
             color: #000;
-            border: none;
+            border: 2px solid var(--text-main);
             padding: 12px 24px;
-            border-radius: 10px;
-            font-weight: 800;
+            border-radius: 0px;
+            font-family: 'Outfit';
+            font-weight: 900;
+            text-transform: uppercase;
             cursor: pointer;
-            transition: 0.2s;
-            font-size: 0.9rem;
+            box-shadow: 3px 3px 0px var(--text-main);
+            transition: all 0.1s ease;
+        }
+
+        .btn:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px var(--text-main);
+        }
+
+        .btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px var(--text-main);
         }
 
         .btn-outline {
-            background: none;
-            border: 1px solid var(--border);
-            color: var(--text-muted);
-            padding: 6px 12px;
+            background: var(--bg-body);
+            border: 2px solid var(--text-main);
+            color: var(--text-main);
+            padding: 5px 12px;
             font-size: 0.75rem;
-            margin-left: 8px;
-        }
-
-        /* FOOTER DESIGN */
-        footer {
-            margin-top: 40px;
-            padding: 20px;
-            text-align: center;
-            border-top: 1px solid var(--border);
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        footer a {
-            color: var(--primary);
-            text-decoration: none;
             font-weight: 700;
+            margin-left: 4px;
+            box-shadow: 2px 2px 0px var(--text-main);
         }
 
-        /* Navigation Styles */
+        /* --- NAVIGATION MENUS --- */
         .nav-menu {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             align-items: center;
             margin-right: auto;
             margin-left: 20px;
@@ -381,90 +437,66 @@
         .nav-link {
             color: var(--text-main);
             text-decoration: none;
-            font-weight: 700;
-            font-size: 0.95rem;
-            transition: color 0.2s;
-            cursor: pointer;
+            font-weight: 900;
+            font-size: 1rem;
+            text-transform: uppercase;
+            padding: 4px 8px;
+            transition: background 0.15s;
         }
 
         .nav-link:hover {
-            color: var(--primary);
+            background: var(--ryo-blue);
+            color: #000;
         }
 
-        /* Dropdown Logic */
-        .dropdown {
-            position: relative;
-            display: inline-block;
+        /* --- FOOTER LIVE BAND METERS --- */
+        footer {
+            margin-top: 50px;
+            padding: 20px;
+            text-align: center;
+            border-top: 4px dashed var(--text-main);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 700;
         }
 
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: var(--bg-card);
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.4);
-            z-index: 1000;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            margin-top: 10px;
+        footer a {
+            color: var(--bocchi-pink);
+            text-decoration: underline;
         }
 
-        .dropdown-content a {
-            color: var(--text-main);
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-            font-size: 0.9rem;
-            font-weight: 600;
-            transition: background 0.2s;
-        }
-
-        .dropdown-content a:hover {
-            background-color: rgba(56, 189, 248, 0.1);
-            color: var(--primary);
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        /* Mobile Nav Adjustment */
         @media (max-width: 768px) {
             .nav-menu {
                 width: 100%;
-                margin: 10px 0;
+                margin: 5px 0;
                 justify-content: center;
+                flex-wrap: wrap;
             }
         }
     </style>
 </head>
 
 <body>
-    {% set wca =
-    ['333','222','444','555','666','777','333bf','333fm','333oh','clock','minx','pyram','skewb','sq1','444bf','555bf','333mbf','333ft','333mbo','magic','mmagic']
-    %}
-    {% set github_unofficial =
-    ['222bf','222oh','234567relay','234567relay_2_person','23456relay','2345relay','234relay','333_linear_fm','333_mirror_blocks','333_mirror_blocks_bld','333_oh_bld_relay','333_oh_bld_team_relay','333_oven_mitts','333_siamese','333_speed_bld','333_team_bld','333_team_factory','333bf_2_person_relay','333bf_3_person_relay','333bf_4_person_relay','333bf_8_person_relay','333mts','444ft','666bf','777bf','baby_fto','cmetrick_mini','corner_helicopter_222','crazy_333','curvycopter','dino','fisher','fto','gear','gigaminx','helicopter','ivy','kilominx','magic_oh','miniguild','miniguild_2_person','miniguild_bld','minx_bld','mpyram','mskewb','mtetram','pyraminx_crystal','pyramorphix','redi','sq1_bld','sq2','super_sq1','ufo']
-    %}
+    {% set wca = ['333','222','444','555','666','777','333bf','333fm','333oh','clock','minx','pyram','skewb','sq1','444bf','555bf','333mbf','333ft','333mbo','magic','mmagic'] %}
+    {% set github_unofficial = ['222bf','222oh','234567relay','234567relay_2_person','23456relay','2345relay','234relay','333_linear_fm','333_mirror_blocks','333_mirror_blocks_bld','333_oh_bld_relay','333_oh_bld_team_relay','333_oven_mitts','333_siamese','333_speed_bld','333_team_bld','333_team_factory','333bf_2_person_relay','333bf_3_person_relay','333bf_4_person_relay','333bf_8_person_relay','333mts','444ft','666bf','777bf','baby_fto','cmetrick_mini','corner_helicopter_222','crazy_333','curvycopter','dino','fisher','fto','gear','gigaminx','helicopter','ivy','kilominx','magic_oh','miniguild','miniguild_2_person','miniguild_bld','minx_bld','mpyram','mskewb','mtetram','pyraminx_crystal','pyramorphix','redi','sq1_bld','sq2','super_sq1','ufo'] %}
 
     <div class="container">
         <header>
-            <div class="logo">Unofficial Kinchranks</div>
+            <div class="logo">DumbClock Kinch</div>
 
             <nav class="nav-menu">
                 <a href="competitions" class="nav-link">Competitions</a>
                 <a href="records" class="nav-link">Records</a>
                 <a href="rankings" class="nav-link">Rankings</a>
-
             </nav>
 
             <div class="search-wrap">
-                <input type="text" id="mainSearch" class="search-input" placeholder="ID, Name, or Comp...">
-                <button class="btn" style="padding: 10px 15px;" onclick="executeSearch()">
+                <input type="text" id="mainSearch" class="search-input" placeholder="Search competitor ID / Name...">
+                <button class="btn" style="padding: 10px 15px; box-shadow: 2px 2px 0px var(--text-main);" onclick="executeSearch()">
                     <i class="fa-solid fa-magnifying-glass"></i>
                 </button>
                 <button class="btn"
-                    style="background:none; border: 1px solid var(--border); color:var(--text-main); min-width: 45px; padding: 0;"
+                    style="background:none; border: 2px solid var(--text-main); color:var(--text-main); min-width: 45px; padding: 0; box-shadow: 2px 2px 0px var(--text-main);"
                     onclick="document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')">
                     <i class="fa-solid fa-circle-half-stroke"></i>
                 </button>
@@ -474,23 +506,21 @@
         <div class="config-panel">
             <form action="/" method="POST" id="eventForm">
                 <div class="section-header-container">
-                    <span class="section-h">Core & Unofficial</span>
+                    <span class="section-h">Tracklist: Core Events</span>
                     <div>
-                        <button type="button" class="btn btn-outline" onclick="toggleAll(true)">Select All</button>
-                        <button type="button" class="btn btn-outline" onclick="toggleAll(false)">None</button>
+                        <button type="button" class="btn btn-outline" onclick="toggleAll(true)">All</button>
+                        <button type="button" class="btn btn-outline" onclick="toggleAll(false)">Clear</button>
                     </div>
                 </div>
 
                 <div class="event-flex">
                     {% for eid in all_events if eid in (CORE_AVG + CORE_SIN) %}
                     <label class="chip" title="{{ event_names[eid] }}">
-                        <input type="checkbox" name="events" value="{{ eid }}" {% if eid in event_ids %}checked{% endif
-                            %} style="display:none;">
+                        <input type="checkbox" name="events" value="{{ eid }}" {% if eid in event_ids %}checked{% endif %} style="display:none;">
                         {% if eid in wca %}
                         <span class="cubing-icon event-{{ eid }}"></span>
                         {% elif eid in github_unofficial %}
-                        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/{{ eid }}.svg"
-                            alt="{{ eid }}">
+                        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/{{ eid }}.svg" alt="{{ eid }}">
                         {% else %}
                         <span class="cubing-icon unofficial-{{ eid }}"></span>
                         {% endif %}
@@ -499,31 +529,25 @@
                 </div>
 
                 <div class="section-header-container">
-                    <span class="section-h">Misc Events</span>
+                    <span class="section-h">B-Sides & Rarities</span>
                 </div>
 
                 <div class="event-flex">
                     {% for eid in all_events if eid not in (CORE_AVG + CORE_SIN) %}
                     <label class="chip" title="{{ event_names[eid] }}">
-                        <input type="checkbox" name="events" value="{{ eid }}" {% if eid in event_ids %}checked{% endif
-                            %} style="display:none;">
+                        <input type="checkbox" name="events" value="{{ eid }}" {% if eid in event_ids %}checked{% endif %} style="display:none;">
                         {% if eid in wca %}
                         <span class="cubing-icon event-{{ eid }}"></span>
                         {% elif eid in github_unofficial %}
-                        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/{{ eid }}.svg"
-                            alt="{{ eid }}">
+                        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/{{ eid }}.svg" alt="{{ eid }}">
                         {% elif eid == 'gear_cube' %}
-                        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/gear.svg"
-                            alt="Gear Cube">
+                        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/gear.svg" alt="Gear Cube">
                         {% elif eid == 'ivy_cube' %}
-                        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/ivy.svg"
-                            alt="Ivy Cube">
+                        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/ivy.svg" alt="Ivy Cube">
                         {% elif eid == 'corner_heli222' %}
-                        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/corner_helicopter_222.svg"
-                            alt="Corner Helicopter 2x2">
+                        <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/corner_helicopter_222.svg" alt="Corner Helicopter 2x2">
                         {% else %}
-                        <img src="/static/icons/{{ eid }}.svg" alt="{{ eid }}"
-                            onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <img src="/static/icons/{{ eid }}.svg" alt="{{ eid }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div class="txt" style="display:none;">{{ event_names[eid] or eid }}</div>
                         {% endif %}
                     </label>
@@ -532,12 +556,11 @@
 
                 <div class="controls">
                     <select name="region"
-                        style="padding: 10px; border-radius: 8px; background: var(--bg-body); color: var(--text-main); border: 2px solid var(--border); font-weight: 700;">
-                        <option value="All">Global Rankings</option>
-                        {% for r in regions %}<option value="{{ r }}" {% if current_region==r %}selected{% endif %}>{{ r
-                            }}</option>{% endfor %}
+                        style="padding: 10px 15px; border-radius: 0px; background: var(--bg-card); color: var(--text-main); border: 2px solid var(--text-main); font-weight: 700; font-family: inherit; box-shadow: 3px 3px 0px var(--text-main);">
+                        <option value="All">Global Stage</option>
+                        {% for r in regions %}<option value="{{ r }}" {% if current_region==r %}selected{% endif %}>{{ r }}</option>{% endfor %}
                     </select>
-                    <button type="submit" class="btn">UPDATE RANKINGS</button>
+                    <button type="submit" class="btn">Amplify Rankings</button>
                 </div>
             </form>
         </div>
@@ -547,22 +570,19 @@
                 <table id="kinchTable">
                     <thead>
                         <tr>
-                            <th class="col-rank">#</th>
-                            <th class="col-name">Competitor</th>
-                            <th style="text-align: center;">Kinch</th>
+                            <th class="col-rank">SET</th>
+                            <th class="col-name">Band / Competitor</th>
+                            <th style="text-align: center; min-width: 80px;">Kinch</th>
                             {% for eid in event_ids %}
-                            <th style="text-align: center;">
+                            <th style="text-align: center; min-width: 50px;">
                                 <div class="header-icon-wrap">
                                     {% if eid in wca %}
                                     <span class="cubing-icon event-{{ eid }}"></span>
                                     {% elif eid in github_unofficial %}
-                                    <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/{{ eid }}.svg"
-                                        alt="{{ eid }}">
+                                    <img src="https://raw.githubusercontent.com/cubing/icons/main/src/svg/unofficial/{{ eid }}.svg" alt="{{ eid }}">
                                     {% else %}
-                                    <img src="/static/icons/{{ eid }}.svg" alt="{{ eid }}"
-                                        onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
-                                    <span style="font-size: 0.7rem; display:none;">{{ event_names[eid][:5] or eid
-                                        }}</span>
+                                    <img src="/static/icons/{{ eid }}.svg" alt="{{ eid }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';">
+                                    <span style="font-size: 0.7rem; display:none;">{{ event_names[eid][:5] or eid }}</span>
                                     {% endif %}
                                 </div>
                             </th>
@@ -574,10 +594,8 @@
                         <tr class="comp-row" data-name="{{ row.name }}" data-id="{{ row.id }}">
                             <td class="col-rank">{{ row.rank }}</td>
                             <td class="col-name">
-                                <a href="/person/{{ row.id }}"
-                                    style="color:var(--primary); text-decoration:none; font-weight:800;">{{ row.name
-                                    }}</a><br>
-                                <small style="color:var(--text-muted); font-weight: 500;">{{ row.region }}</small>
+                                <a href="/person/{{ row.id }}" style="color:var(--text-main); text-decoration:none; font-weight:900; border-bottom: 2px dashed var(--bocchi-pink);">{{ row.name }}</a><br>
+                                <small style="color:var(--text-muted); font-weight: 700; font-size: 0.75rem;">{{ row.region }}</small>
                             </td>
                             <td class="score-box">{{ row.total }}</td>
                             {% for eid in event_ids %}
@@ -591,10 +609,8 @@
         </div>
     </div>
 
-    <footer class="site-footer">
-        Results are licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC
-            BY-SA
-            4.0</a> | Latest export: v1 (05/04/2026)
+    <footer>
+        Live performance scores licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">CC BY-SA 4.0</a> | Mix Tape Export: v1 (05/04/2026)
     </footer>
 
     <script>
